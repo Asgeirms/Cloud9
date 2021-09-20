@@ -5,8 +5,12 @@
     <title>scheduled_event.event.name</title>
 </head>
 <body>
+{% if scheduled_event %}
 <h1>{{ scheduled_event.event.name }}</h1>
 <p>{{ scheduled_event.start_time }} - {{ scheduled_event.end_time }}</p>
 <p>{{ scheduled_event.event.description }}</p>
+    {% else %}
+    No more events
+{% endif %}
 </body>
 </html>
