@@ -25,6 +25,6 @@ class AddNewEvent(CreateView):
     models = Event
     form_class = EventForm
     context_object_name = "event"
-    success_url = reverse_lazy('all-events')
+    success_url = reverse_lazy('all_events')
 
 

@@ -1,5 +1,7 @@
 {% extends 'web/base.html' %}
 
-{% block body %} Hello world world 
-    <button><a href={% url 'create_event' %}/>Create Event</a></button>
+{% block body %} Here are all your events!
+    <br>
+    <button><a href={% url 'create_event' %}>Create Event</a></button>
+
 {% endblock body %}
