@@ -1,0 +1,15 @@
+{% extends 'web/base.html' %}
+
+{% block body %} These are your events!
+    {% if my_events_list %}
+    <ul>
+    {% for event in my_events_list %}
+        <li> {{event.name}} </li>
+    {% endfor %}
+    </ul>
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+    <br>
+    <button><a href={% url 'create_event' %}>Create Event</a></button>
+{% endblock body %}
