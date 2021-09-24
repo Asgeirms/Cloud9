@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView
+from django.views.generic import DetailView
 from django.urls import reverse_lazy
-
 from django.forms import ModelForm
 
 from .models import Event
@@ -17,7 +17,7 @@ class EventForm(ModelForm):
         fields = ['name', 'location', 'min_price', 'max_price', 'description']
         #fields = '__all__'
 
-
+# For displaying all events
 class DisplayEventsView(TemplateView):
     template_name = "happenings/events.html"
 
@@ -26,6 +26,11 @@ class MyEventsView(ListView):
     context_object_name = "my_events_list"
     def get_queryset(self):
         return Event.objects.order_by('-name') 
+
+class DetailedEventView(DetailView):
+    model = Event
+    template_name = 'happenings/event_detail.html'
+    context_object_name = "event"
 
 class AddNewEvent(CreateView):
     template_name = "happenings/add_event.html"
