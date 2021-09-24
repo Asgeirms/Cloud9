@@ -27,7 +27,7 @@ class MyEventsView(ListView):
 
 class DetailedEventView(DetailView):
     model = Event
-    template_name = 'happenings/event_detail.html'
+    template_name = 'happenings/detail.html'
     context_object_name = "event"
 
 class AddNewEvent(CreateView):
@@ -40,13 +40,13 @@ class AddNewEvent(CreateView):
 class EventList(ListView):
     model = Schedule
     queryset = Schedule.objects.filter(event__admin_approved=True)
-    template_name = "event_list_view.html"
+    template_name = "happenings/event_list_view.html"
     context_object_name = "scheduled_events_list"
 
 
 class EventView(DetailView):
     model = Schedule
-    template_name = "event_detail_view.html"
+    template_name = "happenings/event_detail_view.html"
     context_object_name = 'scheduled_event'
 
 
