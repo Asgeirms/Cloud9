@@ -1,12 +1,13 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .validators import validate_only_letters
 
 # Form for the user registration page
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
-    first_name = forms.CharField(label='First Name')
-    last_name = forms.CharField(label='Last Name')
+    first_name = forms.CharField(label='First Name', validators=[validate_only_letters])
+    last_name = forms.CharField(label='Last Name', validators=[validate_only_letters])
 
     class Meta:
         model = User

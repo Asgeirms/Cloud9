@@ -43,10 +43,20 @@ class UserRegisterFormTests(TestCase):
         response = self.client.post("/authenticate/register/", data=form_data)
         self.assertFalse(User.objects.filter(username = "NewTestUser").exists())
 
-    def test_uppercase_names(self):
+    def test_creat_user_uppercase_names(self):
         form_data = {"username": "NewTestUser", "first_name": "test", "last_name": "user", "email": "testing@test.no", "password1": "passwordtest1234", "password2": "passwordtest1234"}
         response = self.client.post("/authenticate/register/", data=form_data)
         self.assertTrue(User.objects.filter(first_name = "Test").exists())
         self.assertFalse(User.objects.filter(first_name = "test").exists())
         self.assertTrue(User.objects.filter(last_name = "User").exists())
         self.assertFalse(User.objects.filter(last_name = "user").exists())
+
+    def test_create_user_unvalid_firstname(self):
+        form_data = {"username": "NewTestUser", "first_name": "1test", "last_name": "user", "email": "testing@test.no", "password1": "passwordtest1234", "password2": "passwordtest1234"}
+        response = self.client.post("/authenticate/register/", data=form_data)
+        self.assertFalse(User.objects.filter(username = "NewTestUser").exists())
+
+    def test_create_user_unvalid_lastname(self):
+        form_data = {"username": "NewTestUser", "first_name": "test", "last_name": "1user", "email": "testing@test.no", "password1": "passwordtest1234", "password2": "passwordtest1234"}
+        response = self.client.post("/authenticate/register/", data=form_data)
+        self.assertFalse(User.objects.filter(username = "NewTestUser").exists())
