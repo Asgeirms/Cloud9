@@ -48,7 +48,7 @@ class AddEventView(CreateView):
     context_object_name = "event"
     success_url = reverse_lazy('my_events')
 
-class EventList(ListView):
+class EventListView(ListView):
     model = Schedule
     queryset = Schedule.objects.filter(event__admin_approved=True)
     template_name = "happenings/event_list_view.html"
