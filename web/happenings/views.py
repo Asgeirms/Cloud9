@@ -63,7 +63,7 @@ class EventView(DetailView):
 
 class RandomEventView(DetailView):
     queryset = Schedule.objects.all()
-    template_name = "event_detail_view.html"
+    template_name = "happenings/event_detail_view.html"
     context_object_name = 'scheduled_event'
 
     def get_object(self):
