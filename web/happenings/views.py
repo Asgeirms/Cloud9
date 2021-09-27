@@ -12,9 +12,8 @@ from .models import Event, Schedule
 from random import randint
 
 
-# Formclass. Can be used to both add new and to alter existing.
 class EventForm(ModelForm):
-    
+    '''Formclass. Can be used to both add new and to alter existing.'''
     class Meta:
         model = Event
         fields = ['name', 'location', 'min_price', 'max_price', 'description']
@@ -28,8 +27,8 @@ class EventForm(ModelForm):
         }
 
 
-# View you own events
 class MyEventsView(ListView):
+    '''View you own events'''
     template_name = "happenings/my_events.html"
     context_object_name = "my_events_list"
     # TODO: sort out only your events, not all.
@@ -48,7 +47,7 @@ class AddEventView(CreateView):
     form_class = EventForm
     context_object_name = "event"
     success_url = reverse_lazy('my_events')
-#---------------------------------------------------------------
+
 class EventList(ListView):
     model = Schedule
     queryset = Schedule.objects.filter(event__admin_approved=True)
