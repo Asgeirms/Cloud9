@@ -7,4 +7,3 @@ def validate_is_name(value):
         raise ValidationError('Not a string')
     if not value.replace("-", "").replace(" ","").isalpha():
         raise ValidationError('A name can only contain letters, hyphens and spaces')
-
