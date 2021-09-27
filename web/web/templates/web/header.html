@@ -1,0 +1,23 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'web/css/header.css' %}">
+
+<header id="header">
+    <div class="ui inverted segment">
+        <div class="ui inverted secondary menu">
+            <a class="active item">
+                Logo
+            </a>
+            <a class="item">
+                My profile
+            </a>
+            <a href="{% url 'events' %}" class="item">
+                Events
+            </a>
+            <a class="right item">
+                Sign in
+            </a>
+        </div>
+    </div>
+
+</header>

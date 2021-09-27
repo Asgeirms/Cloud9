@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upcoming events</title>
+</head>
+<body>
+<h1>Upcoming events</h1>
+{% if scheduled_events_list %}
+{% for event in scheduled_events_list %}
+    <a href="{% url 'events' event.pk %}"> {{ event }}</a>
+    <br>
+
+{% endfor %}
+   {% else %}
+    No more events
+{% endif %}
+</body>
+</html>
