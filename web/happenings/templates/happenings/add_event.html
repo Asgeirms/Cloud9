@@ -1,0 +1,30 @@
+{% extends 'web/base.html' %}
+
+{% block body %}
+    <div class="ui raised very padded text container segment">
+        <form class="ui form" method="post">{% csrf_token %}
+            {% for field in form.visible_fields %}
+                <div class="field">
+                    {{ field.label_tag }}
+
+                    {% if form.is_bound %}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <div class="field error">
+                                    {{ field }}
+                                    <label>{{ error }}</label>    
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            {{ field }}
+
+                        {% endif %}
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                </div> 
+            {% endfor %}
+            <input class="ui blue button" type="submit" value="Suggest event">
+        </form>
+    </div>
+{% endblock body %}
