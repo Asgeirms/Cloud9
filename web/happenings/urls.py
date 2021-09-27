@@ -1,9 +1,13 @@
 from django.urls import path
-from .views import DisplayEventsView, AddEventView, EventList, RandomEventView, EventView
+from . import views
+
 
 urlpatterns = [
-    path('', EventList.as_view(), name="all_events"),
-    path('<int:pk>', EventView.as_view(), name="events"),
-    path('random', RandomEventView.as_view(), name='spesific_event'),
-    path('create/', AddEventView.as_view(), name='create_event'),
-]
+    path('', views.EventListView.as_view(), name="events"),
+    path('me/create/', views.AddEventView.as_view(), name='create_event'),
+    path('me/', views.MyEventsView.as_view(), name='my_events'),
+    path('me/<int:pk>', views.DetailedEventView.as_view(), name="detail"),
+    path('<int:pk>', views.EventView.as_view(), name="events"),
+    path('random', views.RandomEventView.as_view(), name='spesific_event'),
+]   
+

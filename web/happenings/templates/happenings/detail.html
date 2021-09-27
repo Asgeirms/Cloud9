@@ -1,0 +1,16 @@
+{% extends 'web/base.html' %}
+
+{% block body %} {{event.name}}
+    <br>
+    Location: {{event.location}}
+    <br>
+    Minimum-price: {{event.min_price}}
+    <br>
+    Maximum-price: {{event.max_price}}
+    <br>
+    Description: {{event.description}}
+    <br>
+    Approved? {{event.admin_approved}}
+    <br>
+    <button><a href={% url 'my_events' %}>Go back</a></button>
+{% endblock body %}
