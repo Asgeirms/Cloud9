@@ -5,17 +5,28 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
-from django.forms import ModelForm
+
+from django.forms import ModelForm, TextInput, ValidationError
 
 from .models import Event, Schedule
 from random import randint
 
-# Formclass. Can be used to both add new and to alter existing objects.
+
+# Formclass. Can be used to both add new and to alter existing.
 class EventForm(ModelForm):
+    
     class Meta:
         model = Event
         fields = ['name', 'location', 'min_price', 'max_price', 'description']
-        #fields = '__all__'
+        labels = {
+            'min_price': 'Minimum price',
+            'max_price': 'Maximum price'
+        }
+        widgets = {
+            'name': TextInput(attrs={'placeholder': 'Your name'}),
+            'location': TextInput(attrs={'placeholder': 'Where to host?'}),
+        }
+
 
 # View you own events
 class MyEventsView(ListView):
@@ -30,7 +41,8 @@ class DetailedEventView(DetailView):
     template_name = 'happenings/detail.html'
     context_object_name = "event"
 
-class AddNewEvent(CreateView):
+    
+class AddEventView(CreateView):
     template_name = "happenings/add_event.html"
     models = Event
     form_class = EventForm
