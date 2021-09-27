@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegisterForm
 
 # Register page for users
-def register(request):
+def registerView(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
