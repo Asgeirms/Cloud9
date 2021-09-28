@@ -1,3 +1,5 @@
+import datetime
+
 from django.db.models import fields
 from django.db.models.base import Model
 from django.shortcuts import render
@@ -50,7 +52,7 @@ class AddEventView(CreateView):
 
 class EventListView(ListView):
     model = Schedule
-    queryset = Schedule.objects.filter(event__admin_approved=True)
+    queryset = Schedule.objects.filter(event__admin_approved=True).filter(start_time__gte=datetime.datetime.now())
     template_name = "happenings/event_list_view.html"
     context_object_name = "scheduled_events_list"
 

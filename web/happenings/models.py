@@ -23,3 +23,6 @@ class Schedule(models.Model):
 
     def __str__(self):
         return str(self.event.name + "-" + self.start_time.strftime('%Y-%m-%d %H:%M'))
+
+    def get_times(self):
+        return str(self.start_time.strftime('%H:%M %d-%m-%Y') + "-" + self.end_time.strftime('%H:%M %d-%m-%Y'))

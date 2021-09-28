@@ -2,7 +2,7 @@ import datetime
 
 from django.test import TestCase
 
-from happenings.models import Event, Schedule
+from .models import Event, Schedule
 
 
 class EventAndScheduleSaveTest(TestCase):
