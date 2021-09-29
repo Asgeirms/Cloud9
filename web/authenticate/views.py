@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegisterForm
 
 # Register page for users
-def registerView(request):
+def RegisterView(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
