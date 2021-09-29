@@ -11,17 +11,19 @@ from datetime import datetime
 
 class MyEventsView(ListView):
     '''View you own events'''
-    template_name = "happenings/my_events.html"
+    template_name = "happenings/my_events_list_view.html"
     context_object_name = "my_events_list"
+    
     # TODO: sort out only your events, not all.
     def get_queryset(self):
         return Event.objects.order_by('-name') 
 
-class EventDetailView(DetailView):
-    model = Event
-    template_name = 'happenings/event_detail.html'
-    context_object_name = "event"
-
+class DetailedMyEventView(DetailView):
+    '''The detailed view you get watching your own events.'''
+    model = Schedule
+    template_name = 'happenings/my_event_detail_view.html'
+    context_object_name = 'scheduled_event'
+    success_url = reverse_lazy('my_events')
     
 class SuggestEventView(CreateView):
     template_name = "happenings/suggest_event.html"
