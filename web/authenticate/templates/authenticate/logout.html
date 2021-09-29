@@ -1,0 +1,12 @@
+{% extends 'web/base.html' %}
+
+{% block body %}
+    <div class="ui raised very padded text container segment">
+        <h2>You have been logged out</h2>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                <a href="{% url 'login' %}">Log Back In</a>
+            </small>
+        </div>
+    </div>
+{% endblock body %}

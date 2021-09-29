@@ -1,0 +1,34 @@
+{% extends 'web/base.html' %}
+
+{% block body %}
+  <div class="ui raised very padded text container segment">
+    <h2>Log In</h2>
+    <form class="ui form" method="post">{% csrf_token %}
+      {% for field in form.visible_fields %}
+        <div class="field">
+          {{ field.label_tag }}
+          {% if form.is_bound %}
+            {% if field.errors %}
+              {% for error in field.errors %}
+                <div class="field error">
+                  {{ field }}
+                  <label>{{ error }}</label>    
+                </div>
+              {% endfor %}
+            {% else %}
+              {{ field }}
+            {% endif %}
+          {% else %}
+            {{ field }}
+          {% endif %}
+        </div> 
+      {% endfor %}
+      <input class="ui blue button" type="submit" value="Log In">
+    </form>
+    <div class="border-top pt-3">
+      <small class="text-muted">
+        Need An Account? <a class="ml-2" href="{% url 'register'%}">Sign Up Now!</a>
+      </small>
+    </div>
+  </div> 
+{% endblock body %}
