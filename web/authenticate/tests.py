@@ -16,8 +16,7 @@ class UserRegisterFormTests(TestCase):
 
     def test_create_user_success(self):
         self.assertFalse(User.objects.exists())
-        url = reverse('register')
-        response = self.client.post("/user/register/", data=self.valid_form_data)
+        response = self.client.post(url, data=self.valid_form_data)
         self.assertTrue(User.objects.filter(username = "NewTestUser").exists())
 
     def test_valid_user_register_form(self):

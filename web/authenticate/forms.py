@@ -17,10 +17,10 @@ class UserRegisterForm(UserCreationForm):
             'username': None
         }
 
-    # Capitalizes the first name
     def clean_first_name(self):
+        """Capitalizes the first name"""
         return self.cleaned_data['first_name'].capitalize()
 
-    # Capitalizes the last name
     def clean_last_name(self):
+        """Capitalizes the last name"""
         return self.cleaned_data['last_name'].capitalize()
