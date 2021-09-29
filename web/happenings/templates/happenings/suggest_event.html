@@ -2,6 +2,8 @@
 
 {% block body %}
     <div class="ui raised very padded text container segment">
+        <h1 class="ui header">Suggest an event</h1>
+
         <form class="ui form" method="post">{% csrf_token %}
             {% for field in form.visible_fields %}
                 <div class="field">
