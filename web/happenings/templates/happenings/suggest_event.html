@@ -5,28 +5,59 @@
         <h1 class="ui header">Suggest an event</h1>
 
         <form class="ui form" method="post">{% csrf_token %}
-            {% for field in form.visible_fields %}
+           
                 <div class="field">
-                    {{ field.label_tag }}
-
-                    {% if form.is_bound %}
-                        {% if field.errors %}
-                            {% for error in field.errors %}
-                                <div class="field error">
-                                    {{ field }}
-                                    <label>{{ error }}</label>    
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            {{ field }}
-
-                        {% endif %}
-                    {% else %}
-                        {{ field }}
-                    {% endif %}
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
                 </div> 
-            {% endfor %}
+
+                <div class="field">
+                    {{ form.location.label_tag }}
+                    {{ form.location }}
+                </div>
+
+                <div class="two field">
+                    <div class="field">
+                        {{ form.min_price.label_tag }}
+                        {{ form.min_price }}
+                    </div>
+                    <div class="field">
+                        {{ form.max_price.label_tag }}
+                        {{ form.max_price }}
+                    </div>
+                </div>
+
+                <div class="two field">
+                    <div class="field">
+                        {{ form.start_time.label_tag }}
+                        <div class="ui calendar">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                    {{ form.start_time }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        {{ form.end_time.label_tag }}
+                        <div class="ui calendar">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                    {{ form.end_time }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                </div>
+
             <input class="ui blue button" type="submit" value="Suggest event">
         </form>
     </div>
+    
+<script>
+    $('.ui.calendar').calendar({ampm: false});
+</script>
 {% endblock body %}

@@ -7,7 +7,20 @@ class EventForm(forms.ModelForm):
 
     start_time = forms.DateTimeField()
     end_time = forms.DateTimeField()
-    field_order = ['name', 'location', 'min_price', 'max_price', 'start_time', 'end_time', 'description']
+
+    field_order = [
+        'name',
+        'location',
+        'min_price',
+        'max_price',
+        'start_time',
+        'end_time'
+        'description',
+    ]
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['start_time'].widget.attrs.update({'autocomplete': 'off'})
+        self.fields['end_time'].widget.attrs.update({'autocomplete': 'off'})
 
     class Meta:
         model = Event
@@ -19,7 +32,7 @@ class EventForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Your name'}),
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),
-            'description': forms.Textarea(attrs={'placeholder': 'Describe your event!'})
+            'description': forms.Textarea(attrs={'placeholder': 'Describe your event!'}),
         }
     
     def save(self, commit=True):
