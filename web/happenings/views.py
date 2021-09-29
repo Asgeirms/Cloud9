@@ -2,26 +2,11 @@ from django.views.generic.edit import CreateView
 from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
 
-from django.forms import ModelForm, TextInput
+from .forms import EventForm
 
 from .models import Event, Schedule
 from random import randint
 from datetime import datetime
-
-
-class EventForm(ModelForm):
-    '''Formclass. Can be used to both add new and to alter existing.'''
-    class Meta:
-        model = Event
-        fields = ['name', 'location', 'min_price', 'max_price', 'description']
-        labels = {
-            'min_price': 'Minimum price',
-            'max_price': 'Maximum price'
-        }
-        widgets = {
-            'name': TextInput(attrs={'placeholder': 'Your name'}),
-            'location': TextInput(attrs={'placeholder': 'Where to host?'}),
-        }
 
 
 class MyEventsView(ListView):
@@ -32,14 +17,14 @@ class MyEventsView(ListView):
     def get_queryset(self):
         return Event.objects.order_by('-name') 
 
-class DetailedEventView(DetailView):
+class EventDetailView(DetailView):
     model = Event
-    template_name = 'happenings/detail.html'
+    template_name = 'happenings/event_detail.html'
     context_object_name = "event"
 
     
-class AddEventView(CreateView):
-    template_name = "happenings/add_event.html"
+class SuggestEventView(CreateView):
+    template_name = "happenings/suggest_event.html"
     models = Event
     form_class = EventForm
     context_object_name = "event"
