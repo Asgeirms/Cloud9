@@ -11,5 +11,5 @@ def get_event_times(event: Schedule):
 
 
 @register.simple_tag
-def get_pricerange(Schedule: Schedule):
-    return Schedule.event.get_pricerange()
+def get_pricerange(schedule: Schedule):
+    return schedule.event.get_pricerange()

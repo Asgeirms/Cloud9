@@ -1,17 +1,12 @@
-import datetime
-
-from django.db.models import fields
-from django.db.models.base import Model
-from django.shortcuts import render
-from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
 
-from django.forms import ModelForm, TextInput, ValidationError
+from django.forms import ModelForm, TextInput
 
 from .models import Event, Schedule
 from random import randint
+from datetime import datetime
 
 
 class EventForm(ModelForm):
