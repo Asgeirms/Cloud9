@@ -52,7 +52,7 @@ class AddEventView(CreateView):
 
 class EventListView(ListView):
     model = Schedule
-    queryset = Schedule.objects.filter(event__admin_approved=True).filter(start_time__gte=datetime.datetime.now())
+    queryset = Schedule.objects.filter(event__admin_approved=True).filter(start_time__gte=datetime.datetime.now()).order_by('start_time')
     template_name = "happenings/event_list_view.html"
     context_object_name = "scheduled_events_list"
 
@@ -61,6 +61,7 @@ class EventView(DetailView):
     model = Schedule
     template_name = "happenings/event_detail_view.html"
     context_object_name = 'scheduled_event'
+    success_url = reverse_lazy('events')
 
 
 class RandomEventView(DetailView):
@@ -69,7 +70,7 @@ class RandomEventView(DetailView):
     context_object_name = 'scheduled_event'
 
     def get_object(self):
-        object_list = Schedule.objects.filter(event__admin_approved=True)
+        object_list = Schedule.objects.filter(event__admin_approved=True).filter(start_time__gte=datetime.datetime.now())
         if (len(object_list) > 1):
             number = randint(0, len(object_list)-1)
             return object_list[number]

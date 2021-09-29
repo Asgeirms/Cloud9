@@ -1,9 +1,9 @@
-#content {
+.ui.container {
     margin: 5%;
 }
 
 .ui.card{
     margin: 5%;
-    padding: 3%;
+    padding: 1%;
     width: auto;
 }
