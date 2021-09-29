@@ -1,19 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Upcoming events</title>
-</head>
-<body>
-<h1>Upcoming events</h1>
-{% if scheduled_events_list %}
-{% for event in scheduled_events_list %}
-    <a href="{% url 'events' event.pk %}"> {{ event }}</a>
-    <br>
+{% extends 'web/base.html' %}
+{% load happenings_templatetags %}
+{% load static %}
 
-{% endfor %}
-   {% else %}
-    No more events
-{% endif %}
-</body>
-</html>
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
+{% endblock head %}
+
+{% block body %}
+<div class="ui container">
+    <h1>Upcoming events</h1>
+        {% if scheduled_events_list %}
+
+            <div class="ui link cards">
+                {% for scheduled_event in scheduled_events_list %}
+                        <a class="card" href="{% url 'events' scheduled_event.pk %}">
+                            <div class="content">
+                                <div class="header"> {{ scheduled_event.event.name }}</div>
+                                    <div class="meta"> {% get_event_times scheduled_event %} </div>
+                                    <div class="meta">{% get_pricerange scheduled_event %}  </div>
+                                <div class="meta">{{ scheduled_event.event.location }}</div>
+                                    <div class="description"> {{ scheduled_event.event.description }}</div>
+                            </div>
+                        </a>
+
+
+        {% endfor %}  </div>
+        {% else %}
+            No more events
+        {% endif %}
+</div>
+{% endblock body %}

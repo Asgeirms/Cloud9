@@ -1,16 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>scheduled_event.event.name</title>
-</head>
-<body>
+{% extends 'web/base.html' %}
+{% load happenings_templatetags %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
+{% endblock head %}
+
+{% block body %}
+    <div class="ui container">
+<div class="ui card">
 {% if scheduled_event %}
-<h1>{{ scheduled_event.event.name }}</h1>
-<p>{{ scheduled_event.start_time }} - {{ scheduled_event.end_time }}</p>
-<p>{{ scheduled_event.event.description }}</p>
+<div class="content">
+    <div class="header">{{ scheduled_event.event.name }}</div>
+    <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
+        <span class="right floated">{% get_pricerange scheduled_event %}</span></div>
+    <div class="meta">{{ scheduled_event.event.location }}</div>
+    <div class="description"> {{ scheduled_event.event.description }}</div></div>
+
     {% else %}
     No more events
 {% endif %}
-</body>
-</html>
+</div>
+    </div>
+{% endblock body %}
