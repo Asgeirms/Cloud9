@@ -1,0 +1,62 @@
+{% extends 'web/base.html' %}
+{% load happenings_templatetags %}
+
+{% block body %}
+
+    {% if user.is_staff %}
+
+        <div class="ui tabular menu">
+            <a class="item active" data-tab="not-approved">
+            Non-approved events
+            </a>
+            <a class="item" data-tab="approved">
+            Approved events
+            </a>
+        </div>
+
+        <div class="ui bottom attached tab segment active" data-tab="not-approved">
+            <div class="ui link cards">
+                {% for scheduled_event in scheduled_events %}
+            {% if not scheduled_event.event.admin_approved %}
+                <a class="card" href="{% url 'events' scheduled_event.pk %}">
+                            <div class="content">
+                                <div class="header"> {{ scheduled_event.event.name }}</div>
+                                    <div class="meta"> {% get_event_times scheduled_event %} </div>
+                                    <div class="meta">{% get_pricerange scheduled_event %}  </div>
+                                <div class="meta">{{ scheduled_event.event.location }}</div>
+                                    <div class="description"> {{ scheduled_event.event.description }}</div>
+                            </div>
+                        </a>
+                {% endif %}
+        {% endfor %}
+        </div>
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="approved">
+         <div class="ui link cards">
+                {% for scheduled_event in scheduled_events %}
+            {% if scheduled_event.event.admin_approved %}
+                <a class="card" href="{% url 'events' scheduled_event.pk %}">
+                            <div class="content">
+                                <div class="header"> {{ scheduled_event.event.name }}</div>
+                                    <div class="meta"> {% get_event_times scheduled_event %} </div>
+                                    <div class="meta">{% get_pricerange scheduled_event %}  </div>
+                                <div class="meta">{{ scheduled_event.event.location }}</div>
+                                    <div class="description"> {{ scheduled_event.event.description }}</div>
+                            </div>
+                        </a>
+                {% endif %}
+        {% endfor %}
+        </div>
+            </div>
+
+        {% else %}
+        You dont have premission to view this page
+    {% endif %}
+
+ <script>
+    $('.menu .item').tab();
+    </script>
+
+
+{% endblock body %}
+

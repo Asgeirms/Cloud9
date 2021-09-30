@@ -13,7 +13,7 @@ class Event(models.Model):
         return str(self.name)
 
     def get_pricerange(self):
-        if (self.max_price > 0):
+        if self.max_price > 0:
             return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
         return "FREE"
 
@@ -30,7 +30,7 @@ class Schedule(models.Model):
         return str(self.event.name + "-" + self.start_time.strftime('%Y-%m-%d %H:%M'))
 
     def get_times(self):
-        if (self.start_time.strftime('%d-%m-%Y') != self.end_time.strftime('%d-%m-%Y')):
+        if self.start_time.strftime('%d-%m-%Y') != self.end_time.strftime('%d-%m-%Y'):
             return str(self.start_time.strftime('%d-%m-%Y - %H:%M') + " to " + self.end_time.strftime('%d-%m-%Y - %H:%M'))
         return str(self.start_time.strftime('%d-%m-%Y %H:%M') + " to " + self.end_time.strftime('%H:%M'))
 
