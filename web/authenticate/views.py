@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView
 from .models import User
 from django.urls import reverse_lazy
 
+
 # Register page for users
 class RegisterCreateView(CreateView):
     template_name = "authenticate/register.html"

@@ -14,9 +14,26 @@
             <a href="{% url 'events' %}" class="item">
                 Events
             </a>
-            <a href="{% url 'login' %}" class="right item">
+            {% if user.is_authenticated %}
+                <div class="ui dropdown right item">
+                 <a href="{% url 'logout' %}" class="right item">
+                                    <div class="text"> {{ user.username }} </div>
+                                </a>
+                        <i class="dropdown icon text" tabindex{# For disabling focus on click #}></i>
+                        <nav class="menu transition" >
+                            <div class="item">
+                                <a href="{% url 'logout' %}" class="right item">
+                                    <div class="text"> Sign out </div>
+                                </a>
+                            </div>
+
+                        </nav>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}" class="right item">
                 Sign in
-            </a>
+                </a>
+            {% endif %}
         </div>
     </div>
 

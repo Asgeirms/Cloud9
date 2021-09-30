@@ -29,8 +29,10 @@ class MyEventsListView(ListView):
     template_name = "happenings/my_events_list_view.html"
     context_object_name = "my_events_list"
     # TODO: sort out only your events, not all.
+
     def get_queryset(self):
         return Event.objects.order_by('-name') 
+
 
 class DetailedMyEventView(DetailView):
     '''The detailed view you get watching your own events.'''
@@ -38,7 +40,8 @@ class DetailedMyEventView(DetailView):
     template_name = 'happenings/my_event_detail_view.html'
     context_object_name = 'scheduled_event'
     success_url = reverse_lazy('my_events')
-    
+
+
 class AddEventView(CreateView):
     template_name = "happenings/add_event.html"
     models = Event
@@ -68,7 +71,7 @@ class RandomEventView(DetailView):
 
     def get_object(self):
         object_list = Schedule.objects.filter(event__admin_approved=True).filter(end_time__gte=datetime.now())
-        if (len(object_list) > 1):
+        if len(object_list) > 0:
             number = randint(0, len(object_list)-1)
             return object_list[number]
         return None
