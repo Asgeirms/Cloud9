@@ -1,0 +1,40 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'web/css/header.css' %}">
+
+<header id="header">
+    <div class="ui inverted segment">
+        <div class="ui inverted secondary menu">
+            <a href="{% url 'random_event' %}" class="active item">
+                Swipe!
+            </a>
+            <a href="{% url 'my_events' %}" class="item">
+                My profile
+            </a>
+            <a href="{% url 'events' %}" class="item">
+                Events
+            </a>
+            {% if user.is_authenticated %}
+                <div class="ui dropdown right item">
+                 <a href="{% url 'logout' %}" class="right item">
+                                    <div class="text"> {{ user.username }} </div>
+                                </a>
+                        <i class="dropdown icon text" tabindex{# For disabling focus on click #}></i>
+                        <nav class="menu transition" >
+                            <div class="item">
+                                <a href="{% url 'logout' %}" class="right item">
+                                    <div class="text"> Sign out </div>
+                                </a>
+                            </div>
+
+                        </nav>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}" class="right item">
+                Sign in
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+</header>

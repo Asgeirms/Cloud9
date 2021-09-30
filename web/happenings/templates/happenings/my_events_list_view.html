@@ -1,0 +1,27 @@
+{% extends 'web/base.html' %}
+{% load happenings_templatetags %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
+{% endblock head %}
+
+
+{% block body %} 
+    <div class="ui container">
+        <div class="ui card">
+            <h1>These are your events!</h1>
+            {% if my_events_list %}
+                <div class="ui huge link list">
+                    {% for event in my_events_list %}
+                        <a class="item" href="{% url 'my_events_detailed' event.id %}"> {{ event.name }} </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>You haven't added any events yet!</p>
+            {% endif %}
+
+            <button class="ui button"><a href={% url 'create_event' %}>Create Event</a></button>
+        </div>
+    </div>
+{% endblock body %}
