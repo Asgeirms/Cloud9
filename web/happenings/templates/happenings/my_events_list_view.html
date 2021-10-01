@@ -16,18 +16,32 @@
             
                 {% if my_events_list %}
                     <div class="ui huge link list">
-                        {% for event in my_events_list %}
-                            <a class="item" href="{% url 'my_events_detailed' event.id %}"> {{ event.name }} </a>
+                        {% for scheduled_event in my_events_list %}
+                            <!--
+                            <a class="ui button" href="{% url 'my_events_detailed' scheduled_event.event.id %}"> {{ scheduled_event.event.name }} </a> 
+                            
+                            <p> {{ scheduled_event.start_time }}</p>
+                           -->
+                            <div class="ui labeled button" tabindex="0">
+                                <a class="ui grey button" href="{% url 'my_events_detailed' scheduled_event.event.id %}">
+                                    {{ scheduled_event.event.name }}
+                                </a>
+                                <a class="ui basic black left pointing label">
+                                    {{ scheduled_event.start_time }}
+                                </a>
+                            </div>
+                            <br>
+                            <br>
                         {% endfor %}
                     </div>
                 {% else %}
                     <p>You haven't added any events yet!</p>
-                {% endif %}    
+                {% endif %}
 
             </div>
             <div class="extra content">
      
-                <button class="ui button"><a href={% url 'create_event' %}>Create Event</a></button>
+                <a class="ui green button" href="{% url 'create_event' %}">Create Event</a>
   
             </div>
 
@@ -38,12 +52,13 @@
         <div class="ui card">
             <div class="content">
                 <div class="header">Your swipes!</div>
-                    <p>You haven't swiped any events yet!</p>
+                    <br>
+                    <div class="meta">You haven't swiped any events yet!</div>
             </div>
             <div class="extra content">
-                <button class="ui button" tabindex="0">
-                    <a href={% url 'random_event' %}>Swipe</a>
-                </button>
+                <a class="ui blue button" tabindex="0"href="{% url 'random_event' %}">
+                    Swipe
+                </a>
             </div>
         </div>
     </div>

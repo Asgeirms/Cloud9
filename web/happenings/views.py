@@ -28,9 +28,9 @@ class MyEventsListView(ListView):
     '''View you own events'''
     template_name = "happenings/my_events_list_view.html"
     context_object_name = "my_events_list"
-    model = Event
+    model = Schedule
     def get_queryset(self):
-        return Event.objects.filter(host=self.request.user)
+        return Schedule.objects.filter(event__host=self.request.user)
 
 
 class DetailedMyEventView(DetailView):
