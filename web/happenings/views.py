@@ -1,13 +1,14 @@
 from django.views.generic.edit import CreateView
 from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
-
+from django.contrib.auth import get_user_model
 from django.forms import ModelForm, TextInput
 
 from .models import Event, Schedule
 from random import randint
 from datetime import datetime
 
+from django.http import HttpResponse, HttpResponseRedirect
 
 class EventForm(ModelForm):
     '''Formclass. Can be used to both add new and to alter existing.'''
@@ -22,7 +23,6 @@ class EventForm(ModelForm):
             'name': TextInput(attrs={'placeholder': 'Your name'}),
             'location': TextInput(attrs={'placeholder': 'Where to host?'}),
         }
-
 
 class MyEventsListView(ListView):
     '''View you own events'''
@@ -48,6 +48,11 @@ class AddEventView(CreateView):
     form_class = EventForm
     context_object_name = "event"
     success_url = reverse_lazy('my_events')
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.host = self.request.user
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class EventListView(ListView):

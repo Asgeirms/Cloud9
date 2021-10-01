@@ -8,20 +8,46 @@
 
 
 {% block body %} 
+    <!--For your events -->
     <div class="ui container">
         <div class="ui card">
-            <h1>These are your events!</h1>
-            {% if my_events_list %}
-                <div class="ui huge link list">
-                    {% for event in my_events_list %}
-                        <a class="item" href="{% url 'my_events_detailed' event.id %}"> {{ event.name }} </a>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>You haven't added any events yet!</p>
-            {% endif %}
+            <div class="content">
+                <div class="header">Your events</div>
+            
+                {% if my_events_list %}
+                    <div class="ui huge link list">
+                        {% for event in my_events_list %}
+                            <a class="item" href="{% url 'my_events_detailed' event.id %}"> {{ event.name }} </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>You haven't added any events yet!</p>
+                {% endif %}    
 
-            <button class="ui button"><a href={% url 'create_event' %}>Create Event</a></button>
+            </div>
+            <div class="extra content">
+     
+                <button class="ui button"><a href={% url 'create_event' %}>Create Event</a></button>
+  
+            </div>
+
         </div>
     </div>
+    <!--For your swipes -->
+    <div class="ui container">
+        <div class="ui card">
+            <div class="content">
+                <div class="header">Your swipes!</div>
+                    <p>You haven't swiped any events yet!</p>
+            </div>
+            <div class="extra content">
+                <button class="ui button" tabindex="0">
+                    <a href={% url 'random_event' %}>Swipe</a>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    
+
 {% endblock body %}
