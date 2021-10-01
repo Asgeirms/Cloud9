@@ -1,14 +1,12 @@
 from django.views.generic.edit import CreateView
 from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
-from django.contrib.auth import get_user_model
 from django.forms import ModelForm, TextInput
 
 from .models import Event, Schedule
 from random import randint
 from datetime import datetime
 
-from django.http import HttpResponse, HttpResponseRedirect
 
 class EventForm(ModelForm):
     '''Formclass. Can be used to both add new and to alter existing.'''

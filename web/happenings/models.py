@@ -22,9 +22,7 @@ class Event(models.Model):
         if (self.max_price > 0):
             return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
         return "FREE"
-    
-    #def set_host(self):
-    #    self.host = get_user_model()
+
 
 
 class Schedule(models.Model):

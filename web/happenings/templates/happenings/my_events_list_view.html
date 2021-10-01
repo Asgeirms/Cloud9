@@ -8,7 +8,7 @@
 
 
 {% block body %} 
-    <!--For your events -->
+    {#For your events#}
     <div class="ui container">
         <div class="ui card">
             <div class="content">
@@ -17,11 +17,6 @@
                 {% if my_events_list %}
                     <div class="ui huge link list">
                         {% for scheduled_event in my_events_list %}
-                            <!--
-                            <a class="ui button" href="{% url 'my_events_detailed' scheduled_event.event.id %}"> {{ scheduled_event.event.name }} </a> 
-                            
-                            <p> {{ scheduled_event.start_time }}</p>
-                           -->
                             <div class="ui labeled button" tabindex="0">
                                 <a class="ui grey button" href="{% url 'my_events_detailed' scheduled_event.event.id %}">
                                     {{ scheduled_event.event.name }}
@@ -47,7 +42,7 @@
 
         </div>
     </div>
-    <!--For your swipes -->
+    {#For your swipes#}
     <div class="ui container">
         <div class="ui card">
             <div class="content">
