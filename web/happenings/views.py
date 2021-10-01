@@ -30,6 +30,7 @@ class MyEventsListView(ListView):
     context_object_name = "my_events_list"
     model = Schedule
     def get_queryset(self):
+        # Only see your own events.
         return Schedule.objects.filter(event__host=self.request.user)
 
 
@@ -48,10 +49,14 @@ class AddEventView(CreateView):
     context_object_name = "event"
     success_url = reverse_lazy('my_events')
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.host = self.request.user
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+    # This only works with event.host(null=True)
+    #    self.object = form.save(commit=False)
+    #    self.object.host = self.request.user
+    #    self.object.save()
+    #    return HttpResponseRedirect(self.get_success_url())
+    # Better solution:
+        form.instance.host = self.request.user
+        return super().form_valid(form)
 
 
 class EventListView(ListView):
