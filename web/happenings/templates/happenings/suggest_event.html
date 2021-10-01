@@ -58,6 +58,27 @@
     </div>
     
 <script>
-    $('.ui.calendar').calendar({ampm: false});
+    $('.ui.calendar').calendar(
+        {
+            time: 'datetime',
+            ampm: false,
+            firstDayOfWeek: 1,
+            formatter: {
+                datetime: function (date, settings) {
+                    // Padding the date values 
+                    // adding a leading zero to make its size equal to 2
+                    // E.g. Month: 3 --> 03
+
+                    const pad = (val) => (val < 10) ? `0${val}` : val;
+                    const year = date.getFullYear();
+                    const month = pad(date.getMonth());
+                    const day = pad(date.getDate());
+                    const hours = pad(date.getHours());
+                    const minutes = pad(date.getMinutes());
+                    return `${year}-${month}-${day} ${hours}:${minutes}`;
+                },
+            }
+        },
+    );
 </script>
 {% endblock body %}
