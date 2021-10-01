@@ -49,13 +49,8 @@ class AddEventView(CreateView):
     context_object_name = "event"
     success_url = reverse_lazy('my_events')
     def form_valid(self, form):
-    # This only works with event.host(null=True)
-    #    self.object = form.save(commit=False)
-    #    self.object.host = self.request.user
-    #    self.object.save()
-    #    return HttpResponseRedirect(self.get_success_url())
-    # Better solution:
         form.instance.host = self.request.user
+        # Super(). allows you to alter the django super-class, without breaking it.
         return super().form_valid(form)
 
 
