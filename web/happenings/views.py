@@ -3,7 +3,7 @@ from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
 from django.utils import timezone
 
-from .forms import EventForm
+from .forms import EventForm, ScheduleForm
 
 from .models import Event, Schedule
 from random import randint
@@ -33,10 +33,35 @@ class SuggestEventView(CreateView):
     context_object_name = "event"
     success_url = reverse_lazy('my_events')
 
-    def form_valid(self, form):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.POST:
+            context['schedule_form'] = ScheduleForm(self.request.POST)
+        else:
+            context['schedule_form'] = ScheduleForm()
+        
+        return context
+
+    def form_valid(self, form, **kwargs):
+        context = self.get_context_data(**kwargs)
+        
         form.instance.host = self.request.user
-        # Super(). allows you to alter the django super-class, without breaking it.
-        return super().form_valid(form)
+        
+        # Attaching a schedule form with its fields 
+        schedule_form = context['schedule_form']
+        if schedule_form.is_valid():
+            self.object = form.save()
+            schedule_form.instance.event = self.object
+            schedule_form.save()
+
+            # Super(). allows you to alter the django super-class, without breaking it.
+            return super().form_valid(form)
+        else:
+
+            # If not successful, keep the existent data on form 
+            return self.render_to_response(self.get_context_data(form=form))
+
 
 class EventListView(ListView):
     model = Schedule
