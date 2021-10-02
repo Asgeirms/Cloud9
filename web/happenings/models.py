@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.conf import settings
+from authenticate.models import User
 
 class Event(models.Model):
     name = models.CharField(max_length=250)
@@ -9,6 +10,11 @@ class Event(models.Model):
     description = models.TextField()
     admin_approved = models.BooleanField(default=False)
 
+    host = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
     def __str__(self):
         return str(self.name)
 
@@ -16,6 +22,7 @@ class Event(models.Model):
         if (self.max_price > 0):
             return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
         return "FREE"
+
 
 
 class Schedule(models.Model):
