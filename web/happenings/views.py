@@ -1,7 +1,6 @@
 from django.views.generic.edit import CreateView
 from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
-
 from django.forms import ModelForm, TextInput
 
 from .models import Event, Schedule
@@ -23,15 +22,14 @@ class EventForm(ModelForm):
             'location': TextInput(attrs={'placeholder': 'Where to host?'}),
         }
 
-
 class MyEventsListView(ListView):
     '''View you own events'''
     template_name = "happenings/my_events_list_view.html"
     context_object_name = "my_events_list"
-    # TODO: sort out only your events, not all.
-
+    model = Schedule
     def get_queryset(self):
-        return Event.objects.order_by('-name') 
+        # Only see your own events.
+        return Schedule.objects.filter(event__host=self.request.user)
 
 
 class DetailedMyEventView(DetailView):
@@ -48,6 +46,10 @@ class AddEventView(CreateView):
     form_class = EventForm
     context_object_name = "event"
     success_url = reverse_lazy('my_events')
+    def form_valid(self, form):
+        form.instance.host = self.request.user
+        # Super(). allows you to alter the django super-class, without breaking it.
+        return super().form_valid(form)
 
 
 class EventListView(ListView):
