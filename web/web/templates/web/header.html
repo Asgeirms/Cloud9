@@ -5,36 +5,31 @@
 <header id="header">
     <div class="ui inverted segment">
         <div class="ui inverted secondary menu">
-            <a href="{% url 'random_event' %}" class="active item">
-                Swipe!
-            </a>
-            <a href="{% url 'my_events' %}" class="item">
-                My profile
-            </a>
-            <a href="{% url 'events' %}" class="item">
-                Events
-            </a>
-            {% if user.is_authenticated %}
-                <div class="ui dropdown right item">
-                 <a href="{% url 'logout' %}" class="right item">
-                                    <div class="text"> {{ user.username }} </div>
-                                </a>
-                        <i class="dropdown icon text" tabindex{# For disabling focus on click #}></i>
-                        <nav class="menu transition" >
-                            <div class="item">
-                                <a href="{% url 'logout' %}" class="right item">
-                                    <div class="text"> Sign out </div>
-                                </a>
-                            </div>
-
-                        </nav>
-                </div>
-            {% else %}
-                <a href="{% url 'login' %}" class="right item">
-                Sign in
-                </a>
-            {% endif %}
-        </div>
+            <a href="{% url 'random_event' %}" class="active item"> Swipe! </a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'my_events' %}" class="item"> My profile </a>
+        {% endif %}
+            <a href="{% url 'events' %}" class="item"> Events </a>
+                {% if user.is_authenticated %}
+                    <div id="nav-user-dropdown" class="ui dropdown right item">
+                        <div class="text"> {{ user.username }} </div>
+                            <i class="dropdown icon text"></i>
+                            <nav class="menu transition" >
+                                 {% if user.is_staff %}
+                                     <div class="item">Admin page</div>
+                                 {% endif %}
+                                <a href="{% url 'logout' %}" class="item"> Sign out </a>
+                            </nav>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="right item"> Sign in </a>
+                {% endif %}
+            </div>
     </div>
 
 </header>
+
+
+<script>
+    $('.ui.dropdown, #nav-user-dropdown').dropdown({action: 'hide'});
+</script>
