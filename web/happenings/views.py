@@ -1,12 +1,12 @@
 from django.views.generic.edit import CreateView
 from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
+from django.utils import timezone
 
 from .forms import EventForm
 
 from .models import Event, Schedule
 from random import randint
-from datetime import datetime
 
 
 class MyEventsView(ListView):
@@ -32,10 +32,9 @@ class SuggestEventView(CreateView):
     context_object_name = "event"
     success_url = reverse_lazy('my_events')
 
-
 class EventListView(ListView):
     model = Schedule
-    queryset = Schedule.objects.filter(event__admin_approved=True).filter(end_time__gte=datetime.now()).order_by('start_time')
+    queryset = Schedule.objects.filter(event__admin_approved=True).filter(end_time__gte=timezone.now()).order_by('start_time')
     template_name = "happenings/event_list_view.html"
     context_object_name = "scheduled_events_list"
 
