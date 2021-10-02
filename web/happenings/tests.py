@@ -3,12 +3,16 @@ from django.utils import timezone
 
 from django.test import TestCase
 
+from authenticate.models import User
 from .models import Event, Schedule
-from .forms import EventForm
+from .forms import EventForm, ScheduleForm
+
 
 class EventAndScheduleSaveTest(TestCase):
 
     def setUp(self):
+        self.user = User.objects.create()
+
         self.valid_form_data = {
             "name": "TestEvent",
             "location": "TestLocation",
@@ -19,7 +23,7 @@ class EventAndScheduleSaveTest(TestCase):
 
     def test_create_event(self):
         event = Event.objects.create(name="TestEvent", location="TestLocation", min_price=0, max_price=10,
-                                     description="A long description")
+                                     description="A long description", host=self.user)
         self.assertEqual(event.name, self.valid_form_data["name"])
         self.assertFalse(event.admin_approved)
         event.name = "TestEventChanged"
@@ -28,7 +32,7 @@ class EventAndScheduleSaveTest(TestCase):
 
     def test_create_schedule(self):
         event = Event.objects.create(name="TestEvent", location="TestLocation", min_price=0, max_price=10,
-                                     description="A long description")
+                                     description="A long description", host=self.user)
         schedule = Schedule.objects.create(start_time=timezone.now(),
                                            end_time=timezone.now() + timezone.timedelta(hours=2), event=event)
         self.assertEqual(schedule.event.name, self.valid_form_data["name"])
@@ -37,17 +41,21 @@ class EventAndScheduleSaveTest(TestCase):
         self.assertEqual(schedule.event.name, "TestEventChanged")
 
 
-class EventFormTest(TestCase):
+class EventAndScheduleFormTest(TestCase):
 
     def setUp(self):
-        self.valid_form_data = {
+        self.user = User.objects.create()
+        self.valid_event_form_data = {
             "name": "Henrik's DevBlog: The Movie",
             "location": "thelist.no",
             "min_price": 0,
             "max_price": 10,
+            "description": "The rise of Django developer beginner to successfully and established Django Pro at The List"
+        }
+
+        self.valid_schedule_form_data = {
             "start_time": timezone.now(),
             "end_time": timezone.now() + timezone.timedelta(hours=3),
-            "description": "The rise of Django developer beginner to successfully and established Django Pro at The List"
         }
 
     def assertErrorCodeInForm(self, field_name, error_code, form):
@@ -66,18 +74,36 @@ class EventFormTest(TestCase):
         self.assertIn(error_code, error_code_list)
 
 
-    def test_valid_form(self):
-        form = EventForm(data=self.valid_form_data)
+    def test_valid_event_form(self):
+        form = EventForm(data=self.valid_event_form_data)
+        form.instance.host = self.user
         self.assertTrue(form.is_valid())
 
-    def test_invalid_start_time_in(self):
-        invalid_form = self.valid_form_data
-        invalid_form['start_time'] = timezone.now() + timezone.timedelta(hours=12)
-        form = EventForm(data=invalid_form)
+    def test_invalid_price(self):
+        invalid_form = self.valid_event_form_data
+        invalid_form['min_price'] = 9999
 
-        self.assertFalse(form.is_valid())
+        invalid_price = EventForm(data=invalid_form)
+        invalid_price.instance.host = self.user
+
+        self.assertFalse(invalid_price.is_valid())
+        self.assertErrorCodeInForm(
+            field_name='min_price',
+            error_code='invalid_price',
+            form=invalid_price
+        )
+
+    def test_invalid_start_time(self):
+        valid_event = Event()
+        
+        invalid_form = self.valid_schedule_form_data
+        invalid_form['start_time'] = timezone.now() + timezone.timedelta(hours=99)
+        invalid_start_time = ScheduleForm(data=invalid_form)
+        invalid_start_time.instance.event = valid_event
+
+        self.assertFalse(invalid_start_time.is_valid())
         self.assertErrorCodeInForm(
             field_name='start_time',
             error_code='invalid_time',
-            form=form
+            form=invalid_start_time
         )
