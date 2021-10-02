@@ -8,16 +8,6 @@ class EventForm(forms.ModelForm):
     start_time = forms.DateTimeField()
     end_time = forms.DateTimeField()
 
-    field_order = [
-        'name',
-        'location',
-        'min_price',
-        'max_price',
-        'start_time',
-        'end_time'
-        'description',
-    ]
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['start_time'].widget.attrs.update({'autocomplete': 'off'})
