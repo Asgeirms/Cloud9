@@ -16,6 +16,7 @@ class EventForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),
             'description': forms.Textarea(attrs={'placeholder': 'Describe your event!'}),
         }
+        
     def clean(self):
         cleaned_data = super().clean()
         min_price = cleaned_data.get('min_price')
