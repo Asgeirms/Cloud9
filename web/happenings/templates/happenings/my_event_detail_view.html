@@ -25,14 +25,17 @@
             </div>
         
             <div class="extra content">
-
+                <div class="ui buttons">
                 <a class="ui black button" href={% url 'my_events' %}>Go back</a>
-                <a class="ui green button">Edit</a>
-                <a class="ui red button">Delete</a>
+                <a class="ui green button" href="{% url 'edit_event' scheduled_event.event.pk %}">Edit event info </a>
+                <a class="ui green button" href="{% url 'edit_schedule' scheduled_event.pk %}">Edit time info</a>
+                <a class="ui green button" href="{% url 'add_schedule' scheduled_event.event.pk %}">Add another time</a>
+                <form method="POST"  action="{% url "cancel_schedule" scheduled_event.pk  %}">
+                    {% csrf_token %}<button class="ui red button" type="submit"> Cancel </button>
+                </form>
+                    </div>
 
             </div>
         </div>
     </div>
 {% endblock body %}
-
-

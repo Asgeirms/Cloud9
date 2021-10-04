@@ -18,7 +18,7 @@
                     <div class="ui huge link list">
                         {% for scheduled_event in my_events_list %}
                             <div class="ui labeled button" tabindex="0">
-                                <a class="ui grey button" href="{% url 'my_events_detailed' scheduled_event.event.id %}">
+                                <a class="ui grey button" href="{% url 'my_events_detailed' scheduled_event.id %}">
                                     {{ scheduled_event.event.name }}
                                 </a>
                                 <a class="ui basic black left pointing label">
