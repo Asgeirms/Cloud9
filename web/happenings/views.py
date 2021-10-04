@@ -53,6 +53,7 @@ class SuggestEventView(CreateView):
         # Attaching a schedule form with its fields 
         schedule_form = context['schedule_form']
         if schedule_form.is_valid():
+            # Very dirty hack
             self.object = form.save()
             schedule_form.instance.event = self.object
             schedule_form.save()
