@@ -4,35 +4,34 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
-<style>
-h1 {text-align: center;}
-p {text-align: center;}
-div {text-align: center;}
-</style>
 {% endblock head %}
 
 {% block body %}
     <div class="ui container">
         <div class="ui card">
-            {% if scheduled_event %}
             <div class="content">
-                <div class="header">{{ scheduled_event.event.name }}</div>
-                <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
-                    <span class="right floated">{% get_pricerange scheduled_event %}</span></div>
-                <div class="meta">{{ scheduled_event.event.location }}</div>
-                <div class="description"> {{ scheduled_event.event.description }}</div></div>
-                <div class="meta"> Admin approved: {{ scheduled_event.event.admin_approved }}</div></div>
-                {% else %}
-                You don't have any upcoming events.
-            {% endif %}
-        </div>
+                {% if scheduled_event %}
+                    <div class="header">{{ scheduled_event.event.name }}</div>
+                    <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
+                        <span class="right floated">{% get_pricerange scheduled_event %}</span>
+                    </div>
+                    <div class="meta">{{ scheduled_event.event.location }}</div>
+                    <div class="description"> {{ scheduled_event.event.description }}</div>
+                    <br>
+                    <div class="meta"> Admin approved: {{ scheduled_event.event.admin_approved }}</div>
+                    {% else %}
+                    <div class="header">You don't have any upcoming events.</div>
+                {% endif %}
+            </div>
         
-        <div class="ui buttons">
-            <button class="ui green button"><a href={% url 'my_events' %}>Go back</a></button>
-            <button class="ui button">Edit</button>
-            <button class="ui red button">Delete</button>
+            <div class="extra content">
+
+                <a class="ui black button" href={% url 'my_events' %}>Go back</a>
+                <a class="ui green button">Edit</a>
+                <a class="ui red button">Delete</a>
+
+            </div>
         </div>
-    
     </div>
 {% endblock body %}
 

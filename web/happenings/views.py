@@ -1,37 +1,22 @@
 from django.views.generic.edit import CreateView
 from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
+from django.utils import timezone
 
-from django.forms import ModelForm, TextInput
+from .forms import EventForm, ScheduleForm
 
 from .models import Event, Schedule
 from random import randint
-from datetime import datetime
-
-
-class EventForm(ModelForm):
-    '''Formclass. Can be used to both add new and to alter existing.'''
-    class Meta:
-        model = Event
-        fields = ['name', 'location', 'min_price', 'max_price', 'description']
-        labels = {
-            'min_price': 'Minimum price',
-            'max_price': 'Maximum price'
-        }
-        widgets = {
-            'name': TextInput(attrs={'placeholder': 'Your name'}),
-            'location': TextInput(attrs={'placeholder': 'Where to host?'}),
-        }
 
 
 class MyEventsListView(ListView):
     '''View you own events'''
     template_name = "happenings/my_events_list_view.html"
     context_object_name = "my_events_list"
-    # TODO: sort out only your events, not all.
-
+    model = Schedule
     def get_queryset(self):
-        return Event.objects.order_by('-name') 
+        # Only see your own events.
+        return Schedule.objects.filter(event__host=self.request.user)
 
 
 class DetailedMyEventView(DetailView):
@@ -40,19 +25,48 @@ class DetailedMyEventView(DetailView):
     template_name = 'happenings/my_event_detail_view.html'
     context_object_name = 'scheduled_event'
     success_url = reverse_lazy('my_events')
-
-
-class AddEventView(CreateView):
-    template_name = "happenings/add_event.html"
+    
+class SuggestEventView(CreateView):
+    template_name = "happenings/suggest_event.html"
     models = Event
     form_class = EventForm
     context_object_name = "event"
     success_url = reverse_lazy('my_events')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.POST:
+            context['schedule_form'] = ScheduleForm(self.request.POST)
+        else:
+            context['schedule_form'] = ScheduleForm()
+        
+        return context
+
+    def form_valid(self, form, **kwargs):
+        context = self.get_context_data(**kwargs)
+        
+        form.instance.host = self.request.user
+        
+        # Attaching a schedule form with its fields 
+        schedule_form = context['schedule_form']
+        if schedule_form.is_valid():
+            # Very dirty hack
+            self.object = form.save()
+            schedule_form.instance.event = self.object
+            schedule_form.save()
+
+            # Super(). allows you to alter the django super-class, without breaking it.
+            return super().form_valid(form)
+        else:
+
+            # If not successful, keep the existent data on form 
+            return self.render_to_response(self.get_context_data(form=form))
+
 
 class EventListView(ListView):
     model = Schedule
-    queryset = Schedule.objects.filter(event__admin_approved=True).filter(end_time__gte=datetime.now()).order_by('start_time')
+    queryset = Schedule.objects.filter(event__admin_approved=True).filter(end_time__gte=timezone.now()).order_by('start_time')
     template_name = "happenings/event_list_view.html"
     context_object_name = "scheduled_events_list"
 
@@ -70,7 +84,7 @@ class RandomEventView(DetailView):
     context_object_name = 'scheduled_event'
 
     def get_object(self):
-        object_list = Schedule.objects.filter(event__admin_approved=True).filter(end_time__gte=datetime.now())
+        object_list = Schedule.objects.filter(event__admin_approved=True).filter(end_time__gte=timezone.now())
         if len(object_list) > 0:
             number = randint(0, len(object_list)-1)
             return object_list[number]

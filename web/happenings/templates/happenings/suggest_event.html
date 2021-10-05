@@ -1,0 +1,119 @@
+{% extends 'web/base.html' %}
+
+{% block body %}
+    <div class="ui raised very padded text container segment">
+        <h1 class="ui header">Suggest an event</h1>
+
+        <form class="ui form" method="post">{% csrf_token %}
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="ui negative small message">
+                            <i class="close icon"></i>
+                            <b>{{ error|escape }}</b>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+        {# TODO: Better way of rendering the errors in schedule #}
+            {% if schedule_form.errors %}
+                {% for field in schedule_form %}
+                    {% for error in field.errors %}
+                        <div class="ui negative small message">
+                            <i class="close icon"></i>
+                            <b>{{ error|escape }}</b>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+           
+                <div class="field">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div> 
+
+                <div class="field">
+                    {{ form.location.label_tag }}
+                    {{ form.location }}
+                </div>
+
+                <div class="two field">
+                    <div class="field">
+                        {{ form.min_price.label_tag }}
+                        {{ form.min_price }}
+                    </div>
+                    <div class="field">
+                        {{ form.max_price.label_tag }}
+                        {{ form.max_price }}
+                    </div>
+                </div>
+
+                <div class="two field">
+                    <div class="field">
+                        {{ form.start_time.label_tag }}
+                        <div class="ui calendar">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                    {{ schedule_form.start_time }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        {{ form.end_time.label_tag }}
+                        <div class="ui calendar">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                    {{ schedule_form.end_time }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                </div>
+
+            <input class="ui blue button" type="submit" value="Suggest event">
+
+        </form>
+    </div>
+    
+<script>
+    function formatDatetime(date){
+        // Padding the date values 
+        // adding a leading zero to make its size equal to 2
+        // E.g. Month: 3 --> 03
+        const pad = (val) => (val < 10) ? `0${val}` : val;
+        if (date === null) { return; };
+            const year = date.getFullYear();
+        const month = pad(date.getMonth());
+        const day = pad(date.getDate());
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+    }
+
+    $('.ui.calendar').calendar(
+        {
+            time: 'datetime',
+            ampm: false,
+            firstDayOfWeek: 1,
+            initialDate: formatDatetime(new Date()),
+            formatter: {
+                datetime: function (date, settings) {
+                    return formatDatetime(date);
+                },
+            }
+        },
+    );
+
+    $(".message .close").click(function () {
+        $(this)
+            .closest(".message")
+            .transition("fade");
+    });
+    
+</script>
+{% endblock body %}
