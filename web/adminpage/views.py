@@ -1,14 +1,14 @@
 from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import redirect
 
 # Create your views here.
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView
 
-from happenings.models import Event, Schedule
+from happenings.models import Event
 
 
-class CurateEventsView(UserPassesTestMixin, ListView):
+class CurateEventsView(PermissionRequiredMixin, ListView):
     template_name = "adminpage/curate_events.html"
     context_object_name = "events"
 
@@ -19,16 +19,16 @@ class CurateEventsView(UserPassesTestMixin, ListView):
         }
         return data
 
-    def test_func(self):
+    def has_permission(self):
         return self.request.user.is_staff
 
 
-class AdminEventDetailView(UserPassesTestMixin, DetailView):
+class AdminEventDetailView(PermissionRequiredMixin, DetailView):
     template_name = "adminpage/detail_event_view.html"
     model = Event
     context_object_name = "event"
 
-    def test_func(self):
+    def has_permission(self):
         return self.request.user.is_staff
 
     @user_passes_test(lambda user: user.is_staff)
