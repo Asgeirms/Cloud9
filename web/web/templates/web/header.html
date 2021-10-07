@@ -5,7 +5,8 @@
 <header id="header">
     <div class="ui inverted segment">
         <div class="ui inverted secondary menu">
-            <a href="{% url 'random_event' %}" class="active item"> Swipe! </a>
+            <a href="{% url 'swiping' %}" class="active item"> Swipe! </a>
+            <a href="{% url 'random_event' %}" class="item"> Random </a>
         {% if user.is_authenticated %}
             <a href="{% url 'my_events' %}" class="item"> My profile </a>
         {% endif %}
