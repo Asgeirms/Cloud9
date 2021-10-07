@@ -11,4 +11,3 @@ urlpatterns = [
     path('random', views.RandomEventView.as_view(), name='random_event'),
     path('filter', views.FilterEventListView, name="filter"),
 ]   
-

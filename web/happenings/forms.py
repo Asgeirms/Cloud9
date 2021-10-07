@@ -76,3 +76,4 @@ class FilterForm(forms.Form):
                         "From time cannot begin after to time!",
                         code='invalid_time')
                 )
+                

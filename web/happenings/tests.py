@@ -5,7 +5,7 @@ from django.test import TestCase
 
 from authenticate.models import User
 from .models import Event, Schedule
-from .forms import EventForm, ScheduleForm
+from .forms import EventForm, ScheduleForm, FilterForm
 
 
 class EventAndScheduleSaveTest(TestCase):
@@ -107,3 +107,40 @@ class EventAndScheduleFormTest(TestCase):
             error_code='invalid_time',
             form=invalid_start_time
         )
+
+class FilterFormTest(TestCase):
+
+    def setUp(self):
+        self.valid_filter_form_data = {
+            "from_time": datetime.datetime.now(),
+            "to_time": datetime.datetime.now(),
+            "max_price": 200
+        }
+
+    def test_valid_filter_form_all_data(self):
+        valid_form = FilterForm(data=self.valid_filter_form_data)
+        self.assertTrue(valid_form.is_valid())
+
+    def test_valid_filter_form_missing_to_time(self):
+        missing_to_time_data = self.valid_filter_form_data
+        missing_to_time_data["to_time"]= None
+        valid_form = FilterForm(data=missing_to_time_data)
+        self.assertTrue(valid_form.is_valid())
+
+    def test_valid_filter_form_missing_from_time(self):
+        missing_from_time_data = self.valid_filter_form_data
+        missing_from_time_data["from_time"]= None
+        valid_form = FilterForm(data=missing_from_time_data)
+        self.assertTrue(valid_form.is_valid())
+
+    def test_valid_filter_form_missing_max_price(self):
+        missing_max_price_data = self.valid_filter_form_data
+        missing_max_price_data["max_price"]= None
+        valid_form = FilterForm(data=missing_max_price_data)
+        self.assertTrue(valid_form.is_valid())
+
+    def test_invalid_filter_form_invalid_time(self):
+        invalid_time_data = self.valid_filter_form_data
+        invalid_time_data["from_time"]= datetime.datetime.now() + datetime.timedelta(hours=1)
+        invalid_form = FilterForm(data=invalid_time_data)
+        self.assertFalse(invalid_form.is_valid())
