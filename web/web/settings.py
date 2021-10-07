@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'authenticate',
     'happenings',
     'web',
+    'swiping',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'authenticate.User'
 
 LOGIN_REDIRECT_URL = 'events'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
