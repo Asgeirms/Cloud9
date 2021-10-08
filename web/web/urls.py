@@ -19,5 +19,6 @@ from django.urls import include, path
 urlpatterns = [
     path('events/', include('happenings.urls')),
     path('admin/', admin.site.urls),
-    path('user/', include('authenticate.urls'))
+    path('user/', include('authenticate.urls')),
+    path('swiping/', include('swiping.urls')),
 ]
