@@ -1,0 +1,87 @@
+{% extends 'web/base.html' %}
+{% load happenings_templatetags %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'adminpage/css/adminpage.css' %}">
+{% endblock head %}
+
+{% block body %}
+
+    {% if user.is_staff %}
+
+
+        <h1 class="ui header">Events</h1>
+
+        <div class="ui tabular menu">
+            <a class="item active" data-tab="not-approved">
+                Non-approved <div class="number">{{ events.not_approved.count }} </div>
+            </a>
+            <a class="item" data-tab="approved">
+                Approved
+            </a>
+        </div>
+
+        <div class="ui bottom attached tab segment active" data-tab="not-approved">
+            <div class="ui link cards">
+            {% if events.not_approved.count == 0 %}
+                <div class="text">You've curated all the events! Congrats on the hard work</div>
+
+                {% else %}
+                {% for event in events.not_approved %}
+                <a class="card" href="{% url 'admin_events' event.pk %}">
+                    <div class="content">
+                        <div class="header"> {{ event.name }}</div>
+                            <div class="meta">{% get_pricerange event %}  </div>
+                        <div class="meta">{{ event.location }}</div>
+                            <div class="description"> {{ event.description }}</div>
+                    </div>
+                    <form method="post" action="{% url 'approve' event.pk %}">
+                        {% csrf_token %}
+                        <button class="ui fluid positive button" type="submit">Approve</button>
+                    </form>
+                </a>
+
+
+                {% endfor %}
+            {% endif %}
+        </div>
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="approved">
+            <div class="ui link cards">
+            {% if events.approved.count == 0 %}
+                <div class="text">You haven't approved any events. Please go check if any fits your standards</div>
+
+                {% else %}
+
+                {% for event in events.approved %}
+                <a class="card" href="{% url 'admin_events' event.pk %}">
+                    <div class="content">
+                        <div class="header"> {{ event.name }}</div>
+                            <div class="meta">{% get_pricerange event %}  </div>
+                        <div class="meta">{{ event.location }}</div>
+                            <div class="description"> {{ event.description }}</div>
+                    </div>
+                    <form method="post" action="{% url 'disapprove' event.pk %}">
+                        {% csrf_token %}
+                        <button class="ui fluid negative button" type="submit">Disapprove</button>
+                    </form>
+                </a>
+
+                {% endfor %}
+
+                {% endif %}
+
+            </div>
+        </div>
+
+        {% else %}
+        You dont have premission to view this page
+    {% endif %}
+
+ <script>
+    $('.menu .item').tab();
+    </script>
+
+
+{% endblock body %}

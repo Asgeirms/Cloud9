@@ -13,7 +13,7 @@
                 {% if scheduled_event %}
                     <div class="header">{{ scheduled_event.event.name }}</div>
                     <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
-                        <span class="right floated">{% get_pricerange scheduled_event %}</span>
+                        <span class="right floated">{% get_pricerange scheduled_event.event %}</span>
                     </div>
                     <div class="meta">{{ scheduled_event.event.location }}</div>
                     <div class="description"> {{ scheduled_event.event.description }}</div>
@@ -23,7 +23,7 @@
                     <div class="header">You don't have any upcoming events.</div>
                 {% endif %}
             </div>
-        
+
             <div class="extra content">
 
                 <a class="ui black button" href={% url 'my_events' %}>Go back</a>
