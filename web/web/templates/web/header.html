@@ -16,7 +16,7 @@
                             <i class="dropdown icon text"></i>
                             <nav class="menu transition" >
                                  {% if user.is_staff %}
-                                     <a href="{% url 'curateEvents' %}" class="item">Admin page</a>
+                                     <a href="{% url 'curate_events' %}" class="item">Admin page</a>
                                  {% endif %}
                                 <a href="{% url 'logout' %}" class="item"> Sign out </a>
                             </nav>

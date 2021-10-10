@@ -36,11 +36,11 @@ class AdminEventDetailView(PermissionRequiredMixin, DetailView):
         event = Event.objects.get(pk=pk)
         event.admin_approved = False
         event.save()
-        return redirect('curateEvents')
+        return redirect('curate_events')
 
     @user_passes_test(lambda user: user.is_staff)
     def approve(self, pk):
         event = Event.objects.get(pk=pk)
         event.admin_approved = True
         event.save()
-        return redirect('curateEvents')
+        return redirect('curate_events')

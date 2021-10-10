@@ -43,7 +43,7 @@
 
 
         <div class="ui buttons">
-            <a class="ui gray button" href={% url 'curateEvents' %}>Go back</a>
+            <a class="ui gray button" href={% url 'curate_events' %}>Go back</a>
             {% if event.admin_approved %}
                 <form method="post" action="{% url 'disapprove' event.pk %}">
                 {% csrf_token %}
@@ -55,7 +55,7 @@
                     <button id="middle_button" class="ui positive button" type="submit">Approve</button>
                 </form>
             {% endif %}
-            <button class="ui red button">Delete</button>
+            <button class="ui button">Delete</button>
         </div>
 
     </div>

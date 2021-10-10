@@ -29,7 +29,7 @@
 
                 {% else %}
                 {% for event in events.not_approved %}
-                <a class="card" href="{% url 'adminEvents' event.pk %}">
+                <a class="card" href="{% url 'admin_events' event.pk %}">
                     <div class="content">
                         <div class="header"> {{ event.name }}</div>
                             <div class="meta">{% get_pricerange event %}  </div>
@@ -55,7 +55,7 @@
                 {% else %}
 
                 {% for event in events.approved %}
-                <a class="card" href="{% url 'adminEvents' event.pk %}">
+                <a class="card" href="{% url 'admin_events' event.pk %}">
                     <div class="content">
                         <div class="header"> {{ event.name }}</div>
                             <div class="meta">{% get_pricerange event %}  </div>
