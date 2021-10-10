@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from authenticate.models import User
 
+
 class Event(models.Model):
     name = models.CharField(max_length=250)
     location = models.CharField(max_length=250)
@@ -40,4 +41,3 @@ class Schedule(models.Model):
         if self.start_time.strftime('%d-%m-%Y') != self.end_time.strftime('%d-%m-%Y'):
             return str(self.start_time.strftime('%d-%m-%Y - %H:%M') + " to " + self.end_time.strftime('%d-%m-%Y - %H:%M'))
         return str(self.start_time.strftime('%d-%m-%Y %H:%M') + " to " + self.end_time.strftime('%H:%M'))
-
