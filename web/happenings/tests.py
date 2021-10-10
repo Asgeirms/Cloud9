@@ -144,4 +144,3 @@ class FilterFormTest(TestCase):
         invalid_time_data["from_time"]= datetime.datetime.now() + datetime.timedelta(hours=1)
         invalid_form = FilterForm(data=invalid_time_data)
         self.assertFalse(invalid_form.is_valid())
-        
