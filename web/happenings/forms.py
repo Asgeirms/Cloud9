@@ -73,6 +73,6 @@ class FilterForm(forms.Form):
                 self.add_error(
                     'from_time',
                     forms.ValidationError(
-                        "From time cannot begin after to time!",
+                        "From time cannot be after to time!",
                         code='invalid_time')
                 )

@@ -108,5 +108,6 @@ def FilterEventListView(request):
             if to_time:
                 queryset = queryset.filter(start_time__lte=to_time)
     else:
-        form = FilterForm()
+        form = FilterForm({'from_time': timezone.now()})
+        queryset = queryset.filter(end_time__gte=timezone.now())
     return render(request, 'happenings/filter.html', {'form': form, 'queryset': queryset})
