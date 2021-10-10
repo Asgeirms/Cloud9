@@ -1,6 +1,7 @@
 from django import template
 
 from ..models import Schedule, Event
+from django.utils import timezone
 
 register = template.Library()
 
@@ -18,3 +19,8 @@ def get_pricerange(event: Event):
 @register.simple_tag
 def get_schedules(event: Event):
     return Schedule.objects.filter(event=event)
+
+
+@register.simple_tag
+def set_current_date(shift_hours=0):
+    return (timezone.now() + timezone.timedelta(hours=shift_hours)).strftime("%Y-%m-%d %H:%M")
