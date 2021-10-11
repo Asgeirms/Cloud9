@@ -12,11 +12,12 @@
             <div class="content">
                 {% if event %}
                     <div class="header">{{ event.name }}</div>
-                    <div class="meta">{{ event.location }}</div>
+                    <div class="meta">{{ event.location }}
+                        <span class="right floated">{% get_pricerange event %}</span>
+                    </div>
                     <div class="description"> {{ event.description }}</div>
                     <br>
                     <div class="meta"> Admin approved: {{ event.admin_approved }}</div>
-                    <div class="ui divider"></div>
                     {% get_schedules event as scheduled_events %}
                     <div class="ui divided relaxed list">
                     {% for scheduled_event in scheduled_events %}
