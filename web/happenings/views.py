@@ -4,11 +4,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.shortcuts import render
 
-<<<<<<< HEAD
-from .forms import EventForm, ScheduleForm, FilterForm
-=======
-from .forms import EventForm, ScheduleForm, EditEventForm
->>>>>>> origin/develop
+from .forms import EventForm, ScheduleForm, FilterForm, EditEventForm
 
 from .models import Event, Schedule
 from random import randint
@@ -128,7 +124,6 @@ class RandomEventView(DetailView):
             number = randint(0, len(object_list)-1)
             return object_list[number]
         return None
-<<<<<<< HEAD
 
 
 def FilterEventListView(request):
@@ -151,5 +146,3 @@ def FilterEventListView(request):
         form = FilterForm({'from_time': timezone.now()})
         queryset = queryset.filter(end_time__gte=timezone.now())
     return render(request, 'happenings/filter.html', {'form': form, 'queryset': queryset})
-=======
->>>>>>> origin/develop

@@ -56,7 +56,6 @@ class ScheduleForm(forms.ModelForm):
                     code='invalid_time')
             )
 
-<<<<<<< HEAD
 class FilterForm(forms.Form):
     from_time = forms.DateTimeField(label="From:", required=False)
     to_time = forms.DateTimeField(label="To:", required=False)
@@ -77,7 +76,6 @@ class FilterForm(forms.Form):
                         "From time cannot be after to time!",
                         code='invalid_time')
                 )
-=======
 
 class EditEventForm(forms.ModelForm):
     '''Formclass. Creating event suggestions'''
@@ -106,4 +104,3 @@ class EditEventForm(forms.ModelForm):
                     "Minimum price cannot cost more than maximum price!",
                     code='invalid_price')
             )
->>>>>>> origin/develop
