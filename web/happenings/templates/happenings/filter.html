@@ -57,7 +57,7 @@
                             <div class="content">
                                 <div class="header"> {{ scheduled_event.event.name }}</div>
                                     <div class="meta"> {% get_event_times scheduled_event %} </div>
-                                    <div class="meta">{% get_pricerange scheduled_event %}  </div>
+                                    <div class="meta">{% get_pricerange scheduled_event.event %}  </div>
                                 <div class="meta">{{ scheduled_event.event.location }}</div>
                                     <div class="description"> {{ scheduled_event.event.description }}</div>
                             </div>
