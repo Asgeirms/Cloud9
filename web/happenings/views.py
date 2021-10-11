@@ -1,10 +1,14 @@
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.shortcuts import render
 
+<<<<<<< HEAD
 from .forms import EventForm, ScheduleForm, FilterForm
+=======
+from .forms import EventForm, ScheduleForm, EditEventForm
+>>>>>>> origin/develop
 
 from .models import Event, Schedule
 from random import randint
@@ -15,6 +19,7 @@ class MyEventsListView(ListView):
     template_name = "happenings/my_events_list_view.html"
     context_object_name = "my_events_list"
     model = Schedule
+
     def get_queryset(self):
         # Only see your own events.
         return Schedule.objects.filter(event__host=self.request.user)
@@ -26,7 +31,8 @@ class DetailedMyEventView(DetailView):
     template_name = 'happenings/my_event_detail_view.html'
     context_object_name = 'scheduled_event'
     success_url = reverse_lazy('my_events')
-    
+
+
 class SuggestEventView(CreateView):
     template_name = "happenings/suggest_event.html"
     models = Event
@@ -64,6 +70,39 @@ class SuggestEventView(CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
+class EditEventView(UpdateView):
+    template_name = "happenings/update_event.html"
+    model = Event
+    form_class = EditEventForm
+    context_object_name = "event"
+    success_url = reverse_lazy('my_events')
+
+
+class AddScheduleView(CreateView):
+    template_name = "happenings/add_schedule.html"
+    model = Schedule
+    form_class = ScheduleForm
+    context_object_name = "schedule"
+    success_url = reverse_lazy('my_events')
+
+    def form_valid(self, form, **kwargs):
+        form.instance.event_id = self.kwargs['pk']
+        return super().form_valid(form)
+
+
+class EditScheduleView(UpdateView):
+    template_name = "happenings/update_schedule.html"
+    model = Schedule
+    form_class = ScheduleForm
+    context_object_name = "scheduled_event"
+    success_url = reverse_lazy('my_events')
+
+
+class DeleteScheduleView(DeleteView):
+    model = Schedule
+    success_url = reverse_lazy('my_events')
+
+
 class EventListView(ListView):
     model = Schedule
     queryset = Schedule.objects.filter(event__admin_approved=True).filter(end_time__gte=timezone.now()).order_by('start_time')
@@ -89,6 +128,7 @@ class RandomEventView(DetailView):
             number = randint(0, len(object_list)-1)
             return object_list[number]
         return None
+<<<<<<< HEAD
 
 
 def FilterEventListView(request):
@@ -111,3 +151,5 @@ def FilterEventListView(request):
         form = FilterForm({'from_time': timezone.now()})
         queryset = queryset.filter(end_time__gte=timezone.now())
     return render(request, 'happenings/filter.html', {'form': form, 'queryset': queryset})
+=======
+>>>>>>> origin/develop

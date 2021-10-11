@@ -1,0 +1,72 @@
+{% extends 'web/base.html' %}
+{% load happenings_templatetags %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'adminpage/css/adminpage.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
+
+
+{% endblock head %}
+
+
+{% block body %}
+
+    {% if user.is_staff %}
+
+    <div class="ui container">
+        <div class="ui card">
+            <div class="content">
+                <h1 class="header">{{ event.name }}</h1>
+                <div class="text">{{ event.host.username }}</div>
+            <div class="ui hidden divider"></div>
+        <div class="ui two column very relaxed stackable grid">
+            <div class="column">
+                <div class="content">
+                <div class=" text">{% get_pricerange event %}</div>
+                    <div class="ui hidden divider"></div>
+                {% get_schedules event as scheduled_events %}
+                {% for scheduled_event in scheduled_events %}
+                <div class="text"><span class="date">{% get_event_times scheduled_event %}</span></div>
+                    {% endfor %}
+            </div>
+            </div>
+            <div class="middle aligned column">
+                <div class=" text">{{ event.location }}</div>
+            <div class="ui hidden divider"></div>
+                <div class="description"> {{ event.description }}</div>
+            </div>
+        </div>
+            <div class="meta"> Admin approved: {{ event.admin_approved }}</div></div>
+        </div>
+        </div>
+
+
+        <div class="ui buttons">
+            <a class="ui gray button" href={% url 'curate_events' %}>Go back</a>
+            {% if event.admin_approved %}
+                <form method="post" action="{% url 'disapprove' event.pk %}">
+                {% csrf_token %}
+                    <button id="middle_button" class="ui negative button" type="submit">Disapprove</button>
+                </form>
+            {% else %}
+                <form method="post" action="{% url 'approve' event.pk %}">
+                {% csrf_token %}
+                    <button id="middle_button" class="ui positive button" type="submit">Approve</button>
+                </form>
+            {% endif %}
+            <button class="ui button">Delete</button>
+        </div>
+
+    </div>
+        {% else%}
+        You dont have access to this page. Please go away
+    {% endif %}
+
+<script>
+function reload() {
+  //window.location.reload(false);
+}
+</script>
+
+{% endblock body %}

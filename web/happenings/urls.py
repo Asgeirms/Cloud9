@@ -9,4 +9,8 @@ urlpatterns = [
     path('me/<int:pk>', views.DetailedMyEventView.as_view(), name="my_events_detailed"),
     path('<int:pk>', views.EventView.as_view(), name="events"),
     path('random', views.RandomEventView.as_view(), name='random_event'),
+    path('me/<int:pk>/edit', views.EditEventView.as_view(), name='edit_event'),
+    path('me/<int:pk>/editSchedule', views.EditScheduleView.as_view(), name='edit_schedule'),
+    path('me/<int:pk>/create', views.AddScheduleView.as_view(), name='add_schedule'),
+    path('me/<int:pk>/cancel', views.DeleteScheduleView.as_view(), name='cancel_schedule'),
 ]   
