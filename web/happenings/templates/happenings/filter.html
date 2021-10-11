@@ -4,11 +4,11 @@
 {% block body %}
     <div class="ui raised text container segment">
         <div class="ui accordion">
-            <div class="title active" style="display:inline; white-space:nowrap;">
+            <div class="title" style="display:inline; white-space:nowrap;">
                 <i class="dropdown icon"></i>
                 <h2 class="ui header" style="display:inline; white-space:nowrap;">Filter</h2>
             </div>
-            <div class="content active">   
+            <div class="content">   
                 <form class="ui form" method="post">{% csrf_token %}
                     {% if form.errors %}
                         {% for field in form %}
