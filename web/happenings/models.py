@@ -3,13 +3,39 @@ from django.conf import settings
 from authenticate.models import User
 
 
+class InterestCategory(models.Model):
+    name = models.CharField(max_length=250)
+    description = models.TextField()
+
+
+class RequirementCategory(models.Model):
+    name = models.CharField(max_length=250)
+    description = models.TextField()
+
+
+class CategoryWeightsUser(models.Model):
+    category = models.ForeignKey(
+        InterestCategory,
+        on_delete=models.CASCADE)
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
+
+    weight = models.FloatField(default=1)
+
+
 class Event(models.Model):
     name = models.CharField(max_length=250)
     location = models.CharField(max_length=250)
     min_price = models.IntegerField(default=0)
     max_price = models.IntegerField(default=0)
+    short_description = models.TextField(blank=True, max_length=250)
     description = models.TextField()
+    image = models.ImageField(blank=True, upload_to='events')
     admin_approved = models.BooleanField(default=False)
+    interest_categories = models.ManyToManyField(InterestCategory)
+    requirement_categories = models.ManyToManyField(RequirementCategory)
 
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -23,7 +49,6 @@ class Event(models.Model):
         if self.max_price > 0:
             return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
         return "FREE"
-
 
 
 class Schedule(models.Model):
