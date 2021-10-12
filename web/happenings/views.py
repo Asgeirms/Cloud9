@@ -1,5 +1,5 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.urls import reverse_lazy
 from django.utils import timezone
 
@@ -124,3 +124,7 @@ class RandomEventView(DetailView):
             number = randint(0, len(object_list)-1)
             return object_list[number]
         return None
+
+
+class SwipeFinishView(TemplateView):
+    template_name = "happenings/swipe_finish.html"
