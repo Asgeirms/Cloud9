@@ -1,0 +1,23 @@
+.number{
+    color: gray;
+    margin-left: 7%;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.ui.tabular.menu .item{
+    width: 50%;
+    max-width: 150px;
+}
+
+.ui.header {
+    margin: 1%;
+}
+
+#middle_button {
+    border-radius: 0px;
+}
+
+h1 {text-align: center;}
+p {text-align: center;}
+div {text-align: center;}

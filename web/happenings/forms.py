@@ -55,3 +55,32 @@ class ScheduleForm(forms.ModelForm):
                     "Start time cannot begin after end time!",
                     code='invalid_time')
             )
+
+
+class EditEventForm(forms.ModelForm):
+    '''Formclass. Creating event suggestions'''
+
+    class Meta:
+        model = Event
+        exclude = ['admin_approved', 'host', 'name', 'description']
+        labels = {
+            'min_price': 'Minimum price',
+            'max_price': 'Maximum price'
+        }
+        widgets = {
+            'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        min_price = cleaned_data.get('min_price')
+        max_price = cleaned_data.get('max_price')
+
+        # Validating the price fields
+        if min_price > max_price:
+            self.add_error(
+                'min_price',
+                forms.ValidationError(
+                    "Minimum price cannot cost more than maximum price!",
+                    code='invalid_price')
+            )
