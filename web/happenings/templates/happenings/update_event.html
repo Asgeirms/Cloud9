@@ -1,0 +1,54 @@
+{% extends 'web/base.html' %}
+
+{% block body %}
+
+    <div class="ui raised very padded text container segment">
+        <h1 class="ui header">Update your event</h1>
+
+        <form class="ui form" method="post">{% csrf_token %}
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="ui negative small message">
+                            <i class="close icon"></i>
+                            <b>{{ error|escape }}</b>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+        {# TODO: Better way of rendering the errors in schedule #}
+            {% if schedule_form.errors %}
+                {% for field in schedule_form %}
+                    {% for error in field.errors %}
+                        <div class="ui negative small message">
+                            <i class="close icon"></i>
+                            <b>{{ error|escape }}</b>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+                <div class="field">
+                    {{ form.location.label_tag }}
+                    {{ form.location }}
+                </div>
+
+                <div class="two field">
+                    <div class="field">
+                        {{ form.min_price.label_tag }}
+                        {{ form.min_price }}
+                    </div>
+                    <div class="field">
+                        {{ form.max_price.label_tag }}
+                        {{ form.max_price }}
+                    </div>
+                </div>
+
+
+            <input class="ui blue button" type="submit" value="Save event">
+
+        </form>
+    </div>
+
+{% endblock body %}

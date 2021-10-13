@@ -4,36 +4,47 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
-<style>
-h1 {text-align: center;}
-p {text-align: center;}
-div {text-align: center;}
-</style>
 {% endblock head %}
 
 {% block body %}
     <div class="ui container">
         <div class="ui card">
-            {% if scheduled_event %}
             <div class="content">
-                <div class="header">{{ scheduled_event.event.name }}</div>
-                <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
-                    <span class="right floated">{% get_pricerange scheduled_event %}</span></div>
-                <div class="meta">{{ scheduled_event.event.location }}</div>
-                <div class="description"> {{ scheduled_event.event.description }}</div></div>
-                <div class="meta"> Admin approved: {{ scheduled_event.event.admin_approved }}</div></div>
-                {% else %}
-                You don't have any upcoming events.
-            {% endif %}
+                {% if event %}
+                    <div class="header">{{ event.name }}</div>
+                    <div class="meta">{{ event.location }}
+                        <span class="right floated">{% get_pricerange event %}</span>
+                    </div>
+                    <div class="description"> {{ event.description }}</div>
+                    <br>
+                    <div class="meta"> Admin approved: {{ event.admin_approved }}</div>
+                    {% get_schedules event as scheduled_events %}
+                    <div class="ui divided relaxed list">
+                    {% for scheduled_event in scheduled_events %}
+                        <div class="item">
+                        <a class="header" href="{% url 'my_schedule_detailed' scheduled_event.id%}">
+                            <span class="date">{% get_event_times scheduled_event %}</span></a>
+                        </div>
+                    {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="header">You don't have any upcoming events.</div>
+
+                {% endif %}
+
+            </div>
+
+            <div class="extra content">
+                <div class="ui stackable buttons">
+                <a class="ui black button" href={% url 'my_events' %}>Go back</a>
+                <a class="ui olive button" href="{% url 'edit_event' event.pk %}">Edit event info </a>
+                <a class="ui green button" href="{% url 'add_schedule' event.pk %}">Add another time</a>
+                <form method="POST"  action="{% url "delete_event" event.pk  %}">
+                    {% csrf_token %}<button class="ui fluid negative button" type="submit"> Delete </button>
+                </form>
+
+                </div>
+            </div>
         </div>
-        
-        <div class="ui buttons">
-            <button class="ui green button"><a href={% url 'my_events' %}>Go back</a></button>
-            <button class="ui button">Edit</button>
-            <button class="ui red button">Delete</button>
-        </div>
-    
     </div>
 {% endblock body %}
-
-

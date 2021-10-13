@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+from authenticate.models import User
 
 
 class Event(models.Model):
@@ -9,13 +11,19 @@ class Event(models.Model):
     description = models.TextField()
     admin_approved = models.BooleanField(default=False)
 
+    host = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
     def __str__(self):
         return str(self.name)
 
     def get_pricerange(self):
-        if (self.max_price > 0):
+        if self.max_price > 0:
             return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
         return "FREE"
+
 
 
 class Schedule(models.Model):
@@ -30,7 +38,6 @@ class Schedule(models.Model):
         return str(self.event.name + "-" + self.start_time.strftime('%Y-%m-%d %H:%M'))
 
     def get_times(self):
-        if (self.start_time.strftime('%d-%m-%Y') != self.end_time.strftime('%d-%m-%Y')):
+        if self.start_time.strftime('%d-%m-%Y') != self.end_time.strftime('%d-%m-%Y'):
             return str(self.start_time.strftime('%d-%m-%Y - %H:%M') + " to " + self.end_time.strftime('%d-%m-%Y - %H:%M'))
         return str(self.start_time.strftime('%d-%m-%Y %H:%M') + " to " + self.end_time.strftime('%H:%M'))
-
