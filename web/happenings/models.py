@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from authenticate.models import User
 
 
 class Event(models.Model):

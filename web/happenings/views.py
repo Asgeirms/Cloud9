@@ -1,8 +1,10 @@
+from django import shortcuts
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.shortcuts import render
+from django.db.models import Case, When # to order querysets on list of ids
 
 from .forms import EventForm, ScheduleForm, FilterForm, EditEventForm
 
@@ -18,11 +20,20 @@ class MyEventsListView(ListView):
 
     def get_queryset(self):
         # Only see your own events.
-        return Event.objects.filter(host=self.request.user)
+        # Find what schedule belonging to what event
+        all_schedules_ordered = Schedule.objects.filter(event__host=self.request.user).order_by('start_time')
+        print(all_schedules_ordered)
+        pk_list = []
+        for schedule in all_schedules_ordered:
+            if schedule.event.id not in pk_list:
+                pk_list.append(schedule.event.id)
+        # Now pk_list contains all event_id's ordered
+        preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(pk_list)])
+        return Event.objects.filter(pk__in=pk_list).order_by(preserved)
 
 
 class DetailedMyScheduleView(DetailView):
-    '''The detailed view you get watching your own events.'''
+    '''The detailed view you get watching your own event-schedules.'''
     model = Schedule
     template_name = 'happenings/my_schedules_detail_view.html'
     context_object_name = 'scheduled_event'
@@ -150,8 +161,7 @@ class RandomEventView(DetailView):
             return object_list[number]
         return None
 
-      
-      
+
 class SwipeFinishView(TemplateView):
     template_name = "happenings/swipe_finish.html"
 
