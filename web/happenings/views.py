@@ -2,8 +2,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.shortcuts import render
 
-from .forms import EventForm, ScheduleForm, EditEventForm
+from .forms import EventForm, ScheduleForm, FilterForm, EditEventForm
 
 from .models import Event, Schedule
 from random import randint
@@ -61,7 +62,6 @@ class SuggestEventView(CreateView):
         # Attaching a schedule form with its fields 
         schedule_form = context['schedule_form']
         if schedule_form.is_valid():
-            # Very dirty hack
             self.object = form.save()
             schedule_form.instance.event = self.object
             schedule_form.save()
@@ -150,6 +150,30 @@ class RandomEventView(DetailView):
             return object_list[number]
         return None
 
-
+      
+      
 class SwipeFinishView(TemplateView):
     template_name = "happenings/swipe_finish.html"
+
+
+def FilterEventListView(request):
+    queryset = Schedule.objects.all()
+    queryset = queryset.filter(event__admin_approved=True)
+    queryset = queryset.order_by('start_time')
+    if request.method == 'POST':
+        form = FilterForm(request.POST)
+        if form.is_valid():
+            max_price = form.cleaned_data.get("max_price")
+            from_time = form.cleaned_data.get("from_time")
+            to_time = form.cleaned_data.get("to_time")
+            if max_price:
+                queryset = queryset.filter(event__min_price__lte=max_price)
+            if from_time:
+                queryset = queryset.filter(end_time__gte=from_time)
+            if to_time:
+                queryset = queryset.filter(start_time__lte=to_time)
+    else:
+        form = FilterForm({'from_time': timezone.now()})
+        queryset = queryset.filter(end_time__gte=timezone.now())
+    return render(request, 'happenings/filter.html', {'form': form, 'queryset': queryset})
+

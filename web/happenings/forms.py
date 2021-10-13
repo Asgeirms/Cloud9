@@ -56,6 +56,26 @@ class ScheduleForm(forms.ModelForm):
                     code='invalid_time')
             )
 
+class FilterForm(forms.Form):
+    from_time = forms.DateTimeField(label="From:", required=False)
+    to_time = forms.DateTimeField(label="To:", required=False)
+    max_price = forms.IntegerField(label="Max Price:", required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        from_time = cleaned_data.get('from_time')
+        to_time = cleaned_data.get('to_time')
+        max_price = cleaned_data.get('max_price')
+
+        # Validating the time fields
+        if from_time and to_time:
+            if from_time > to_time:
+                self.add_error(
+                    'from_time',
+                    forms.ValidationError(
+                        "From time cannot be after to time!",
+                        code='invalid_time')
+                )
 
 class EditEventForm(forms.ModelForm):
     '''Formclass. Creating event suggestions'''
