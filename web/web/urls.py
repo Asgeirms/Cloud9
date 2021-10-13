@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('authenticate.urls')),
     path('swiping/', include('swiping.urls')),
+    path('adminpage/', include('adminpage.urls'))
 ]

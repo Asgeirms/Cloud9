@@ -1,9 +1,9 @@
-from django.views.generic.edit import CreateView
-from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.urls import reverse_lazy
 from django.utils import timezone
 
-from .forms import EventForm, ScheduleForm
+from .forms import EventForm, ScheduleForm, EditEventForm
 
 from .models import Event, Schedule
 from random import randint
@@ -13,19 +13,29 @@ class MyEventsListView(ListView):
     '''View you own events'''
     template_name = "happenings/my_events_list_view.html"
     context_object_name = "my_events_list"
-    model = Schedule
+    model = Event
+
     def get_queryset(self):
         # Only see your own events.
-        return Schedule.objects.filter(event__host=self.request.user)
+        return Event.objects.filter(host=self.request.user)
+
+
+class DetailedMyScheduleView(DetailView):
+    '''The detailed view you get watching your own events.'''
+    model = Schedule
+    template_name = 'happenings/my_schedules_detail_view.html'
+    context_object_name = 'scheduled_event'
+    success_url = reverse_lazy('my_events_detailed')
 
 
 class DetailedMyEventView(DetailView):
     '''The detailed view you get watching your own events.'''
-    model = Schedule
+    model = Event
     template_name = 'happenings/my_event_detail_view.html'
-    context_object_name = 'scheduled_event'
+    context_object_name = 'event'
     success_url = reverse_lazy('my_events')
-    
+
+
 class SuggestEventView(CreateView):
     template_name = "happenings/suggest_event.html"
     models = Event
@@ -64,6 +74,56 @@ class SuggestEventView(CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
+class EditEventView(UpdateView):
+    template_name = "happenings/update_event.html"
+    model = Event
+    form_class = EditEventForm
+    context_object_name = "event"
+
+    def get_success_url(self):
+        event_id = self.kwargs['pk']
+        return reverse_lazy('my_events_detailed', kwargs={'pk': event_id})
+
+
+class DeleteEventView(DeleteView):
+    model = Event
+    success_url = reverse_lazy('my_events')
+
+
+class AddScheduleView(CreateView):
+    template_name = "happenings/add_schedule.html"
+    model = Schedule
+    form_class = ScheduleForm
+    context_object_name = "schedule"
+
+    def form_valid(self, form, **kwargs):
+        form.instance.event_id = self.kwargs['pk']
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        event_id = self.kwargs['pk']
+        return reverse_lazy('my_events_detailed', kwargs={'pk': event_id})
+
+
+class EditScheduleView(UpdateView):
+    template_name = "happenings/update_schedule.html"
+    model = Schedule
+    form_class = ScheduleForm
+    context_object_name = "scheduled_event"
+
+    def get_success_url(self):
+        schedule_id = self.kwargs['pk']
+        return reverse_lazy('my_schedule_detailed', kwargs={'pk': schedule_id})
+
+
+class DeleteScheduleView(DeleteView):
+    model = Schedule
+
+    def get_success_url(self):
+        event_id = self.kwargs['pk']
+        return reverse_lazy('my_events_detailed', kwargs={'pk': event_id})
+
+
 class EventListView(ListView):
     model = Schedule
     queryset = Schedule.objects.filter(event__admin_approved=True).filter(end_time__gte=timezone.now()).order_by('start_time')
@@ -90,3 +150,6 @@ class RandomEventView(DetailView):
             return object_list[number]
         return None
 
+
+class SwipeFinishView(TemplateView):
+    template_name = "happenings/swipe_finish.html"
