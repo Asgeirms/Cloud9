@@ -3,9 +3,9 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.shortcuts import render
+from datetime import datetime
 
 from .forms import EventForm, ScheduleForm, FilterForm, EditEventForm
-
 from .models import Event, Schedule
 from random import randint
 
@@ -157,18 +157,55 @@ def FilterEventListView(request):
     queryset = queryset.order_by('start_time')
     if request.method == 'POST':
         form = FilterForm(request.POST)
-        if form.is_valid():
-            max_price = form.cleaned_data.get("max_price")
-            from_time = form.cleaned_data.get("from_time")
-            to_time = form.cleaned_data.get("to_time")
-            if max_price:
-                queryset = queryset.filter(event__min_price__lte=max_price)
-            if from_time:
-                queryset = queryset.filter(end_time__gte=from_time)
-            if to_time:
-                queryset = queryset.filter(start_time__lte=to_time)
+        #if apply filter button
+        if 'submit' in (request.POST):
+            if form.is_valid(): 
+                max_price = form.cleaned_data.get("max_price")
+                from_time = form.cleaned_data.get("from_time")
+                to_time = form.cleaned_data.get("to_time")
+                #Stores the filter to session
+                #Used for check if filter should be applied
+                request.session['filter'] = True
+                request.session['filter_max_price'] = max_price
+                #Converts datetime to string so it can be stored in JSON format
+                if from_time:
+                    request.session['filter_from_time'] = from_time.strftime("%Y-%m-%d %H:%M")
+                else:
+                    request.session['filter_from_time'] = None
+                if to_time:
+                    request.session['filter_to_time'] = to_time.strftime("%Y-%m-%d %H:%M")
+                else:
+                    request.session['filter_to_time'] = None
+                #Actual filtering of search
+                if max_price:
+                    queryset = queryset.filter(event__min_price__lte=max_price)
+                if from_time:
+                    queryset = queryset.filter(end_time__gte=from_time)
+                if to_time:
+                    queryset = queryset.filter(start_time__lte=to_time)
+        #if reset filter button
+        if 'reset' in (request.POST):
+            #resets session
+            request.session['filter'] = False
+            request.session['filter_max_price'] = None
+            request.session['filter_from_time'] = None
+            request.session['filter_to_time'] = None
+            #resets the form
+            form = FilterForm({'from_time': timezone.now()})
+            queryset = queryset.filter(end_time__gte=timezone.now())
     else:
-        form = FilterForm({'from_time': timezone.now()})
-        queryset = queryset.filter(end_time__gte=timezone.now())
+        if (request.session.get('filter')):
+            form = FilterForm({'from_time': request.session.get('filter_from_time'),
+            'to_time': request.session.get('filter_to_time'),
+            'max_price': request.session.get('filter_max_price')})
+            if request.session.get('filter_max_price'):
+                    queryset = queryset.filter(event__min_price__lte=request.session.get('filter_max_price'))
+            if request.session.get('filter_from_time'):
+                queryset = queryset.filter(end_time__gte=datetime.strptime(request.session.get('filter_from_time'), "%Y-%m-%d %H:%M"))
+            if request.session.get('filter_to_time'):
+                queryset = queryset.filter(start_time__lte=datetime.strptime(request.session.get('filter_to_time'), "%Y-%m-%d %H:%M"))
+        else: 
+            form = FilterForm({'from_time': timezone.now()})
+            queryset = queryset.filter(end_time__gte=timezone.now())
     return render(request, 'happenings/filter.html', {'form': form, 'queryset': queryset})
 
