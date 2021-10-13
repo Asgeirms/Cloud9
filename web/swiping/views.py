@@ -29,7 +29,7 @@ class SwipingEventsView(ListView):
         swiped = request.GET.get('swiped')
 
         if pages.count() <= 1:
-            return redirect('swiping_finished')
+            return redirect('swiping_finish')
         
         # This is not beautiful
         # Attemps to find the current page based on if it was a refresh, swipe or swipe then refresh
@@ -114,4 +114,4 @@ class SwipingEventsView(ListView):
         return queryset.order_by('?')
     
 class FinishSwipingView(TemplateView):
-    template_name = "swiping/swiping_finished.html"
+    template_name = "swiping/swipe_finish.html"

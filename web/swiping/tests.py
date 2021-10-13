@@ -87,7 +87,7 @@ class SwipingEventsViewTests(TestCase):
 
     @skip("Same as 1: Suspect it cache the session data such that it ruins the integration flow")
     def test_finished_swiping(self):
-        EXPECTED_URL = reverse('swiping_finished')
+        EXPECTED_URL = reverse('swiping_finish')
         swiped = self.client.get(self.url, self.query)
         INIT_SWIPE = 1 
 
