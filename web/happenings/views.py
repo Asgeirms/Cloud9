@@ -150,11 +150,6 @@ class RandomEventView(DetailView):
             return object_list[number]
         return None
 
-      
-      
-class SwipeFinishView(TemplateView):
-    template_name = "happenings/swipe_finish.html"
-
 
 def FilterEventListView(request):
     queryset = Schedule.objects.all()
