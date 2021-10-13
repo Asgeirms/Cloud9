@@ -15,18 +15,16 @@
                 <div class="header">Your events</div>
             
                 {% if my_events_list %}
-                    <div class="ui huge link list">
-                        {% for scheduled_event in my_events_list %}
-                            <div class="ui labeled button" tabindex="0">
-                                <a class="ui grey button" href="{% url 'my_events_detailed' scheduled_event.id %}">
-                                    {{ scheduled_event.event.name }}
-                                </a>
-                                <a class="ui basic black left pointing label">
-                                    {{ scheduled_event.start_time }}
-                                </a>
-                            </div>
-                            <br>
-                            <br>
+                    <div class="ui divided link items">
+                        {% for event in my_events_list %}
+                            <a class="item" href="{% url 'my_events_detailed' event.id %}">
+                                <div class="content">
+                                  <div class="header">{{ event.name }}</div>
+                                  <div class="description">
+                                    <p>{{ event.description }}</p>
+                                  </div>
+                                </div>
+                            </a>
                         {% endfor %}
                     </div>
                 {% else %}
