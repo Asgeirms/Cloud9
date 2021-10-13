@@ -3,7 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.EventListView.as_view(), name="events"),
+    path('', views.FilterEventListView, name="events"),
     path('me/create/', views.SuggestEventView.as_view(), name='create_event'),
     path('me/<int:pk>/delete', views.DeleteEventView.as_view(), name='delete_event'),
     path('me/', views.MyEventsListView.as_view(), name='my_events'),
