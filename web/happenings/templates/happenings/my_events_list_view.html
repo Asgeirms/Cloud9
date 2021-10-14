@@ -4,6 +4,7 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
+<script src="{% static 'happenings/hide_old_button.js'%}"></script>
 {% endblock head %}
 
 
@@ -13,33 +14,57 @@
         <div class="ui card">
             <div class="content">
                 <div class="header">Your events</div>
-            
-                {% if my_events_list %}
+
+                <button id="toggle">HIDE</button>
+
+                {% if my_events_list.current %}
                     <div class="ui divided link items">
-                        {% for event in my_events_list %}
+                        
+                        {% for event in my_events_list.current %}
                             <a class="item" href="{% url 'my_events_detailed' event.id %}">
                                 <div class="content">
-                                  <div class="header">{{ event.name }}</div>
-                                  <div class="description">
-                                    <p>{{ event.description }}</p>
-                                  </div>
+                                    <div class="header">{{ event.name }}</div>
+                                    <div class="description">
+                                        <p>{{ event.description }}</p>
+                                    </div>
                                 </div>
                             </a>
                         {% endfor %}
+
+
                     </div>
                 {% else %}
-                    <p>You haven't added any events yet!</p>
+                    <p>You don't have any events currently yet!</p>
                 {% endif %}
-
+                
+                <div class="content" id="old_events"> 
+                    <div class="header"> Old-events </div>
+                    {% if my_events_list.old %}
+                        <div class="ui divided link items">
+                            {% for event in my_events_list.old %}
+                                <a class="item" href="{% url 'my_events_detailed' event.id %}">
+                                    <div class="content">
+                                        <div class="header">{{ event.name }}</div>
+                                        <div class="description">
+                                            <p>{{ event.description }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>You don't have old events!</p>
+                    {% endif %}
+                </div>
             </div>
+            
             <div class="extra content">
-     
                 <a class="ui green button" href="{% url 'create_event' %}">Create Event</a>
-  
+                <a class="ui tiny grey button" id="toggle_old"> show/hide old events</a>
             </div>
-
         </div>
     </div>
+    
     {#For your swipes#}
     <div class="ui container">
         <div class="ui card">

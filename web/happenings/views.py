@@ -21,15 +21,27 @@ class MyEventsListView(ListView):
     def get_queryset(self):
         # Only see your own events.
         # Find what schedule belonging to what event
-        all_schedules_ordered = Schedule.objects.filter(event__host=self.request.user).order_by('start_time')
-        print(all_schedules_ordered)
-        pk_list = []
-        for schedule in all_schedules_ordered:
-            if schedule.event.id not in pk_list:
-                pk_list.append(schedule.event.id)
-        # Now pk_list contains all event_id's ordered
-        preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(pk_list)])
-        return Event.objects.filter(pk__in=pk_list).order_by(preserved)
+        current_schedules = Schedule.objects.filter(event__host=self.request.user).filter(end_time__gte=timezone.now()).order_by('start_time')
+        old_schedules = Schedule.objects.filter(event__host=self.request.user).filter(end_time__lt=timezone.now()).order_by('start_time')
+
+        current_pks = []
+        old_pks = []
+        for schedule in current_schedules:
+            if schedule.event.id not in current_pks:
+                current_pks.append(schedule.event.id)
+        
+        for schedule in old_schedules:
+            if schedule.event.id not in old_pks and schedule.event.id not in current_pks:
+                old_pks.append(schedule.event.id)
+
+        # Now current_pks contains all event_id's ordered
+        preserved_current = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(current_pks)])
+        preserved_old = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(old_pks)])
+
+        queryset = {'current' : Event.objects.filter(pk__in=current_pks).order_by(preserved_current),
+                    'expired' : Event.objects.filter(pk__in=old_pks).order_by(preserved_old),
+                    }
+        return queryset
 
 
 class DetailedMyScheduleView(DetailView):
