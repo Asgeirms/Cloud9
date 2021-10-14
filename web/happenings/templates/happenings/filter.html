@@ -54,12 +54,15 @@
                 <div class="ui link cards">
                     {% for scheduled_event in queryset %}
                         <a class="card" href="{% url 'events' scheduled_event.pk %}">
+                            <div class="image">
+                                <img src="{{ scheduled_event.event.image.url }}" alt="Event image"/>
+                            </div>
                             <div class="content">
                                 <div class="header"> {{ scheduled_event.event.name }}</div>
                                     <div class="meta"> {% get_event_times scheduled_event %} </div>
                                     <div class="meta">{% get_pricerange scheduled_event.event %}  </div>
                                 <div class="meta">{{ scheduled_event.event.location }}</div>
-                                    <div class="description"> {{ scheduled_event.event.description }}</div>
+                                    <div class="description"> {{ scheduled_event.event.short_description }}</div>
                             </div>
                         </a>
                     {% endfor %}  

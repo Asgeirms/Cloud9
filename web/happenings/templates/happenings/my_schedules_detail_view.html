@@ -7,10 +7,15 @@
 {% endblock head %}
 
 {% block body %}
+
     <div class="ui container">
-        <div class="ui card">
+       {% if scheduled_event %}
+           <div class="ui card">
+               <div class="image">
+                   <img src="{{ scheduled_event.event.image.url }}" alt="Event image"/>
+               </div>
             <div class="content">
-                {% if scheduled_event %}
+
                     <div class="header">{{ scheduled_event.event.name }}</div>
                     <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
                         <span class="right floated">{% get_pricerange scheduled_event.event %}</span>
@@ -19,9 +24,7 @@
                     <div class="description"> {{ scheduled_event.event.description }}</div>
                     <br>
                     <div class="meta"> Admin approved: {{ scheduled_event.event.admin_approved }}</div>
-                    {% else %}
-                    <div class="header">You don't have any upcoming events.</div>
-                {% endif %}
+
             </div>
 
             <div class="extra content">
@@ -34,5 +37,9 @@
                 </div>
             </div>
         </div>
+        {% else %}
+           <div class="header">You don't have any upcoming events.</div>
+        {% endif %}
     </div>
+
 {% endblock body %}

@@ -9,6 +9,9 @@
 {% block body %}
     <div class="ui container">
         <div class="ui card">
+            <div class="image">
+                <img src="{{ event.image.url }}" alt="Event image"/>
+            </div>
             <div class="content">
                 {% if event %}
                     <div class="header">{{ event.name }}</div>

@@ -8,18 +8,21 @@
 
 {% block body %}
     <div class="ui container">
-<div class="ui card">
-{% if scheduled_event %}
-<div class="content">
-    <div class="header">{{ scheduled_event.event.name }}</div>
-    <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
-        <span class="right floated">{% get_pricerange scheduled_event.event %}</span></div>
-    <div class="meta">{{ scheduled_event.event.location }}</div>
-    <div class="description"> {{ scheduled_event.event.description }}</div></div>
-
-    {% else %}
-    No more events
-{% endif %}
-</div>
+        <div class="ui card">
+            {% if scheduled_event %}
+                <div class="image">
+                    <img src="{{ scheduled_event.event.image.url }}" alt="Event image"/>
+                </div>
+                <div class="content">
+                    <div class="header">{{ scheduled_event.event.name }}</div>
+                    <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
+                        <span class="right floated">{% get_pricerange scheduled_event.event %}</span></div>
+                    <div class="meta">{{ scheduled_event.event.location }}</div>
+                    <div class="description"> {{ scheduled_event.event.description }}</div>
+                </div>
+            {% else %}
+                No more events
+            {% endif %}
+        </div>
     </div>
 {% endblock body %}

@@ -9,11 +9,13 @@ class EventForm(forms.ModelForm):
         exclude = ['admin_approved', 'host']
         labels = {
             'min_price': 'Minimum price',
-            'max_price': 'Maximum price'
+            'max_price': 'Maximum price',
+            'short_description': 'Short descripton'
         }
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Name of the event'}),
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),
+            'short_description': forms.TextInput(attrs={'placeholder': 'Describe your event, but short and concise!'}),
             'description': forms.Textarea(attrs={'placeholder': 'Describe your event!'}),
         }
         
@@ -56,6 +58,7 @@ class ScheduleForm(forms.ModelForm):
                     code='invalid_time')
             )
 
+
 class FilterForm(forms.Form):
     from_time = forms.DateTimeField(label="From:", required=False)
     to_time = forms.DateTimeField(label="To:", required=False)
@@ -77,12 +80,13 @@ class FilterForm(forms.Form):
                         code='invalid_time')
                 )
 
+
 class EditEventForm(forms.ModelForm):
-    '''Formclass. Creating event suggestions'''
+    '''Formclass. Editing location, price and short description'''
 
     class Meta:
         model = Event
-        exclude = ['admin_approved', 'host', 'name', 'description']
+        exclude = ['admin_approved', 'host', 'name', 'description', 'image']
         labels = {
             'min_price': 'Minimum price',
             'max_price': 'Maximum price'

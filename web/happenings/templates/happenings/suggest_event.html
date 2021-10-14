@@ -71,8 +71,18 @@
                 </div>
 
                 <div class="field">
+                    {{ form.short_description.label_tag }}
+                    {{ form.short_description }}
+                </div>
+
+                <div class="field">
                     {{ form.description.label_tag }}
                     {{ form.description }}
+                </div>
+
+                <div class="field">
+                    {{ form.image.label }} (Preferred format is 16:10)
+                    {{ form.image }}
                 </div>
 
             <input class="ui blue button" type="submit" value="Suggest event">
