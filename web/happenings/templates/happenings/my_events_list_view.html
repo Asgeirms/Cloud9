@@ -4,7 +4,7 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
-<script src="{% static 'happenings/hide_old_button.js'%}"></script>
+<script type="text/javascript" src="{% static 'happenings/hide_old_button.js'%}"></script>
 {% endblock head %}
 
 
@@ -12,13 +12,11 @@
     {#For your events#}
     <div class="ui container">
         <div class="ui card">
-            <div class="content">
-                <div class="header">Your events</div>
-
-                <button id="toggle">HIDE</button>
+            <div class="content" id="current_events">
+                <div class="ui huge header">Upcomming/current events</div>
 
                 {% if my_events_list.current %}
-                    <div class="ui divided link items">
+                    <div class="ui link items">
                         
                         {% for event in my_events_list.current %}
                             <a class="item" href="{% url 'my_events_detailed' event.id %}">
@@ -34,14 +32,15 @@
 
                     </div>
                 {% else %}
-                    <p>You don't have any events currently yet!</p>
+                    <p>You don't have any upcoming/current!</p>
                 {% endif %}
-                
-                <div class="content" id="old_events"> 
-                    <div class="header"> Old-events </div>
-                    {% if my_events_list.old %}
-                        <div class="ui divided link items">
-                            {% for event in my_events_list.old %}
+            </div>
+
+            <div id="old_events" class="content" > 
+                    <div class="ui huge header"> Old-events </div>
+                    {% if my_events_list.expired %}
+                        <div class="ui link items">
+                            {% for event in my_events_list.expired %}
                                 <a class="item" href="{% url 'my_events_detailed' event.id %}">
                                     <div class="content">
                                         <div class="header">{{ event.name }}</div>
@@ -53,14 +52,13 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        <p>You don't have old events!</p>
+                        <p>You don't have any old events!</p>
                     {% endif %}
-                </div>
+                    
             </div>
-            
+
             <div class="extra content">
                 <a class="ui green button" href="{% url 'create_event' %}">Create Event</a>
-                <a class="ui tiny grey button" id="toggle_old"> show/hide old events</a>
             </div>
         </div>
     </div>
@@ -69,9 +67,23 @@
     <div class="ui container">
         <div class="ui card">
             <div class="content">
-                <div class="header">Your swipes!</div>
-                    <br>
-                    <div class="meta">You haven't swiped any events yet!</div>
+                <div class="ui huge header">Your swipes!</div>
+                    {% if my_events_list.my_swipes %}
+                        <div class="ui divided link items">
+                            {% for schedule in my_events_list.my_swipes %}
+                                <a class="item" href="{% url 'my_events_detailed' schedule.event.id %}">
+                                    <div class="content">
+                                        <div class="header">{{ schedule.event.name }}</div>
+                                        <div class="description">
+                                            <p>{{ schedule.event.description }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>You haven't swiped yet!</p>
+                    {% endif %}
             </div>
             <div class="extra content">
                 <a class="ui blue button" tabindex="0"href="{% url 'random_event' %}">
@@ -80,7 +92,4 @@
             </div>
         </div>
     </div>
-
-    
-
 {% endblock body %}

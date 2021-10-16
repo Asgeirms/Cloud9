@@ -5,5 +5,5 @@ from happenings.models import Schedule
 
 class User(AbstractUser):
     # Adding interest interaction to a schedule
-    interests = models.ManyToManyField(Schedule)
-    pass
+    interested_events = models.ManyToManyField(Schedule, related_name="users")
+    

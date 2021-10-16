@@ -1,10 +1,8 @@
-
-const targetDiv = document.getElementById("old_events");
-const btn = document.getElementById("toggle");
-btn.onclick = function () {
-  if (targetDiv.style.display !== "none") {
-    targetDiv.style.display = "none";
+function myFunction(elemID) {
+  var x = document.getElementById(elemID);
+  if (x.style.display === "none") {
+    x.style.display = "block";
   } else {
-    targetDiv.style.display = "block";
+    x.style.display = "none";
   }
-};
+}

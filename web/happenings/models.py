@@ -24,8 +24,6 @@ class Event(models.Model):
             return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
         return "FREE"
 
-
-
 class Schedule(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
