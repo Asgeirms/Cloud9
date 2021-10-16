@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from authenticate.models import User
 
 
 class InterestCategory(models.Model):
@@ -64,5 +63,6 @@ class Schedule(models.Model):
 
     def get_times(self):
         if self.start_time.strftime('%d-%m-%Y') != self.end_time.strftime('%d-%m-%Y'):
-            return str(self.start_time.strftime('%d-%m-%Y - %H:%M') + " to " + self.end_time.strftime('%d-%m-%Y - %H:%M'))
+            return str(self.start_time.strftime('%d-%m-%Y - %H:%M') + " to " +
+                       self.end_time.strftime('%d-%m-%Y - %H:%M'))
         return str(self.start_time.strftime('%d-%m-%Y %H:%M') + " to " + self.end_time.strftime('%H:%M'))

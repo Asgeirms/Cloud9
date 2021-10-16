@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event, Schedule
+from .models import Event, Schedule, InterestCategory, RequirementCategory, CategoryWeightsUser
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -9,3 +9,6 @@ class EventAdmin(admin.ModelAdmin):
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Schedule)
+admin.site.register(InterestCategory)
+admin.site.register(RequirementCategory)
+admin.site.register(CategoryWeightsUser)
