@@ -5,6 +5,7 @@ from .models import Event, Schedule, InterestCategory, RequirementCategory, Cate
 class EventAdmin(admin.ModelAdmin):
     list_display = ('name', 'location', 'admin_approved')
     list_editable = ('admin_approved',)
+    filter_horizontal = ('interest_categories', 'requirement_categories')
 
 
 admin.site.register(Event, EventAdmin)

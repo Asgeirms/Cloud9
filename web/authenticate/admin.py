@@ -7,6 +7,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('swiped_events',)}),
     )
+    filter_horizontal = ('swiped_events',)
 
 
 admin.site.register(User, CustomUserAdmin)
