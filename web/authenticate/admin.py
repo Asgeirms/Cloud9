@@ -5,9 +5,9 @@ from .models import User
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('swiped_events',)}),
+        (None, {'fields': ('interested_events',)}),
     )
-    filter_horizontal = ('swiped_events',)
+    filter_horizontal = ('interested_events',)
 
 
 admin.site.register(User, CustomUserAdmin)

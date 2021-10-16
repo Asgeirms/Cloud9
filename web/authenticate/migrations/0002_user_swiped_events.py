@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='user',
-            name='swiped_events',
+            name='interested_events',
             field=models.ManyToManyField(to='happenings.Schedule'),
         ),
     ]

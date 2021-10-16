@@ -5,4 +5,4 @@ from happenings.models import Schedule
 
 
 class User(AbstractUser):
-    swiped_events = models.ManyToManyField(Schedule)
+    interested_events = models.ManyToManyField(Schedule)
