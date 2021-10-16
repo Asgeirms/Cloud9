@@ -1,6 +1,27 @@
 from django.db import models
 from django.conf import settings
-from authenticate.models import User
+
+
+class InterestCategory(models.Model):
+    name = models.CharField(max_length=250)
+    description = models.TextField()
+
+
+class RequirementCategory(models.Model):
+    name = models.CharField(max_length=250)
+    description = models.TextField()
+
+
+class CategoryWeightsUser(models.Model):
+    category = models.ForeignKey(
+        InterestCategory,
+        on_delete=models.CASCADE)
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
+
+    weight = models.FloatField(default=1)
 
 
 class Event(models.Model):
@@ -8,8 +29,12 @@ class Event(models.Model):
     location = models.CharField(max_length=250)
     min_price = models.IntegerField(default=0)
     max_price = models.IntegerField(default=0)
+    short_description = models.TextField(blank=True, max_length=250)
     description = models.TextField()
+    image = models.ImageField(blank=True, upload_to='events')
     admin_approved = models.BooleanField(default=False)
+    interest_categories = models.ManyToManyField(InterestCategory)
+    requirement_categories = models.ManyToManyField(RequirementCategory)
 
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -25,7 +50,6 @@ class Event(models.Model):
         return "FREE"
 
 
-
 class Schedule(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
@@ -39,5 +63,6 @@ class Schedule(models.Model):
 
     def get_times(self):
         if self.start_time.strftime('%d-%m-%Y') != self.end_time.strftime('%d-%m-%Y'):
-            return str(self.start_time.strftime('%d-%m-%Y - %H:%M') + " to " + self.end_time.strftime('%d-%m-%Y - %H:%M'))
+            return str(self.start_time.strftime('%d-%m-%Y - %H:%M') + " to " +
+                       self.end_time.strftime('%d-%m-%Y - %H:%M'))
         return str(self.start_time.strftime('%d-%m-%Y %H:%M') + " to " + self.end_time.strftime('%H:%M'))
