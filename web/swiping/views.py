@@ -9,6 +9,7 @@ from django.utils import timezone
 from happenings.models import Schedule
 from swiping.paginator import SwipingPaginator
 from util.session_utils import add_data_to_session_as_dict, read_session_data
+from happenings.views import useSessionFilter
 
 class SwipingEventsView(ListView):
     template_name = "swiping/swiping.html"
@@ -92,8 +93,11 @@ class SwipingEventsView(ListView):
     def get_queryset(self):
         events_seen = read_session_data(self.request, self.viewed_events_name)
         queryset = Schedule.objects \
-                    .filter(event__admin_approved=True) \
-                    .filter(end_time__gte=timezone.now())
+                    .filter(event__admin_approved=True)
+        if self.request.session.get('filter'):
+            object_list = useSessionFilter(object_list, self.request)
+        else:
+            queryset = queryset.filter(end_time__gte=timezone.now())
 
         # Temporary solution to random order queryset using order_by('?')
 
