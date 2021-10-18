@@ -1,11 +1,10 @@
 {% block head %}
-<script language="javascript" type="text/javascript" src="{% static 'happenings/buttons.js' %}"></script>
 {% endblock head %}
 
 {% block body %}
     
     <script language="javascript" type="text/javascript">
-        function not_hide_div(elemID) {
+        function hide_div(elemID) {
             var x = document.getElementById(elemID);
             if (x.style.display === "none") {
                 x.style.display = "block";
