@@ -89,10 +89,12 @@ class EditEventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        exclude = ['admin_approved', 'host', 'name', 'description', 'image', 'short_description']
+        fields = ('location', 'min_price', 'max_price', 'requirement_categories', 'interest_categories')
         labels = {
             'min_price': 'Minimum price',
-            'max_price': 'Maximum price'
+            'max_price': 'Maximum price',
+            'requirement_categories': 'Tags',
+            'interest_categories': 'Event categories'
         }
         widgets = {
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),
