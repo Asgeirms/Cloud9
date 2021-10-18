@@ -227,7 +227,6 @@ def resetSessionFilters(request):
     request.session['filter_from_time'] = None
     request.session['filter_to_time'] = None
 
-
 #Uses the filtervalues stored in session in the request to filter events
 def useSessionFilter(queryset, request):
     if (request.session.get('filter')):
