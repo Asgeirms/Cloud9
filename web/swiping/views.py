@@ -95,7 +95,7 @@ class SwipingEventsView(ListView):
         queryset = Schedule.objects \
                     .filter(event__admin_approved=True)
         if self.request.session.get('filter'):
-            object_list = useSessionFilter(object_list, self.request)
+            querset = useSessionFilter(queryset, self.request)
         else:
             queryset = queryset.filter(end_time__gte=timezone.now())
 
