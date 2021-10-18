@@ -138,21 +138,38 @@ class EventView(DetailView):
     success_url = reverse_lazy('events')
 
 
-class RandomEventView(DetailView):
-    queryset = Schedule.objects.all()
-    template_name = "happenings/event_detail_view.html"
-    context_object_name = 'scheduled_event'
+class RandomEventView(TemplateView):
 
-    def get_object(self):
-        object_list = Schedule.objects.filter(event__admin_approved=True)
-        if self.request.session.get("filter"):
-            object_list = useSessionFilter(object_list, self.request)
-        else:
-            object_list = object_list.filter(end_time__gte=timezone.now())
-        if len(object_list) > 0:
-            number = randint(0, len(object_list)-1)
-            return object_list[number]
-        return None
+    def get(self, *args, **kwargs):
+        queryset = Schedule.objects.all()
+        queryset = queryset.filter(event__admin_approved=True)
+        if (self.request.session.get('filter')):
+            form = FilterForm({'from_time': self.request.session.get('filter_from_time'),
+            'to_time': self.request.session.get('filter_to_time'),
+            'max_price': self.request.session.get('filter_max_price')})
+            queryset = useSessionFilter(queryset, self.request)
+        else: 
+            form = FilterForm({'from_time': timezone.now()})
+            queryset = queryset.filter(end_time__gte=timezone.now())
+        return render(self.request, "happenings/event_detail_view.html", {'form':form, 'scheduled_event':queryset[randint(0, len(queryset)-1)]})
+
+    def post(self, *args, **kwargs):
+        queryset = Schedule.objects.all()
+        queryset = queryset.filter(event__admin_approved=True)
+        form = FilterForm(self.request.POST)
+        #if apply filter button
+        if 'submit' in (self.request.POST):
+            if form.is_valid(): 
+                saveFiltersToSession(queryset, self.request, form)
+                #Actual filtering of search
+                queryset = useSessionFilter(queryset, self.request)
+        #if reset filter button
+        if 'reset' in (self.request.POST):
+            resetSessionFilters()
+            #resets the form
+            form = FilterForm({'from_time': timezone.now()})
+            queryset = queryset.filter(end_time__gte=timezone.now())
+        return render(self.request, "happenings/event_detail_view.html", {'form':form, 'scheduled_event':queryset[randint(0, len(queryset)-1)]})
 
 
 def FilterEventListView(request):
