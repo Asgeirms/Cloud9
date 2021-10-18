@@ -169,7 +169,9 @@ class RandomEventView(TemplateView):
             #resets the form
             form = FilterForm({'from_time': timezone.now()})
             queryset = queryset.filter(end_time__gte=timezone.now())
-        return render(self.request, "happenings/event_detail_view.html", {'form':form, 'scheduled_event':queryset[randint(0, len(queryset)-1)]})
+        if len(queryset) > 1:
+            queryset = queryset[randint(0, len(queryset)-1)]
+        return render(self.request, "happenings/event_detail_view.html", {'form':form, 'scheduled_event':queryset})
 
 
 def FilterEventListView(request):
@@ -199,6 +201,8 @@ def FilterEventListView(request):
         else: 
             form = FilterForm({'from_time': timezone.now()})
             queryset = queryset.filter(end_time__gte=timezone.now())
+    if len(queryset) > 1:
+        queryset = queryset[randint(0, len(queryset)-1)]
     return render(request, 'happenings/filtered_event_list_view.html', {'form': form, 'queryset': queryset})
 
 def saveFiltersToSession(queryset, request, form):
