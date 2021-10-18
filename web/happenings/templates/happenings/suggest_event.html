@@ -4,7 +4,7 @@
     <div class="ui raised very padded text container segment">
         <h1 class="ui header">Suggest an event</h1>
 
-        <form class="ui form" method="post">{% csrf_token %}
+        <form class="ui form" enctype="multipart/form-data" method="post">{% csrf_token %}
             {% if form.errors %}
                 {% for field in form %}
                     {% for error in field.errors %}
@@ -81,7 +81,7 @@
                 </div>
 
                 <div class="field">
-                    {{ form.image.label }} (Preferred format is 16:10)
+                    {{ form.image.label }}
                     {{ form.image }}
                 </div>
 

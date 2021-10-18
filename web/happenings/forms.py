@@ -6,7 +6,7 @@ class EventForm(forms.ModelForm):
     '''Formclass. Creating event suggestions'''
     class Meta:
         model = Event
-        exclude = ['admin_approved', 'host']
+        fields = ('name', 'location', 'min_price', 'max_price', 'short_description', 'description', 'image')
         labels = {
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
@@ -86,7 +86,7 @@ class EditEventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        exclude = ['admin_approved', 'host', 'name', 'description', 'image']
+        exclude = ['admin_approved', 'host', 'name', 'description', 'image', 'short_description']
         labels = {
             'min_price': 'Minimum price',
             'max_price': 'Maximum price'
