@@ -16,7 +16,7 @@ class MyEventsListView(ListView):
     '''View you own events'''
     template_name = "happenings/my_events_list_view.html"
     #template_name = "happenings/button_test.html"
-    
+
     context_object_name = "my_events_list"
     model = Event
 
@@ -46,7 +46,6 @@ class MyEventsListView(ListView):
 
         # My own swipes as query
         queryset['my_swipes'] = self.request.user.interested_events.all()
-        print(queryset)
         return queryset
 
 
