@@ -6,11 +6,14 @@ class EventForm(forms.ModelForm):
     '''Formclass. Creating event suggestions'''
     class Meta:
         model = Event
-        fields = ('name', 'location', 'min_price', 'max_price', 'short_description', 'description', 'image')
+        fields = ('name', 'location', 'min_price', 'max_price', 'short_description', 'description', 'image',
+                  'requirement_categories', 'interest_categories')
         labels = {
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
-            'short_description': 'Short descripton'
+            'short_description': 'Short descripton',
+            'requirement_categories': 'Tags',
+            'interest_categories': 'Event categories'
         }
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Name of the event'}),

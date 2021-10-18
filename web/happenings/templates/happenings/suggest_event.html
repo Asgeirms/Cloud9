@@ -81,8 +81,18 @@
                 </div>
 
                 <div class="field">
-                    {{ form.image.label }}
+                    {{ form.image.label_tag }}
                     {{ form.image }}
+                </div>
+
+                <div class="field">
+                    {{ form.requirement_categories.label_tag }}
+                    {{ form.requirement_categories }}
+                </div>
+
+                <div class="field">
+                    {{ form.interest_categories.label_tag }}
+                    {{ form.interest_categories }}
                 </div>
 
             <input class="ui blue button" type="submit" value="Suggest event">

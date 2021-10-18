@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="extra content">
-                            <a><i class="user icon"></i>
+                            <a>
                                 From {{ schedule.start_time }}
                             </a>
 
@@ -43,6 +43,30 @@
                                 To {{ schedule.end_time }}
                             </span>
                         </div>
+                        <div class="ui mini horizontal divided  list">
+                        {% for category in schedule.event.requirement_categories.all %}
+                          <div class="item">
+                            <div class="content">
+                              <div class="header">
+                                <span data-content="{{ category.description }}">
+                                    <i>{{ category.name }}</i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
+                        {% for category in schedule.event.interest_categories.all %}
+                          <div class="item">
+                            <div class="content">
+                              <div class="header">
+                                <span data-content="{{ category.description }}">
+                                    <i>{{ category.name }}</i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
+                    </div>
                     </div>
 
                 </div>
@@ -67,6 +91,7 @@
 <script>
     $("#no").transition('set looping').transition('fade left', '3500ms')
     $("#yes").transition('set looping').transition('fade right', '3500ms')
+    $("span[data-content]").popup();
 
 </script>
 
