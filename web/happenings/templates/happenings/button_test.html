@@ -1,10 +1,11 @@
 {% block head %}
+<script language="javascript" type="text/javascript" src="{% static 'happenings/buttons.js' %}"></script>
 {% endblock head %}
 
 {% block body %}
-
+    
     <script language="javascript" type="text/javascript">
-        function hide_div(elemID) {
+        function not_hide_div(elemID) {
             var x = document.getElementById(elemID);
             if (x.style.display === "none") {
                 x.style.display = "block";
@@ -14,13 +15,16 @@
         }
     </script>
 
-    <button onclick="hide_div("myDiv")">Click Me</button>
+    <button onclick="hide_div('myDiv')">Click Me</button>
     <div id="myDiv">This is my div</div>
 
+    <div id="other">This is the other div</div>
+    <button id="toggle">Hide other div</button>
+
     <script language="javascript" type="text/javascript">
-        const targetDiv = document.getElementById("other");
         const btn = document.getElementById("toggle");
         btn.onclick = function () {
+            const targetDiv = document.getElementById("other");
             if (targetDiv.style.display !== "none") {
                 targetDiv.style.display = "none";
             } else {
@@ -29,7 +33,5 @@
         }
     </script>
 
-    <div id="other">This is the other div</div>
-    <button id="toggle">Hide other div</button>
 
 {% endblock body %}
