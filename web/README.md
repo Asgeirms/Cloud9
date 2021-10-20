@@ -77,7 +77,7 @@ Before running, a prerequisite to run this script is having the `API key` for ac
 #### Store API key as env variables [`optional`]
 It is highly recommended to store the API key in environment settings to avoid it being exposed through a public repository. This can be easily done by creating a `.env` file in the root folder. Then store the API key by assigning it to a variable in `.env` such as:
 ```
-API_KEY = SECRET_API_KEY
+SHEET_KEY = SECRET_API_KEY
 ```
 **Note: without quotes**
 
