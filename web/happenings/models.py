@@ -33,8 +33,8 @@ class Event(models.Model):
     description = models.TextField()
     image = models.ImageField(blank=True, upload_to='events')
     admin_approved = models.BooleanField(default=False)
-    interest_categories = models.ManyToManyField(InterestCategory)
-    requirement_categories = models.ManyToManyField(RequirementCategory)
+    interest_categories = models.ManyToManyField(InterestCategory, blank=True)
+    requirement_categories = models.ManyToManyField(RequirementCategory, blank=True)
 
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL,
