@@ -18,6 +18,9 @@ def main():
     result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=event_range).execute()
     events = result.get('values', [])
 
+    if not events:
+        raise Exception(f"Spreadsheet {SPREADSHEET_ID} does not contain data at range {event_range}")
+
     for row in events[1:]:
         event_pk = pk_counter+1
         event = {
