@@ -77,7 +77,7 @@
                     {% if my_events_list.my_swipes %}
                         <div class="ui divided link items">
                             {% for schedule in my_events_list.my_swipes %}
-                                <a class="item" href="{% url 'my_events_detailed' schedule.event.id %}">
+                                <a class="item" href="{% url 'events' schedule.event.id %}">
                                     <div class="content">
                                         <div class="header">{{ schedule.event.name }}</div>
                                         <div class="description">
