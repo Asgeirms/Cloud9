@@ -6,10 +6,11 @@ from django.shortcuts import redirect
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
-from happenings.models import Schedule
+from happenings.models import Schedule, InterestCategory, CategoryWeightsUser
 from swiping.paginator import SwipingPaginator
 from util.session_utils import add_data_to_session_as_dict, read_session_data
 
+DECREASE_RATE = 0.8
 class SwipingEventsView(ListView):
     template_name = "swiping/swiping.html"
     paginate_by = 1
@@ -21,6 +22,14 @@ class SwipingEventsView(ListView):
     anon_no_name = "anon_no"
 
     def get(self, request, *args, **kwargs):
+        ###############################
+        # AI 1
+        # Initialize all unseen weighted category for user.
+        for obj in InterestCategory.objects.all():
+            if not len(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj)):
+                category_weight_instance = CategoryWeightsUser.objects.create(user=self.request.user, category=obj, weight=1)
+        ###############################
+
         events_seen = read_session_data(request, self.viewed_events_name)
         anon_yes = read_session_data(request, self.anon_yes_name)
         anon_no = read_session_data(request, self.anon_no_name)
@@ -29,6 +38,7 @@ class SwipingEventsView(ListView):
         swiped = request.GET.get('swiped')
 
         if pages.count() <= 1:
+            # BUG: this makes your last swipe "useless": no weight update.
             return redirect('swiping_finish')
         
         # This is not beautiful
@@ -42,6 +52,15 @@ class SwipingEventsView(ListView):
         else:
             current_page = Schedule.objects.get(pk=current_pk)
 
+        ###############################
+        # AI 2 
+        # For debugging/showing
+        print("______________________SWIPE!________________________")
+        print("Categories:", end="   ")
+        for cat in Schedule.objects.filter(pk=current_pk).first().event.interest_categories.all():
+            print(cat, end="\t")
+        print()
+        ###############################
 
         if swiped == "yes":
             add_data_to_session_as_dict(
@@ -65,7 +84,27 @@ class SwipingEventsView(ListView):
                 # --> can be done from both sides
                 self.request.user.interested_events.add(
                     Schedule.objects.filter(pk=current_pk).first())
+
+                ###############################
+                # AI 3
+                # Debugging
+                for obj in InterestCategory.objects.all():
+                    print(obj, end=": ")
+                    print(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj).first().weight)
+                print()
                 
+                # Increase weights of categories belonging to this event.
+                for cat in Schedule.objects.filter(pk=current_pk).first().event.interest_categories.all():
+                    weight : float = CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
+                    weight += (1-weight)*(DECREASE_RATE)
+                    CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).update(weight=weight)
+                
+                # Debugging
+                for obj in InterestCategory.objects.all():
+                    print(obj, end=": ")
+                    print(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj).first().weight)
+                print()
+                ###############################
 
         elif swiped == "no":
             add_data_to_session_as_dict(
@@ -85,14 +124,32 @@ class SwipingEventsView(ListView):
                     value=current_page
                 )
             else:
-
-                # TODO: add to registred user for persistent data
-                pass
-           
+                ###############################
+                # AI 4
+                # Debugging
+                for obj in InterestCategory.objects.all():
+                    print(obj, end=": ")
+                    print(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj).first().weight)
+                print()
+                
+                # Decrease weights of categories belonging to this event.
+                for cat in Schedule.objects.filter(pk=current_pk).first().event.interest_categories.all():
+                    weight = CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
+                    CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).update(weight=weight*DECREASE_RATE)
+                
+                # Debugging
+                for obj in InterestCategory.objects.all():
+                    print(obj, end=": ")
+                    print(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj).first().weight)
+                print()
+                ###############################
+                
         return super().get(request, *args, **kwargs)
     
     def get_queryset(self):
         events_seen = read_session_data(self.request, self.viewed_events_name)
+        
+        # TODO: Filter based on weighted categories.
         queryset = Schedule.objects \
                     .filter(event__admin_approved=True) \
                     .filter(end_time__gte=timezone.now())
