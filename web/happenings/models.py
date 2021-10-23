@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 
-
 class InterestCategory(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField()
@@ -23,7 +22,6 @@ class CategoryWeightsUser(models.Model):
 
     weight = models.FloatField(default=1)
 
-
 class Event(models.Model):
     name = models.CharField(max_length=250)
     location = models.CharField(max_length=250)
@@ -38,7 +36,8 @@ class Event(models.Model):
 
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        blank=True, null=True # Making it optinal
     )
 
     def __str__(self):
@@ -48,7 +47,6 @@ class Event(models.Model):
         if self.max_price > 0:
             return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
         return "FREE"
-
 
 class Schedule(models.Model):
     start_time = models.DateTimeField()

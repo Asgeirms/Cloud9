@@ -1,8 +1,10 @@
+from django import shortcuts
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.shortcuts import render
+from django.db.models import Case, When # to order querysets on list of ids
 
 from .forms import EventForm, ScheduleForm, FilterForm, EditEventForm
 
@@ -12,18 +14,41 @@ from random import randint
 
 class MyEventsListView(ListView):
     '''View you own events'''
-    #template_name = "happenings/my_events_list_view.html"
-    template_name = "happenings/button_test.html"
+    template_name = "happenings/my_events_list_view.html"
     context_object_name = "my_events_list"
     model = Event
 
     def get_queryset(self):
         # Only see your own events.
-        return Event.objects.filter(host=self.request.user)
+        # Find what schedule belonging to what event
+        current_schedules = Schedule.objects.filter(event__host=self.request.user).filter(end_time__gte=timezone.now()).order_by('start_time')
+        old_schedules = Schedule.objects.filter(event__host=self.request.user).filter(end_time__lt=timezone.now()).order_by('start_time')
+
+        current_pks = []
+        old_pks = []
+        for schedule in current_schedules:
+            if schedule.event.id not in current_pks:
+                current_pks.append(schedule.event.id)
+        
+        for schedule in old_schedules:
+            if schedule.event.id not in old_pks and schedule.event.id not in current_pks:
+                old_pks.append(schedule.event.id)
+
+        # Now current_pks contains all event_id's ordered
+        preserved_current = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(current_pks)])
+        preserved_old = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(old_pks)])
+
+        queryset = {'current' : Event.objects.filter(pk__in=current_pks).order_by(preserved_current),
+                    'expired' : Event.objects.filter(pk__in=old_pks).order_by(preserved_old),
+                    }
+
+        # My own swipes as query
+        queryset['my_swipes'] = self.request.user.interested_events.all()
+        return queryset
 
 
 class DetailedMyScheduleView(DetailView):
-    '''The detailed view you get watching your own events.'''
+    '''The detailed view you get watching your own event-schedules.'''
     model = Schedule
     template_name = 'happenings/my_schedules_detail_view.html'
     context_object_name = 'scheduled_event'
@@ -150,7 +175,6 @@ class RandomEventView(DetailView):
             number = randint(0, len(object_list)-1)
             return object_list[number]
         return None
-
 
 def FilterEventListView(request):
     queryset = Schedule.objects.all()
