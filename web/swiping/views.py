@@ -2,6 +2,8 @@ import json
 from datetime import datetime
 
 import numpy as np
+from django.db.models import When, Case
+
 
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
@@ -24,12 +26,14 @@ class SwipingEventsView(ListView):
     anon_no_name = "anon_no"
 
     def get(self, request, *args, **kwargs):
+        
         ###############################
         # AI 1
         # Initialize all unseen weighted category for user.
-        for obj in InterestCategory.objects.all():
-            if not len(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj)):
-                category_weight_instance = CategoryWeightsUser.objects.create(user=self.request.user, category=obj, weight=1)
+        if not self.request.user.is_anonymous:
+            for obj in InterestCategory.objects.all():
+                if not len(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj)):
+                    category_weight_instance = CategoryWeightsUser.objects.create(user=self.request.user, category=obj, weight=1)
         ###############################
 
         events_seen = read_session_data(request, self.viewed_events_name)
@@ -40,7 +44,6 @@ class SwipingEventsView(ListView):
         swiped = request.GET.get('swiped')
 
         if pages.count() <= 1:
-            # BUG: this makes your last swipe "useless": no weight update.
             return redirect('swiping_finish')
         
         # This is not beautiful
@@ -53,16 +56,6 @@ class SwipingEventsView(ListView):
             current_pk = current_page.pk  
         else:
             current_page = Schedule.objects.get(pk=current_pk)
-
-        ###############################
-        # AI 2 
-        # For debugging/showing
-        print("______________________SWIPE!________________________")
-        print("Categories:", end="   ")
-        for cat in Schedule.objects.filter(pk=current_pk).first().event.interest_categories.all():
-            print(cat, end="\t")
-        print()
-        ###############################
 
         if swiped == "yes":
             add_data_to_session_as_dict(
@@ -88,24 +81,12 @@ class SwipingEventsView(ListView):
                     Schedule.objects.filter(pk=current_pk).first())
 
                 ###############################
-                # AI 3
-                # Debugging
-                for obj in InterestCategory.objects.all():
-                    print(obj, end=": ")
-                    print(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj).first().weight)
-                print()
-                
+                # AI 2
                 # Increase weights of categories belonging to this event.
                 for cat in Schedule.objects.filter(pk=current_pk).first().event.interest_categories.all():
                     weight : float = CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
                     weight += (1-weight)*(DECREASE_RATE)
                     CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).update(weight=weight)
-                
-                # Debugging
-                for obj in InterestCategory.objects.all():
-                    print(obj, end=": ")
-                    print(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj).first().weight)
-                print()
                 ###############################
 
         elif swiped == "no":
@@ -127,23 +108,12 @@ class SwipingEventsView(ListView):
                 )
             else:
                 ###############################
-                # AI 4
-                # Debugging
-                for obj in InterestCategory.objects.all():
-                    print(obj, end=": ")
-                    print(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj).first().weight)
-                print()
-                
+                # AI 3
                 # Decrease weights of categories belonging to this event.
                 for cat in Schedule.objects.filter(pk=current_pk).first().event.interest_categories.all():
                     weight = CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
                     CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).update(weight=weight*DECREASE_RATE)
                 
-                # Debugging
-                for obj in InterestCategory.objects.all():
-                    print(obj, end=": ")
-                    print(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj).first().weight)
-                print()
                 ###############################
                 
         return super().get(request, *args, **kwargs)
@@ -151,33 +121,42 @@ class SwipingEventsView(ListView):
     def get_queryset(self):
         events_seen = read_session_data(self.request, self.viewed_events_name)
         
-        # TODO: Filter based on weighted categories.
+        # All eligable schedules
         queryset = Schedule.objects \
                     .filter(event__admin_approved=True) \
                     .filter(end_time__gte=timezone.now())
 
         ###############################
-        # AI 5
-        # Assign score to all schedules based on categories.
-        schedule_score = {}
-        for schedule in queryset:
-            sum = 0
-            n = 0
-            for cat in schedule.event.interest_categories.all():
-                n+=1
-                sum += CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
-            avg_score = sum/n
-            schedule_score[schedule.id] = avg_score
+        # Base AI 4
+        # Assign score to all schedules based on average category score.
+        # Uses a weighted select to select what schedule to show.
+        if not self.request.user.is_anonymous:
+            schedule_score = {}
+            for schedule in queryset:
+                sum = 0
+                n = 0
+                for cat in schedule.event.interest_categories.all():
+                    n+=1
+                    sum += CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
+                avg_score = sum/n
+                schedule_score[schedule.id] = avg_score
+
+            sort_schedules = sorted(schedule_score.items(), key=lambda x: x[1], reverse=True)
+            ids, scores =list(map(list, zip(*sort_schedules)))
+            np_scores = np.array(scores)
+
+            # Draws an ID based on weighted selection
+            drawn_id = np.random.choice(ids, 1, p=(np_scores/np_scores.sum()))
+
+        else: # Random
+            schedule_id = np.zeros(len(queryset))
+            for i, schedule in enumerate(queryset):
+                schedule_id[i] = schedule.id
+            drawn_id = np.random.choice(schedule_id)
+
+        # Order our drawn ID up front
+        queryset = queryset.order_by(Case(When(pk=drawn_id, then=0), default=1))
         ###############################
-        
-        sort_schedules = sorted(schedule_score.items(), key=lambda x: x[1], reverse=True)
-        ids, scores =list(map(list, zip(*sort_schedules)))
-        np_scores = np.array(scores)
-        
-        # Draws an ID based on weighted selection
-        drawn_id = np.random.choice(ids, 1, p=(np_scores/np_scores.sum()))
-        print("Schedules:", sort_schedules)
-        print("Drawn ID:", drawn_id)
 
         # Filtering seen events
         if events_seen:
@@ -186,17 +165,13 @@ class SwipingEventsView(ListView):
 
         # Anon user with multiple events
         if self.request.user.is_anonymous and events_seen:
-            #return queryset.order_by('?')
-            return queryset.filter(pk=drawn_id)
+            return queryset
 
         # Registred user 
         elif self.request.user.is_authenticated:
-            #return queryset.order_by('?')
-            return queryset.filter(pk=drawn_id)
+            return queryset
         
-
-        #return queryset.order_by('?')
-        return queryset.filter(pk=drawn_id)
+        return queryset
     
 class FinishSwipingView(TemplateView):
     template_name = "swiping/swipe_finish.html"
