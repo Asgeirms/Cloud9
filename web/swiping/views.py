@@ -1,6 +1,8 @@
 import json
 from datetime import datetime
 
+import numpy as np
+
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
 from django.core.exceptions import ValidationError
@@ -154,7 +156,28 @@ class SwipingEventsView(ListView):
                     .filter(event__admin_approved=True) \
                     .filter(end_time__gte=timezone.now())
 
-        # Temporary solution to random order queryset using order_by('?')
+        ###############################
+        # AI 5
+        # Assign score to all schedules based on categories.
+        schedule_score = {}
+        for schedule in queryset:
+            sum = 0
+            n = 0
+            for cat in schedule.event.interest_categories.all():
+                n+=1
+                sum += CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
+            avg_score = sum/n
+            schedule_score[schedule.id] = avg_score
+        ###############################
+        
+        sort_schedules = sorted(schedule_score.items(), key=lambda x: x[1], reverse=True)
+        ids, scores =list(map(list, zip(*sort_schedules)))
+        np_scores = np.array(scores)
+        
+        # Draws an ID based on weighted selection
+        drawn_id = np.random.choice(ids, 1, p=(np_scores/np_scores.sum()))
+        print("Schedules:", sort_schedules)
+        print("Drawn ID:", drawn_id)
 
         # Filtering seen events
         if events_seen:
@@ -163,14 +186,17 @@ class SwipingEventsView(ListView):
 
         # Anon user with multiple events
         if self.request.user.is_anonymous and events_seen:
-            return queryset.order_by('?')
+            #return queryset.order_by('?')
+            return queryset.filter(pk=drawn_id)
 
         # Registred user 
         elif self.request.user.is_authenticated:
-            return queryset.order_by('?')
+            #return queryset.order_by('?')
+            return queryset.filter(pk=drawn_id)
         
 
-        return queryset.order_by('?')
+        #return queryset.order_by('?')
+        return queryset.filter(pk=drawn_id)
     
 class FinishSwipingView(TemplateView):
     template_name = "swiping/swipe_finish.html"
