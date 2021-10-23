@@ -15,14 +15,15 @@ from random import randint
 class MyEventsListView(ListView):
     '''View you own events'''
     template_name = "happenings/my_events_list_view.html"
-    #template_name = "happenings/button_test.html"
 
     context_object_name = "my_events_list"
     model = Event
 
     def get_queryset(self):
-        # Only see your own events.
-        # Find what schedule belonging to what event
+        '''The task of this query:
+            - Users should only see their own events.
+            - Find what schedule belonging to what event, and sort events on schedules.
+        '''
         current_schedules = Schedule.objects.filter(event__host=self.request.user).filter(end_time__gte=timezone.now()).order_by('start_time')
         old_schedules = Schedule.objects.filter(event__host=self.request.user).filter(end_time__lt=timezone.now()).order_by('start_time')
 
