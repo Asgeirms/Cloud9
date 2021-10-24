@@ -144,8 +144,8 @@ class RandomEventView(TemplateView):
         queryset = Schedule.objects.all()
         queryset = queryset.filter(event__admin_approved=True)
         if (self.request.session.get('filter')):
-            form = fillFilterFormFromSession(self.request)
-            queryset = useSessionFilter(queryset, self.request)
+            form = fill_filter_form_from_session(self.request)
+            queryset = use_session_filter(queryset, self.request)
         else: 
             form = FilterForm({'from_time': timezone.now()})
             queryset = queryset.filter(end_time__gte=timezone.now())
@@ -160,12 +160,12 @@ class RandomEventView(TemplateView):
         #if apply filter button
         if 'submit' in (self.request.POST):
             if form.is_valid(): 
-                saveFiltersToSession(queryset, self.request, form)
+                save_filters_to_session(queryset, self.request, form)
                 #Actual filtering of search
-                queryset = useSessionFilter(queryset, self.request)
+                queryset = use_session_filter(queryset, self.request)
         #if reset filter button
         if 'reset' in (self.request.POST):
-            resetSessionFilters(self.request)
+            reset_session_filters(self.request)
             #resets the form
             form = FilterForm({'from_time': timezone.now()})
             queryset = queryset.filter(end_time__gte=timezone.now())
@@ -183,25 +183,25 @@ def FilterEventListView(request):
         #if apply filter button
         if 'submit' in (request.POST):
             if form.is_valid(): 
-                saveFiltersToSession(queryset, request, form)
+                save_filters_to_session(queryset, request, form)
                 #Actual filtering of search
-                queryset = useSessionFilter(queryset, request)
+                queryset = use_session_filter(queryset, request)
         #if reset filter button
         if 'reset' in (request.POST):
-            resetSessionFilters(request)
+            reset_session_filters(request)
             #resets the form
             form = FilterForm({'from_time': timezone.now()})
             queryset = queryset.filter(end_time__gte=timezone.now())
     else:
         if (request.session.get('filter')):
-            form = fillFilterFormFromSession(request)
-            queryset = useSessionFilter(queryset, request)
+            form = fill_filter_form_from_session(request)
+            queryset = use_session_filter(queryset, request)
         else: 
             form = FilterForm({'from_time': timezone.now()})
             queryset = queryset.filter(end_time__gte=timezone.now())
     return render(request, 'happenings/filtered_event_list_view.html', {'form': form, 'queryset': queryset})
 
-def saveFiltersToSession(queryset, request, form):
+def save_filters_to_session(queryset, request, form):
     #Gets data from form
     max_price = form.cleaned_data.get("max_price")
     from_time = form.cleaned_data.get("from_time")
@@ -221,14 +221,14 @@ def saveFiltersToSession(queryset, request, form):
         request.session['filter_to_time'] = None
     return queryset
 
-def resetSessionFilters(request):
+def reset_session_filters(request):
     request.session['filter'] = False
     request.session['filter_max_price'] = None
     request.session['filter_from_time'] = None
     request.session['filter_to_time'] = None
 
 #Uses the filtervalues stored in session in the request to filter events
-def useSessionFilter(queryset, request):
+def use_session_filter(queryset, request):
     if (request.session.get('filter')):
         if request.session.get('filter_max_price') != None:
             queryset = queryset.filter(event__min_price__lte=request.session.get('filter_max_price'))
@@ -238,7 +238,7 @@ def useSessionFilter(queryset, request):
             queryset = queryset.filter(start_time__lte=datetime.strptime(request.session.get('filter_to_time'), "%Y-%m-%d %H:%M"))
     return queryset
 
-def fillFilterFormFromSession(request):
+def fill_filter_form_from_session(request):
     form = FilterForm({'from_time': request.session.get('filter_from_time'),
             'to_time': request.session.get('filter_to_time'),
             'max_price': request.session.get('filter_max_price')})

@@ -9,7 +9,7 @@ from django.utils import timezone
 from happenings.models import Schedule
 from swiping.paginator import SwipingPaginator
 from util.session_utils import add_data_to_session_as_dict, read_session_data
-from happenings.views import useSessionFilter
+from happenings.views import use_session_filter
 
 class SwipingEventsView(ListView):
     template_name = "swiping/swiping.html"
@@ -95,7 +95,7 @@ class SwipingEventsView(ListView):
         queryset = Schedule.objects \
                     .filter(event__admin_approved=True)
         if self.request.session.get('filter'):
-            queryset = useSessionFilter(queryset, self.request)
+            queryset = use_session_filter(queryset, self.request)
         else:
             queryset = queryset.filter(end_time__gte=timezone.now())
 
