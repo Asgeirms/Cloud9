@@ -11,6 +11,7 @@ from util.session_utils import read_session_data
 from http import HTTPStatus
 from unittest import skip
 
+import numpy as np
 
 class SwipingEventsViewTests(TestCase):
     def setUp(self):
@@ -102,11 +103,40 @@ class SwipingEventsViewTests(TestCase):
         self.assertEqual(response.url, EXPECTED_URL)
 
 class SimpleSwAIpeTest(TestCase):
-    def test_swipe_right():
-        pass
+    def test_swipe_right(self):
+        # The average score of all weights should increase
 
-    def test_swipe_left():
-        pass
+        DECREASE_RATE = 0.8
+        weights = [1, 0.5, 0.01, 0.1, 1, 0.9999, 1]
+        initial_avg = np.average(weights)
+        for i in range(100):
+            for i, weight in enumerate(weights):
+                weights[i] += (1-weight)*(DECREASE_RATE)
+                self.assertLessEqual(weights[i], 1)
+            self.assertGreater(np.average(weights), initial_avg, )
 
-    def test_random_selection():
-        pass
+    def test_swipe_left(self):
+        # The average score of all weights should increase
+
+        DECREASE_RATE = 0.8
+        weights = [1, 0.5, 0.01, 0.1, 1, 0.9999, 1]
+        initial_avg = np.average(weights)
+        for i in range(100):
+            for i, weight in enumerate(weights):
+                weights[i] *= DECREASE_RATE
+                self.assertGreater(weights[i], 0)
+            self.assertGreater(initial_avg, np.average(weights))
+
+    def test_random_selection(self):
+        weights =   np.array([1, 0.5, 0.1, 0.05, 0.01])
+        ids =       np.array([0, 1, 2, 3, 4])
+        pick_rates = {}
+        for i in range(1000):
+            drawn_id : int = np.random.choice(ids, 1, p=(weights/weights.sum()))[0]
+            try:
+                pick_rates[drawn_id] += 1
+            except KeyError:
+                pick_rates[drawn_id] = 1
+        for i in range(len(pick_rates.keys())-1):
+            self.assertGreater(pick_rates[i], pick_rates[i+1])
+

@@ -25,7 +25,6 @@ class SwipingEventsView(ListView):
     anon_no_name = "anon_no"
 
     def get(self, request, *args, **kwargs):
-        
         ###############################
         # AI 1
         # Initialize all unseen weighted category for user.
