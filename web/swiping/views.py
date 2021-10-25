@@ -12,6 +12,7 @@ from django.utils import timezone
 from happenings.models import Schedule, InterestCategory, CategoryWeightsUser
 from swiping.paginator import SwipingPaginator
 from util.session_utils import add_data_to_session_as_dict, read_session_data
+from happenings.views import use_session_filter
 
 DECREASE_RATE = 0.8
 class SwipingEventsView(ListView):
@@ -121,8 +122,11 @@ class SwipingEventsView(ListView):
         
         # All eligable schedules
         queryset = Schedule.objects \
-                    .filter(event__admin_approved=True) \
-                    .filter(end_time__gte=timezone.now())
+                    .filter(event__admin_approved=True)
+        if self.request.session.get('filter'):
+            queryset = use_session_filter(queryset, self.request)
+        else:
+            queryset = queryset.filter(end_time__gte=timezone.now())
 
         # Filtering seen events
         if events_seen:

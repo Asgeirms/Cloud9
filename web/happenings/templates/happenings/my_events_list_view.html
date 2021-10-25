@@ -16,8 +16,7 @@
                 <div class="ui huge header">Upcomming/current events</div>
 
                 {% if my_events_list.current %}
-                    <div class="ui link items">
-                        
+                    <div class="ui divided link items">
                         {% for event in my_events_list.current %}
                             <a class="item" href="{% url 'my_events_detailed' event.id %}">
                                 <div class="content">
@@ -40,7 +39,7 @@
             <div id="old_events" class="content" > 
                     <div class="ui huge header"> Old-events </div>
                     {% if my_events_list.expired %}
-                        <div class="ui link items">
+                        <div class="ui divided link items">
                             {% for event in my_events_list.expired %}
                                 <a class="item" href="{% url 'my_events_detailed' event.id %}">
                                     <div class="content">
@@ -77,9 +76,10 @@
                     {% if my_events_list.my_swipes %}
                         <div class="ui divided link items">
                             {% for schedule in my_events_list.my_swipes %}
-                                <a class="item" href="{% url 'events' schedule.event.id %}">
+                                <a class="item" href="{% url 'events' schedule.id %}">
                                     <div class="content">
                                         <div class="header">{{ schedule.event.name }}</div>
+                                        <div class="meta">{%  get_event_times schedule %}</div>
                                         <div class="description">
                                             <p>{{ schedule.event.description }}</p>
                                         </div>

@@ -43,31 +43,13 @@
                         {{ form.max_price.label_tag }}
                         {{ form.max_price }}
                     </div>
-                <input class="ui blue button" type="submit" value="Search">
+                <input class="ui primary button" name="submit" type="submit" value="Apply Filter">
+                <input class="ui right floated button" name="reset" type="submit" value="Reset Filter">
                 </form>
             </div>
         </div>
     </div>
-    <div class="ui raised text container">
-        <h2>Scheduled Events</h2>
-            {% if queryset %}
-                <div class="ui link cards">
-                    {% for scheduled_event in queryset %}
-                        <a class="card" href="{% url 'events' scheduled_event.pk %}">
-                            <div class="content">
-                                <div class="header"> {{ scheduled_event.event.name }}</div>
-                                    <div class="meta"> {% get_event_times scheduled_event %} </div>
-                                    <div class="meta">{% get_pricerange scheduled_event.event %}  </div>
-                                <div class="meta">{{ scheduled_event.event.location }}</div>
-                                    <div class="description"> {{ scheduled_event.event.description }}</div>
-                            </div>
-                        </a>
-                    {% endfor %}  
-                </div>
-            {% else %}
-                No matching event
-            {% endif %}
-    </div>
+    {% block content %}{% endblock content %}    
 
     <script>
         function formatDatetime(date){
