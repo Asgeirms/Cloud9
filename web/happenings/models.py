@@ -4,12 +4,18 @@ from django.conf import settings
 
 class InterestCategory(models.Model):
     name = models.CharField(max_length=250)
-    description = models.TextField()
+    description = models.TextField(max_length=500)
+
+    def __str__(self):
+        return str(self.name)
 
 
 class RequirementCategory(models.Model):
     name = models.CharField(max_length=250)
-    description = models.TextField()
+    description = models.TextField(max_length=500)
+
+    def __str__(self):
+        return str(self.name)
 
     def __str__(self):
         return self.name
@@ -36,8 +42,8 @@ class Event(models.Model):
     description = models.TextField()
     image = models.ImageField(blank=True, upload_to='events')
     admin_approved = models.BooleanField(default=False)
-    interest_categories = models.ManyToManyField(InterestCategory)
-    requirement_categories = models.ManyToManyField(RequirementCategory)
+    interest_categories = models.ManyToManyField(InterestCategory, blank=True)
+    requirement_categories = models.ManyToManyField(RequirementCategory, blank=True)
 
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL,

@@ -4,6 +4,9 @@
   <div class="ui raised very padded text container segment">
     <h2>Log In</h2>
     <form class="ui form" method="post">{% csrf_token %}
+      {% if form.non_field_errors %}
+        <p style="color:#D0342C"> Username or password not correct</p>
+      {% endif %}
       {% for field in form.visible_fields %}
         <div class="field">
           {{ field.label_tag }}

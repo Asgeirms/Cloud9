@@ -6,14 +6,29 @@ class EventForm(forms.ModelForm):
     '''Formclass. Creating event suggestions'''
     class Meta:
         model = Event
-        exclude = ['admin_approved', 'host']
+        fields = [
+            'name',
+            'location',
+            'min_price',
+            'max_price',
+            'short_description',
+            'description',
+            'image',
+            'interest_categories',
+            'requirement_categories',
+        ]
+
         labels = {
             'min_price': 'Minimum price',
-            'max_price': 'Maximum price'
+            'max_price': 'Maximum price',
+            'short_description': 'Short descripton',
+            'requirement_categories': 'Tags',
+            'interest_categories': 'Event categories'
         }
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Name of the event'}),
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),
+            'short_description': forms.TextInput(attrs={'placeholder': 'Describe your event, but short and concise!'}),
             'description': forms.Textarea(attrs={'placeholder': 'Describe your event!'}),
         }
         
@@ -80,15 +95,18 @@ class FilterForm(forms.Form):
                         code='invalid_time')
                 )
 
+
 class EditEventForm(forms.ModelForm):
-    '''Formclass. Creating event suggestions'''
+    '''Formclass. Editing location, price and short description'''
 
     class Meta:
         model = Event
-        exclude = ['admin_approved', 'host', 'name', 'description']
+        fields = ('location', 'min_price', 'max_price', 'requirement_categories', 'interest_categories')
         labels = {
             'min_price': 'Minimum price',
-            'max_price': 'Maximum price'
+            'max_price': 'Maximum price',
+            'requirement_categories': 'Tags',
+            'interest_categories': 'Event categories'
         }
         widgets = {
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),
