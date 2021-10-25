@@ -108,7 +108,7 @@
         const pad = (val) => (val < 10) ? `0${val}` : val;
         if (date === null) { return; };
         const year = date.getFullYear();
-        const month = pad(date.getMonth());
+        const month = pad(date.getMonth()+1);
         const day = pad(date.getDate());
         const hours = pad(date.getHours());
         const minutes = pad(date.getMinutes());

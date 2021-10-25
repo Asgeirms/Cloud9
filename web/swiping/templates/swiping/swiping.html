@@ -19,7 +19,13 @@
                 <div class="center aligned column">
                     <div class="ui fluid card">
                         <div class="image">
-                            <img src="{{ schedule.event.image.url }}" >
+                            <img src="
+                                {% if schedule.event.image %}
+                                    {{ schedule.event.image.url }}
+                                {% else %}
+                                    https://fomantic-ui.com/images/avatar2/large/matthew.png
+                                {% endif %}"
+                            />
                         </div>
                         
                         <div class="content">

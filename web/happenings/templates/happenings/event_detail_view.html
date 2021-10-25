@@ -1,4 +1,4 @@
-{% extends 'web/base.html' %}
+{% extends 'happenings/filter.html' %}
 {% load happenings_templatetags %}
 {% load static %}
 
@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
 {% endblock head %}
 
-{% block body %}
+{% block content %}
     <div class="ui container">
         <div class="ui card">
             {% if scheduled_event %}
@@ -53,6 +53,4 @@
      <script>
         $("span[data-content]").popup();
     </script>
-{% endblock body %}
-
-
+{% endblock content %}
