@@ -62,9 +62,11 @@ class SwipingEventsView(ListView):
                     value=current_page
                 )
             else:
-
-                # TODO: add to registred user for persistent data
-                pass
+                # Add the event to the users "interesting events" 
+                # --> can be done from both sides
+                self.request.user.interested_events.add(
+                    Schedule.objects.get(pk=current_page))
+                
 
         elif swiped == "no":
             add_data_to_session_as_dict(
