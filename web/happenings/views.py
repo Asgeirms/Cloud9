@@ -133,7 +133,7 @@ class EventListView(ListView):
 
 class EventView(DetailView):
     model = Schedule
-    template_name = "happenings/event_detail_view.html"
+    template_name = "happenings/schedule_detail_view.html"
     context_object_name = 'scheduled_event'
     success_url = reverse_lazy('events')
 
@@ -151,7 +151,7 @@ class RandomEventView(TemplateView):
             queryset = queryset.filter(end_time__gte=timezone.now())
         if len(queryset) > 1:
             queryset = queryset[randint(0, len(queryset)-1)]
-        return render(self.request, "happenings/event_detail_view.html", {'form':form, 'scheduled_event':queryset})
+        return render(self.request, "happenings/random_schedule_view.html", {'form':form, 'scheduled_event':queryset})
 
     def post(self, *args, **kwargs):
         queryset = Schedule.objects.all()
@@ -171,7 +171,7 @@ class RandomEventView(TemplateView):
             queryset = queryset.filter(end_time__gte=timezone.now())
         if len(queryset) > 1:
             queryset = queryset[randint(0, len(queryset)-1)]
-        return render(self.request, "happenings/event_detail_view.html", {'form':form, 'scheduled_event':queryset})
+        return render(self.request, "happenings/schedule_detail_view.html", {'form':form, 'scheduled_event':queryset})
 
 
 def FilterEventListView(request):
