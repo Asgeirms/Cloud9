@@ -147,10 +147,16 @@ class SwipingEventsView(ListView):
             for schedule in queryset:
                 sum = 0
                 n = 0
-                for cat in schedule.event.interest_categories.all():
-                    n+=1
-                    sum += CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
-                avg_score = sum/n
+                
+                cats = schedule.event.interest_categories.all()
+                if len(cats):
+                    for cat in cats:
+                        n+=1
+                        sum += CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
+                    avg_score = sum/n
+                else:
+                    avg_score = np.random.uniform(0, 1)
+                
                 schedule_score[schedule.id] = avg_score
 
             sort_schedules = sorted(schedule_score.items(), key=lambda x: x[1], reverse=True)

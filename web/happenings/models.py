@@ -40,8 +40,7 @@ class Event(models.Model):
 
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        blank=True, null=True # Making it optinal
+        on_delete=models.CASCADE
     )
 
     def __str__(self):
