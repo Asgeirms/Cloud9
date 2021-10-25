@@ -133,3 +133,8 @@ AUTH_USER_MODEL = 'authenticate.User'
 LOGIN_REDIRECT_URL = 'events'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Media files (Images uploaded via the website)
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

@@ -34,7 +34,7 @@
                         <div class="header"> {{ event.name }}</div>
                             <div class="meta">{% get_pricerange event %}  </div>
                         <div class="meta">{{ event.location }}</div>
-                            <div class="description"> {{ event.description }}</div>
+                            <div class="description"> {{ event.short_description }}</div>
                     </div>
                     <form method="post" action="{% url 'approve' event.pk %}">
                         {% csrf_token %}
@@ -60,7 +60,7 @@
                         <div class="header"> {{ event.name }}</div>
                             <div class="meta">{% get_pricerange event %}  </div>
                         <div class="meta">{{ event.location }}</div>
-                            <div class="description"> {{ event.description }}</div>
+                            <div class="description"> {{ event.short_description }}</div>
                     </div>
                     <form method="post" action="{% url 'disapprove' event.pk %}">
                         {% csrf_token %}

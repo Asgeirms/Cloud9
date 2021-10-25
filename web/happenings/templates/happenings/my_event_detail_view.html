@@ -9,6 +9,14 @@
 {% block body %}
     <div class="ui container">
         <div class="ui card">
+            <div class="image">
+                <img src="
+                {% if event.image %}
+                    {{ event.image.url }}
+                {% else %}
+                    https://fomantic-ui.com/images/avatar2/large/matthew.png
+                {% endif %}" alt="Event image"/>
+            </div>
             <div class="content">
                 {% if event %}
                     <div class="header">{{ event.name }}</div>
@@ -26,6 +34,30 @@
                             <span class="date">{% get_event_times scheduled_event %}</span></a>
                         </div>
                     {% endfor %}
+                    </div>
+                     <div class="ui horizontal divided  list">
+                        {% for category in event.requirement_categories.all %}
+                          <div class="item">
+                            <div class="content">
+                             <div class="header">
+                                <span data-content="{{ category.description }}">
+                                    <i>{{ category.name }}</i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
+                        {% for category in event.interest_categories.all %}
+                          <div class="item">
+                            <div class="content">
+                             <div class="header">
+                                <span data-content="{{ category.description }}">
+                                    <i>{{ category.name }}</i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
                     </div>
                     {% else %}
                     <div class="header">You don't have any upcoming events.</div>
@@ -47,4 +79,8 @@
             </div>
         </div>
     </div>
+
+     <script>
+        $("span[data-content]").popup();
+    </script>
 {% endblock body %}
