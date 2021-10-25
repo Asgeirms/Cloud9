@@ -10,7 +10,12 @@
     <div class="ui container">
         <div class="ui card">
             <div class="image">
-                <img src="{{ event.image.url }}" alt="Event image"/>
+                <img src="
+                {% if event.image %}
+                    {{ event.image.url }}
+                {% else %}
+                    https://fomantic-ui.com/images/avatar2/large/matthew.png
+                {% endif %}" alt="Event image"/>
             </div>
             <div class="content">
                 {% if event %}

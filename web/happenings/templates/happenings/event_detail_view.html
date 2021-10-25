@@ -11,7 +11,13 @@
         <div class="ui card">
             {% if scheduled_event %}
                 <div class="image">
-                    <img src="{{ scheduled_event.event.image.url }}" alt="Event image"/>
+                    <img src="
+                        {% if scheduled_event.event.image %}
+                            {{ scheduled_event.event.image.url }}
+                        {% else %}
+                            https://fomantic-ui.com/images/avatar2/large/matthew.png
+                        {% endif %}"
+                     alt="Event image"/>
                 </div>
                 <div class="content">
                     <div class="header">{{ scheduled_event.event.name }}</div>
