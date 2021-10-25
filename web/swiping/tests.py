@@ -21,7 +21,6 @@ class SwipingEventsViewTests(TestCase):
         self.client = Client()
         self.client.login(username="Superuser", password="pass")
 
-
         # Initializing events for the swiping
         self.TOTAL_EVENTS = 10
         for num in range(self.TOTAL_EVENTS):
@@ -101,3 +100,13 @@ class SwipingEventsViewTests(TestCase):
         response = self.client.get(self.url, self.query)
         
         self.assertEqual(response.url, EXPECTED_URL)
+
+class SimpleSwAIpeTest(TestCase):
+    def test_swipe_right():
+        pass
+
+    def test_swipe_left():
+        pass
+
+    def test_random_selection():
+        pass

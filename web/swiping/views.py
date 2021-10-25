@@ -4,7 +4,6 @@ from datetime import datetime
 import numpy as np
 from django.db.models import When, Case
 
-
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
 from django.core.exceptions import ValidationError
@@ -33,7 +32,7 @@ class SwipingEventsView(ListView):
         if not self.request.user.is_anonymous:
             for obj in InterestCategory.objects.all():
                 if not len(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj)):
-                    category_weight_instance = CategoryWeightsUser.objects.create(user=self.request.user, category=obj, weight=1)
+                    CategoryWeightsUser.objects.create(user=self.request.user, category=obj, weight=1)
         ###############################
 
         events_seen = read_session_data(request, self.viewed_events_name)
@@ -113,7 +112,6 @@ class SwipingEventsView(ListView):
                 for cat in Schedule.objects.filter(pk=current_pk).first().event.interest_categories.all():
                     weight = CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
                     CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).update(weight=weight*DECREASE_RATE)
-                
                 ###############################
                 
         return super().get(request, *args, **kwargs)
@@ -134,16 +132,14 @@ class SwipingEventsView(ListView):
         # Anon user with multiple events
         if self.request.user.is_anonymous and events_seen:
             return queryset
-
-        # Registred user 
-        elif self.request.user.is_authenticated:
+        # No need to do selection
+        elif len(queryset)<=1:
             return queryset
-            
         ###############################
         # Base AI 4
         # Assign score to all schedules based on average category score.
         # Uses a weighted select to select what schedule to show.
-        if not self.request.user.is_anonymous:
+        if self.request.user.is_authenticated:
             schedule_score = {}
             for schedule in queryset:
                 sum = 0
@@ -167,11 +163,9 @@ class SwipingEventsView(ListView):
                 schedule_id[i] = schedule.id
             drawn_id = np.random.choice(schedule_id)
 
-        # Order our drawn ID up front
+        # Order our drawn ID up front. Requires an ordered list of queries.
         queryset = queryset.order_by(Case(When(pk=drawn_id, then=0), default=1))
         ###############################
-
-        
         return queryset
     
 class FinishSwipingView(TemplateView):
