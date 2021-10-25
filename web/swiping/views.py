@@ -126,6 +126,19 @@ class SwipingEventsView(ListView):
                     .filter(event__admin_approved=True) \
                     .filter(end_time__gte=timezone.now())
 
+        # Filtering seen events
+        if events_seen:
+            for pk in events_seen:
+                queryset = queryset.exclude(pk=pk)
+
+        # Anon user with multiple events
+        if self.request.user.is_anonymous and events_seen:
+            return queryset
+
+        # Registred user 
+        elif self.request.user.is_authenticated:
+            return queryset
+            
         ###############################
         # Base AI 4
         # Assign score to all schedules based on average category score.
@@ -158,18 +171,6 @@ class SwipingEventsView(ListView):
         queryset = queryset.order_by(Case(When(pk=drawn_id, then=0), default=1))
         ###############################
 
-        # Filtering seen events
-        if events_seen:
-            for pk in events_seen:
-                queryset = queryset.exclude(pk=pk)
-
-        # Anon user with multiple events
-        if self.request.user.is_anonymous and events_seen:
-            return queryset
-
-        # Registred user 
-        elif self.request.user.is_authenticated:
-            return queryset
         
         return queryset
     
