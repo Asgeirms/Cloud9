@@ -14,8 +14,7 @@
                 <a href="{% url 'events' %}" class="item"> Events </a>
                 {% if user.is_authenticated %}
                     <div id="nav-user-dropdown" class="ui dropdown right item">
-                        <div class="text"> 
-                            {{ user.username }}>
+                        <div class="text"> {{ user.username }} </div> 
                             <i class="dropdown icon text"></i>
                             <nav class="menu transition">
                                 {% if user.is_staff %}
