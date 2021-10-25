@@ -12,7 +12,6 @@ from django.utils import timezone
 from happenings.models import Schedule, InterestCategory, CategoryWeightsUser
 from swiping.paginator import SwipingPaginator
 from util.session_utils import add_data_to_session_as_dict, read_session_data
-from happenings.views import use_session_filter
 
 DECREASE_RATE = 0.8
 class SwipingEventsView(ListView):
@@ -122,17 +121,18 @@ class SwipingEventsView(ListView):
         
         # All eligable schedules
         queryset = Schedule.objects \
-                    .filter(event__admin_approved=True)
-        if self.request.session.get('filter'):
-            queryset = use_session_filter(queryset, self.request)
-        else:
-            queryset = queryset.filter(end_time__gte=timezone.now())
+                    .filter(event__admin_approved=True) \
+                    .filter(end_time__gte=timezone.now())
 
         # Filtering seen events
         if events_seen:
             for pk in events_seen:
                 queryset = queryset.exclude(pk=pk)
-
+        if self.request.user.is_authenticated:
+            for schedule in queryset:
+                my_interests = self.request.user.interested_events.all()
+                if schedule in my_interests:
+                    queryset = queryset.exclude(pk=schedule.id)
         # Anon user with multiple events
         if self.request.user.is_anonymous and events_seen:
             return queryset
