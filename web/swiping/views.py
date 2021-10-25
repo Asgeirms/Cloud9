@@ -2,14 +2,15 @@ import json
 from datetime import datetime
 
 from django.views.generic import TemplateView, ListView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from happenings.models import Schedule
 from swiping.paginator import SwipingPaginator
 from util.session_utils import add_data_to_session_as_dict, read_session_data
-from happenings.views import use_session_filter
+from happenings.views import use_session_filter, fill_filter_form_from_session, save_filters_to_session, reset_session_filters
+from happenings.forms import FilterForm
 
 class SwipingEventsView(ListView):
     template_name = "swiping/swiping.html"
@@ -90,6 +91,32 @@ class SwipingEventsView(ListView):
            
         return super().get(request, *args, **kwargs)
     
+    def post(self, *args, **kwargs):
+        form = FilterForm(self.request.POST)
+        #if apply filter button
+        if 'submit' in (self.request.POST):
+            if form.is_valid(): 
+                save_filters_to_session(self.request, form)
+        #if reset filter button
+        if 'reset' in (self.request.POST):
+            reset_session_filters(self.request)
+            #resets the form
+            form = FilterForm({'from_time': timezone.now()})
+        context = self.get_context_data(object_list=self.get_queryset(), **kwargs)
+        context["form"]=form
+        context["is_empty"] = len(self.get_queryset()) == 0
+        return render(self.request, "swiping/swiping.html", context)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if (self.request.session.get('filter')):
+            form = fill_filter_form_from_session(self.request)
+        else: 
+            form = FilterForm({'from_time': timezone.now()})
+        context["form"]=form
+        return context
+
     def get_queryset(self):
         events_seen = read_session_data(self.request, self.viewed_events_name)
         queryset = Schedule.objects \

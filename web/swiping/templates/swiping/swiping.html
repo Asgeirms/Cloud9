@@ -1,11 +1,14 @@
-{% extends 'web/base.html' %}
+{% extends 'happenings/filter.html' %}
 
-{% block body %}
+{% block content %}
+
+{% if is_empty %}
+    <h1>No events matching the filter</h1>
+{% endif %}
 
 {% for schedule in page_obj  %}
 
     <div class="ui fluid container">
-        
         {# Computer only #}
         <div class="ui middle aligned grid computer only">
             <div class="three column row">
@@ -70,4 +73,4 @@
 
 </script>
 
-{% endblock body %}
+{% endblock content %}

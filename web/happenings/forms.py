@@ -57,16 +57,11 @@ class ScheduleForm(forms.ModelForm):
             )
 
 
-#Used in filterForm, to display name of category instead of PK
-class MyModelMultipleChoiceField(forms.ModelMultipleChoiceField):
-    def label_from_instance(self, obj):
-        return obj.name
-
 class FilterForm(forms.Form):
     from_time = forms.DateTimeField(label="From:", required=False)
     to_time = forms.DateTimeField(label="To:", required=False)
     max_price = forms.IntegerField(label="Max Price:", required=False)
-    categories = MyModelMultipleChoiceField(queryset=RequirementCategory.objects.all(), to_field_name="name" ,label="Categories:", required=False)
+    categories = forms.ModelMultipleChoiceField(queryset=RequirementCategory.objects.all(), to_field_name="name" ,label="Categories:", required=False)
 
     def clean(self):
         cleaned_data = super().clean()

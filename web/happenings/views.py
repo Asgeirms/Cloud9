@@ -253,10 +253,13 @@ def fill_filter_form_from_session(request):
     #to get the selcted categories
     categories = RequirementCategory.objects.all()
     not_selected_categories = RequirementCategory.objects.all()
-    for category in request.session.get('filter_categories'):
-        not_selected_categories = not_selected_categories.exclude(name=category)
-    for not_selected_category in not_selected_categories:
-        categories = categories.exclude(name=not_selected_category.name)
+    if request.session.get('filter_categories'):
+        for category in request.session.get('filter_categories'):
+            not_selected_categories = not_selected_categories.exclude(name=category)
+        for not_selected_category in not_selected_categories:
+            categories = categories.exclude(name=not_selected_category.name)
+    else:
+        categories = None
     form = FilterForm({'from_time': request.session.get('filter_from_time'),
             'to_time': request.session.get('filter_to_time'),
             'max_price': request.session.get('filter_max_price'),
