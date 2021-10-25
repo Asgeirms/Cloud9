@@ -3,15 +3,17 @@ from django.conf import settings
 
 class InterestCategory(models.Model):
     name = models.CharField(max_length=250)
-    description = models.TextField()
+    description = models.TextField(max_length=500)
     def __str__(self):
         return str(self.name)
 
+
 class RequirementCategory(models.Model):
     name = models.CharField(max_length=250)
-    description = models.TextField()
+    description = models.TextField(max_length=500)
     def __str__(self):
         return str(self.name)
+
 
 class CategoryWeightsUser(models.Model):
     category = models.ForeignKey(

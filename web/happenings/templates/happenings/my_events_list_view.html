@@ -20,10 +20,10 @@
                         {% for event in my_events_list.current %}
                             <a class="item" href="{% url 'my_events_detailed' event.id %}">
                                 <div class="content">
-                                    <div class="header">{{ event.name }}</div>
-                                    <div class="description">
-                                        <p>{{ event.description }}</p>
-                                    </div>
+                                  <div class="header">{{ event.name }}</div>
+                                  <div class="description">
+                                    <p>{{ event.short_description }}</p>
+                                  </div>
                                 </div>
                             </a>
                         {% endfor %}
