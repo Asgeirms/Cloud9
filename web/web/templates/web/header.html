@@ -10,7 +10,7 @@
         {% if user.is_authenticated %}
             <a href="{% url 'my_events' %}" class="item"> My profile </a>
         {% endif %}
-            <a href="{% url 'events' %}" class="item"> Events </a>
+            <a href="{% url 'filtered_event_list' %}" class="item"> Events </a>
                 {% if user.is_authenticated %}
                     <div id="nav-user-dropdown" class="ui dropdown right item">
                         <div class="text"> {{ user.username }} </div>
