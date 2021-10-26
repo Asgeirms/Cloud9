@@ -11,6 +11,7 @@ from swiping.paginator import SwipingPaginator
 from util.session_utils import add_data_to_session_as_dict, read_session_data
 from happenings.views import use_session_filter
 
+
 class SwipingEventsView(ListView):
     template_name = "swiping/swiping.html"
     paginate_by = 1
@@ -43,7 +44,6 @@ class SwipingEventsView(ListView):
         else:
             current_page = Schedule.objects.get(pk=current_pk)
 
-
         if swiped == "yes":
             add_data_to_session_as_dict(
                 request=request,
@@ -66,7 +66,6 @@ class SwipingEventsView(ListView):
                 # --> can be done from both sides
                 self.request.user.interested_events.add(
                     Schedule.objects.get(pk=current_page))
-                
 
         elif swiped == "no":
             add_data_to_session_as_dict(
@@ -115,9 +114,9 @@ class SwipingEventsView(ListView):
         # Registred user 
         elif self.request.user.is_authenticated:
             return queryset.order_by('?')
-        
 
         return queryset.order_by('?')
-    
+
+
 class FinishSwipingView(TemplateView):
     template_name = "swiping/swipe_finish.html"

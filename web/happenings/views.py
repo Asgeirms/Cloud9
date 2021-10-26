@@ -160,41 +160,6 @@ class ScheduleDetailView(DetailView):
     success_url = reverse_lazy('filtered_event_list')
 
 
-class RandomEventView(TemplateView):
-
-    def get(self, *args, **kwargs):
-        queryset = Schedule.objects.all()
-        queryset = queryset.filter(event__admin_approved=True)
-        if (self.request.session.get('filter')):
-            form = fill_filter_form_from_session(self.request)
-            queryset = use_session_filter(queryset, self.request)
-        else: 
-            form = FilterForm({'from_time': timezone.now()})
-            queryset = queryset.filter(end_time__gte=timezone.now())
-        if len(queryset) > 1:
-            queryset = queryset[randint(0, len(queryset)-1)]
-        return render(self.request, "happenings/random_schedule_view.html", {'form':form, 'scheduled_event':queryset})
-
-    def post(self, *args, **kwargs):
-        queryset = Schedule.objects.all()
-        queryset = queryset.filter(event__admin_approved=True)
-        form = FilterForm(self.request.POST)
-        #if apply filter button
-        if 'submit' in (self.request.POST):
-            if form.is_valid(): 
-                save_filters_to_session(queryset, self.request, form)
-                #Actual filtering of search
-                queryset = use_session_filter(queryset, self.request)
-        #if reset filter button
-        if 'reset' in (self.request.POST):
-            reset_session_filters(self.request)
-            #resets the form
-            form = FilterForm({'from_time': timezone.now()})
-            queryset = queryset.filter(end_time__gte=timezone.now())
-        if len(queryset) > 1:
-            queryset = queryset[randint(0, len(queryset)-1)]
-        return render(self.request, "happenings/schedule_detail_view.html", {'form':form, 'scheduled_event':queryset})
-
 def FilterEventListView(request):
     queryset = Schedule.objects.all()
     queryset = queryset.filter(event__admin_approved=True)

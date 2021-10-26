@@ -7,7 +7,7 @@
             {% if queryset %}
                 <div class="ui link cards">
                     {% for scheduled_event in queryset %}
-                        <a class="card" href="{% url 'scheduled_detail' scheduled_event.pk %}">
+                        <a class="card" href="{% url 'schedule_detail' scheduled_event.pk %}">
                              <img src="
                                 {% if scheduled_event.event.image %}
                                     {{ scheduled_event.event.image.url }}
