@@ -4,6 +4,7 @@ pytz==2021.1
 sqlparse==0.4.2
 Pillow==8.3.2
 python-dotenv==0.19.1
+numpy==1.19.5
 
 # Sheet API: specified to install in the documentation
 cachetools==4.2.4
