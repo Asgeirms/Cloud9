@@ -153,20 +153,13 @@ class DeleteScheduleView(DeleteView):
         return reverse_lazy('my_events_detailed', kwargs={'pk': event_id})
 
 
-class EventListView(ListView):
+class ScheduleDetailView(DetailView):
     model = Schedule
-    queryset = Schedule.objects.filter(event__admin_approved=True).filter(end_time__gte=timezone.now()).order_by('start_time')
-    template_name = "happenings/event_list_view.html"
-    context_object_name = "scheduled_events_list"
-
-
-class EventView(DetailView):
-    model = Schedule
-    template_name = "happenings/event_detail_view.html"
+    template_name = "happenings/schedule_detail_view.html"
     context_object_name = 'scheduled_event'
-    success_url = reverse_lazy('events')
+    success_url = reverse_lazy('filtered_event_list')
 
-
+    
 class RandomEventView(TemplateView):
 
     def get(self, *args, **kwargs):
@@ -202,6 +195,7 @@ class RandomEventView(TemplateView):
             queryset = queryset[randint(0, len(queryset)-1)]
         return render(self.request, "happenings/event_detail_view.html", {'form':form, 'scheduled_event':queryset})
 
+
 def FilterEventListView(request):
     queryset = Schedule.objects.all()
     queryset = queryset.filter(event__admin_approved=True)
@@ -229,6 +223,7 @@ def FilterEventListView(request):
             queryset = queryset.filter(end_time__gte=timezone.now())
     return render(request, 'happenings/filtered_event_list_view.html', {'form': form, 'queryset': queryset})
 
+  
 def save_filters_to_session(request, form):
     #Gets data from form
     max_price = form.cleaned_data.get("max_price")
@@ -256,12 +251,14 @@ def save_filters_to_session(request, form):
     else:
         request.session['filter_categories'] = None
 
+
 def reset_session_filters(request):
     request.session['filter'] = False
     request.session['filter_max_price'] = None
     request.session['filter_from_time'] = None
     request.session['filter_to_time'] = None
     request.session['filter_categories'] = None
+
 
 #Uses the filtervalues stored in session in the request to filter events
 def use_session_filter(queryset, request):
@@ -276,6 +273,7 @@ def use_session_filter(queryset, request):
             for category in request.session.get('filter_categories'):
                 queryset = queryset.filter(event__requirement_categories__name__contains=category)
     return queryset
+
 
 def fill_filter_form_from_session(request):
     #to get the selcted categories

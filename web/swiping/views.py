@@ -17,6 +17,8 @@ from happenings.forms import FilterForm
 
 
 DECREASE_RATE = 0.8
+
+
 class SwipingEventsView(ListView):
     template_name = "swiping/swiping.html"
     paginate_by = 1
@@ -114,7 +116,7 @@ class SwipingEventsView(ListView):
                     weight = CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
                     CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).update(weight=weight*DECREASE_RATE)
                 ###############################
-                
+
         return super().get(request, *args, **kwargs)
     
     def post(self, *args, **kwargs):
@@ -145,7 +147,7 @@ class SwipingEventsView(ListView):
 
     def get_queryset(self):
         events_seen = read_session_data(self.request, self.viewed_events_name)
-        
+
         # All eligable schedules
         queryset = Schedule.objects \
                     .filter(event__admin_approved=True) \
@@ -175,7 +177,7 @@ class SwipingEventsView(ListView):
             for schedule in queryset:
                 sum = 0
                 n = 0
-                
+
                 cats = schedule.event.interest_categories.all()
                 if len(cats):
                     for cat in cats:
@@ -184,7 +186,7 @@ class SwipingEventsView(ListView):
                     avg_score = sum/n
                 else:
                     avg_score = np.random.uniform(0, 1)
-                
+
                 schedule_score[schedule.id] = avg_score
 
             sort_schedules = sorted(schedule_score.items(), key=lambda x: x[1], reverse=True)
@@ -204,6 +206,7 @@ class SwipingEventsView(ListView):
         queryset = queryset.order_by(Case(When(pk=drawn_id, then=0), default=1))
         ###############################
         return queryset
-    
+
+
 class FinishSwipingView(TemplateView):
     template_name = "swiping/swipe_finish.html"

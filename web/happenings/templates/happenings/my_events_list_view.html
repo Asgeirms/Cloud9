@@ -4,7 +4,7 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
-<script type="text/javascript" src="{% static 'happenings/buttons.js' %}"></script>
+<script type="text/javascript" src="{% static 'happenings/js/buttons.js' %}"></script>
 {% endblock head %}
 
 
@@ -76,7 +76,7 @@
                     {% if my_events_list.my_swipes %}
                         <div class="ui divided link items">
                             {% for schedule in my_events_list.my_swipes %}
-                                <a class="item" href="{% url 'events' schedule.id %}">
+                                <a class="item" href="{% url 'schedule_detail' schedule.id %}">
                                     <div class="content">
                                         <div class="header">{{ schedule.event.name }}</div>
                                         <div class="meta">{%  get_event_times schedule %}</div>
@@ -92,7 +92,7 @@
                     {% endif %}
             </div>
             <div class="extra content">
-                <a class="ui blue button" tabindex="0"href="{% url 'random_event' %}">
+                <a class="ui blue button" tabindex="0"href="{% url 'swiping' %}">
                     Swipe
                 </a>
             </div>
