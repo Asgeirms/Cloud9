@@ -83,7 +83,6 @@ class FilterForm(forms.Form):
         from_time = cleaned_data.get('from_time')
         to_time = cleaned_data.get('to_time')
         max_price = cleaned_data.get('max_price')
-        categories = cleaned_data.get('categories')
 
         # Validating the time fields
         if from_time and to_time:
@@ -94,6 +93,12 @@ class FilterForm(forms.Form):
                         "From time cannot be after to time!",
                         code='invalid_time')
                 )
+        
+        #VAlidating the max_price
+        if max_price:
+            if max_price < 0:
+                self.add_error("max_price", forms.ValidationError(
+                    "Max price cannot be negative", code="negativ_price"))
 
 
 class EditEventForm(forms.ModelForm):

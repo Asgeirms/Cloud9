@@ -15,9 +15,6 @@ class RequirementCategory(models.Model):
     description = models.TextField(max_length=500)
 
     def __str__(self):
-        return str(self.name)
-
-    def __str__(self):
         return self.name
 
 
