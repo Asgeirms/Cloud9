@@ -4,7 +4,6 @@ from django.conf import settings
 class InterestCategory(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField(max_length=500)
-
     def __str__(self):
         return str(self.name)
 
@@ -12,7 +11,6 @@ class InterestCategory(models.Model):
 class RequirementCategory(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField(max_length=500)
-
     def __str__(self):
         return str(self.name)
 
@@ -42,8 +40,7 @@ class Event(models.Model):
 
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        blank=True, null=True # Making it optinal
+        on_delete=models.CASCADE
     )
 
     def __str__(self):
