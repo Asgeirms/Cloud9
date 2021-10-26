@@ -13,7 +13,7 @@
 
             <div class="ui link cards">
                 {% for scheduled_event in scheduled_events_list %}
-                        <a class="card" href="{% url 'events' scheduled_event.pk %}">
+                        <a class="card" href="{% url 'schedule_detail' scheduled_event.pk %}">
                             <div class="image">
                                 <img src="
                                     {% if scheduled_event.event.image %}

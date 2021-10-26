@@ -63,7 +63,7 @@ def main():
     
     with open(f"{path}/{filename}", "w") as output:
         json.dump(data, output, indent=4)
-
+        output.write("\n")
 
 if __name__ == '__main__':
     # Configurations: timezone and environment variables
