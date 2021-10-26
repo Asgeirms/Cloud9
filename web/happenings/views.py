@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.shortcuts import render
 from django.db.models import Case, When # to order querysets on list of ids
+from datetime import datetime
 
 
 from .forms import EventForm, ScheduleForm, FilterForm, EditEventForm
