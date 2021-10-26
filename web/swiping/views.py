@@ -14,6 +14,8 @@ from swiping.paginator import SwipingPaginator
 from util.session_utils import add_data_to_session_as_dict, read_session_data
 
 DECREASE_RATE = 0.8
+
+
 class SwipingEventsView(ListView):
     template_name = "swiping/swiping.html"
     paginate_by = 1
@@ -175,6 +177,7 @@ class SwipingEventsView(ListView):
         queryset = queryset.order_by(Case(When(pk=drawn_id, then=0), default=1))
         ###############################
         return queryset
-    
+
+
 class FinishSwipingView(TemplateView):
     template_name = "swiping/swipe_finish.html"
