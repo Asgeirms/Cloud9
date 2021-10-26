@@ -15,7 +15,6 @@ from random import randint
 class MyEventsListView(ListView):
     '''View you own events'''
     template_name = "happenings/my_events_list_view.html"
-
     context_object_name = "my_events_list"
     model = Event
 
