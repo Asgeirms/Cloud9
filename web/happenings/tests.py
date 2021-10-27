@@ -108,6 +108,7 @@ class EventAndScheduleFormTest(TestCase):
             form=invalid_start_time
         )
 
+#Should probably test categories
 class FilterFormTest(TestCase):
 
     def setUp(self):

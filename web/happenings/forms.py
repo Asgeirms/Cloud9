@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, Schedule
+from .models import Event, Schedule, RequirementCategory
 
 
 class EventForm(forms.ModelForm):
@@ -76,6 +76,7 @@ class FilterForm(forms.Form):
     from_time = forms.DateTimeField(label="From:", required=False)
     to_time = forms.DateTimeField(label="To:", required=False)
     max_price = forms.IntegerField(label="Max Price:", required=False)
+    categories = forms.ModelMultipleChoiceField(queryset=RequirementCategory.objects.all(), to_field_name="name" ,label="Categories:", required=False)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -92,6 +93,12 @@ class FilterForm(forms.Form):
                         "From time cannot be after to time!",
                         code='invalid_time')
                 )
+        
+        #Validating the max_price
+        if max_price:
+            if max_price < 0:
+                self.add_error("max_price", forms.ValidationError(
+                    "Max price cannot be negative", code="negative_price"))
 
 
 class EditEventForm(forms.ModelForm):

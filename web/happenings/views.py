@@ -5,10 +5,11 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.shortcuts import render
 from django.db.models import Case, When # to order querysets on list of ids
+from datetime import datetime
 
 
 from .forms import EventForm, ScheduleForm, FilterForm, EditEventForm
-from .models import Event, Schedule
+from .models import Event, Schedule, RequirementCategory
 from random import randint
 
 
@@ -158,7 +159,7 @@ class ScheduleDetailView(DetailView):
     context_object_name = 'scheduled_event'
     success_url = reverse_lazy('filtered_event_list')
 
-
+ 
 def FilterEventListView(request):
     queryset = Schedule.objects.all()
     queryset = queryset.filter(event__admin_approved=True)
@@ -168,7 +169,7 @@ def FilterEventListView(request):
         #if apply filter button
         if 'submit' in (request.POST):
             if form.is_valid(): 
-                save_filters_to_session(queryset, request, form)
+                save_filters_to_session(request, form)
                 #Actual filtering of search
                 queryset = use_session_filter(queryset, request)
         #if reset filter button
@@ -186,12 +187,13 @@ def FilterEventListView(request):
             queryset = queryset.filter(end_time__gte=timezone.now())
     return render(request, 'happenings/filtered_event_list_view.html', {'form': form, 'queryset': queryset})
 
-
-def save_filters_to_session(queryset, request, form):
+  
+def save_filters_to_session(request, form):
     #Gets data from form
     max_price = form.cleaned_data.get("max_price")
     from_time = form.cleaned_data.get("from_time")
     to_time = form.cleaned_data.get("to_time")
+    categories = form.cleaned_data.get("categories")
     #Stores the filter to session
     #Used for check if filter should be applied
     request.session['filter'] = True
@@ -205,7 +207,13 @@ def save_filters_to_session(queryset, request, form):
         request.session['filter_to_time'] = to_time.strftime("%Y-%m-%d %H:%M")
     else:
         request.session['filter_to_time'] = None
-    return queryset
+    if categories:
+        category_name_list = []
+        for category in categories:
+            category_name_list.append(category.name)
+        request.session['filter_categories'] = category_name_list
+    else:
+        request.session['filter_categories'] = None
 
 
 def reset_session_filters(request):
@@ -213,6 +221,7 @@ def reset_session_filters(request):
     request.session['filter_max_price'] = None
     request.session['filter_from_time'] = None
     request.session['filter_to_time'] = None
+    request.session['filter_categories'] = None
 
 
 #Uses the filtervalues stored in session in the request to filter events
@@ -224,11 +233,25 @@ def use_session_filter(queryset, request):
             queryset = queryset.filter(end_time__gte=datetime.strptime(request.session.get('filter_from_time'), "%Y-%m-%d %H:%M"))
         if request.session.get('filter_to_time'):
             queryset = queryset.filter(start_time__lte=datetime.strptime(request.session.get('filter_to_time'), "%Y-%m-%d %H:%M"))
+        if request.session.get('filter_categories'):
+            for category in request.session.get('filter_categories'):
+                queryset = queryset.filter(event__requirement_categories__name__contains=category)
     return queryset
 
 
 def fill_filter_form_from_session(request):
+    #to get the selcted categories
+    categories = RequirementCategory.objects.all()
+    not_selected_categories = RequirementCategory.objects.all()
+    if request.session.get('filter_categories'):
+        for category in request.session.get('filter_categories'):
+            not_selected_categories = not_selected_categories.exclude(name=category)
+        for not_selected_category in not_selected_categories:
+            categories = categories.exclude(name=not_selected_category.name)
+    else:
+        categories = None
     form = FilterForm({'from_time': request.session.get('filter_from_time'),
             'to_time': request.session.get('filter_to_time'),
-            'max_price': request.session.get('filter_max_price')})
+            'max_price': request.session.get('filter_max_price'),
+            'categories': categories})
     return form
