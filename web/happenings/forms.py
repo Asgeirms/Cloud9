@@ -94,11 +94,11 @@ class FilterForm(forms.Form):
                         code='invalid_time')
                 )
         
-        #VAlidating the max_price
+        #Validating the max_price
         if max_price:
             if max_price < 0:
                 self.add_error("max_price", forms.ValidationError(
-                    "Max price cannot be negative", code="negativ_price"))
+                    "Max price cannot be negative", code="negative_price"))
 
 
 class EditEventForm(forms.ModelForm):
