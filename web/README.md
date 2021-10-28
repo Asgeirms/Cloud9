@@ -102,7 +102,7 @@ Running the script multiple times only result it to update to current state of t
 ## Tests
 To run all tests in the project, run the following command
 ```
-python manage.py tests
+python manage.py test
 ```
 
 ## Coding style and standards

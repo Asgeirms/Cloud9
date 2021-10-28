@@ -14,7 +14,7 @@
   <div class="inline">
 
   <div class="ui large stackable buttons">
-    <a class="ui primary button" href={% url 'events' %}>Look at upcoming events</a>
+    <a class="ui primary button" href={% url 'filtered_event_list' %}>Look at upcoming events</a>
       {% if user.is_authenticated %}
           <a class="ui button" href={% url 'my_events' %}> Look through your events </a>
       {% else %}
