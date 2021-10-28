@@ -81,7 +81,7 @@ class SwipingEventsView(ListView):
                 # Add the event to the users "interesting events" 
                 # --> can be done from both sides
                 self.request.user.interested_events.add(
-                    Schedule.objects.get(pk=current_page))
+                    Schedule.objects.get(pk=current_page.id))
                 ###############################
                 # AI 2
                 # Increase weights of categories belonging to this event.
