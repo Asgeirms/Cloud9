@@ -11,6 +11,13 @@
             "description": "Join us in watching the Lotr movies. There will be popcorn and a good time",
             "image": "",
             "admin_approved": true,
+            "interest_categories": [
+                1000004,
+                1000005
+            ],
+            "requirement_categories": [
+                2
+            ],
             "host": "1"
         }
     },
@@ -18,8 +25,8 @@
         "model": "happenings.schedule",
         "pk": 100000,
         "fields": {
-            "start_time": "2021-11-22T17:31:20Z",
-            "end_time": "2021-11-22T21:31:20Z",
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
             "event": 100000
         }
     },
@@ -35,6 +42,14 @@
             "description": "Join Piratfiskerne in our illegal night fishing in Nidelva! Bring your own fishing gear for a pleasant night of lantern fishing with free beer and music.",
             "image": "",
             "admin_approved": true,
+            "interest_categories": [
+                1000004,
+                1000007,
+                1000010
+            ],
+            "requirement_categories": [
+                1000003
+            ],
             "host": "1"
         }
     },
@@ -42,8 +57,8 @@
         "model": "happenings.schedule",
         "pk": 100001,
         "fields": {
-            "start_time": "2021-11-22T17:31:20Z",
-            "end_time": "2021-11-22T21:31:20Z",
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
             "event": 100001
         }
     },
@@ -59,6 +74,14 @@
             "description": "A standard team quizz with prizes and beer",
             "image": "",
             "admin_approved": true,
+            "interest_categories": [
+                1000012,
+                1000011
+            ],
+            "requirement_categories": [
+                1,
+                1000003
+            ],
             "host": "1"
         }
     },
@@ -66,8 +89,8 @@
         "model": "happenings.schedule",
         "pk": 100002,
         "fields": {
-            "start_time": "2021-11-22T17:31:20Z",
-            "end_time": "2021-11-22T21:31:20Z",
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
             "event": 100002
         }
     },
@@ -83,6 +106,14 @@
             "description": "Look at our event at UT.NO!",
             "image": "",
             "admin_approved": true,
+            "interest_categories": [
+                1000010,
+                1000001
+            ],
+            "requirement_categories": [
+                1000001,
+                1000003
+            ],
             "host": "1"
         }
     },
@@ -90,8 +121,8 @@
         "model": "happenings.schedule",
         "pk": 100003,
         "fields": {
-            "start_time": "2021-11-22T17:31:20Z",
-            "end_time": "2021-11-22T21:31:20Z",
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
             "event": 100003
         }
     },
@@ -107,6 +138,17 @@
             "description": "You dont have to bring anything. Equipment and food is on us.",
             "image": "",
             "admin_approved": true,
+            "interest_categories": [
+                1000008,
+                1000009,
+                1000002,
+                1000005
+            ],
+            "requirement_categories": [
+                1,
+                1000003,
+                2
+            ],
             "host": "1"
         }
     },
@@ -114,8 +156,8 @@
         "model": "happenings.schedule",
         "pk": 100004,
         "fields": {
-            "start_time": "2021-11-22T17:31:20Z",
-            "end_time": "2021-11-22T21:31:20Z",
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
             "event": 100004
         }
     },
@@ -131,6 +173,13 @@
             "description": "Bring your own driftwood",
             "image": "",
             "admin_approved": true,
+            "interest_categories": [
+                1000002,
+                1000005
+            ],
+            "requirement_categories": [
+                1
+            ],
             "host": "1"
         }
     },
@@ -138,8 +187,8 @@
         "model": "happenings.schedule",
         "pk": 100005,
         "fields": {
-            "start_time": "2021-11-22T17:31:20Z",
-            "end_time": "2021-11-22T21:31:20Z",
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
             "event": 100005
         }
     },
@@ -155,6 +204,13 @@
             "description": "Join a host of heroes and play trough the demons dungeon",
             "image": "",
             "admin_approved": true,
+            "interest_categories": [
+                1000012
+            ],
+            "requirement_categories": [
+                2,
+                1
+            ],
             "host": "1"
         }
     },
@@ -162,8 +218,8 @@
         "model": "happenings.schedule",
         "pk": 100006,
         "fields": {
-            "start_time": "2021-11-22T17:31:20Z",
-            "end_time": "2021-11-22T21:31:20Z",
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
             "event": 100006
         }
     },
@@ -179,6 +235,13 @@
             "description": "YOur mom",
             "image": "",
             "admin_approved": true,
+            "interest_categories": [
+                1000004,
+                1000005
+            ],
+            "requirement_categories": [
+                1
+            ],
             "host": "1"
         }
     },
@@ -186,8 +249,8 @@
         "model": "happenings.schedule",
         "pk": 100007,
         "fields": {
-            "start_time": "2021-11-22T17:31:20Z",
-            "end_time": "2021-11-22T21:31:20Z",
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
             "event": 100007
         }
     },
@@ -203,6 +266,14 @@
             "description": "Fight Henrik to win money",
             "image": "",
             "admin_approved": true,
+            "interest_categories": [
+                1000004,
+                1000007,
+                1000010
+            ],
+            "requirement_categories": [
+                1
+            ],
             "host": "1"
         }
     },
@@ -210,8 +281,8 @@
         "model": "happenings.schedule",
         "pk": 100008,
         "fields": {
-            "start_time": "2021-11-22T17:31:20Z",
-            "end_time": "2021-11-22T21:31:20Z",
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
             "event": 100008
         }
     },
@@ -227,6 +298,13 @@
             "description": "Be scared or scare people",
             "image": "",
             "admin_approved": true,
+            "interest_categories": [
+                1000004,
+                1000010
+            ],
+            "requirement_categories": [
+                1000001
+            ],
             "host": "1"
         }
     },
@@ -234,8 +312,8 @@
         "model": "happenings.schedule",
         "pk": 100009,
         "fields": {
-            "start_time": "2021-11-22T17:31:20Z",
-            "end_time": "2021-11-22T21:31:20Z",
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
             "event": 100009
         }
     }

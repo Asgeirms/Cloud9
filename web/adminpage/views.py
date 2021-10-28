@@ -24,7 +24,7 @@ class CurateEventsView(PermissionRequiredMixin, ListView):
 
 
 class AdminEventDetailView(PermissionRequiredMixin, DetailView):
-    template_name = "adminpage/detail_event_view.html"
+    template_name = "adminpage/admin_event_detail_view.html"
     model = Event
     context_object_name = "event"
 
