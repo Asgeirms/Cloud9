@@ -123,7 +123,7 @@ class AddScheduleView(CreateView):
     template_name = "happenings/add_schedule.html"
     model = Schedule
     form_class = ScheduleForm
-    context_object_name = "schedule"
+    context_object_name = "scheduled_event"
 
     def form_valid(self, form, **kwargs):
         form.instance.event_id = self.kwargs['pk']

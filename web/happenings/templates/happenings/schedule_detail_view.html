@@ -7,22 +7,25 @@
 {% endblock head %}
 
 {% block body %}
+
     <div class="ui container">
-        <div class="ui card">
-            {% if scheduled_event %}
-                <div class="image">
-                    <img src="
+       {% if scheduled_event %}
+           <div class="ui card">
+               <div class="image">
+                   <img src="
                         {% if scheduled_event.event.image %}
                             {{ scheduled_event.event.image.url }}
                         {% else %}
                             https://fomantic-ui.com/images/avatar2/large/matthew.png
-                        {% endif %}"
-                     alt="Event image"/>
-                </div>
-                <div class="content">
+                        {% endif %}" alt="Event image"/>
+               </div>
+            <div class="content">
+
                     <div class="header">{{ scheduled_event.event.name }}</div>
+                    <div class="text">Host: {{ event.host.username }}</div>
                     <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
-                        <span class="right floated">{% get_pricerange scheduled_event.event %}</span></div>
+                        <span class="right floated">{% get_pricerange scheduled_event.event %}</span>
+                    </div>
                     <div class="meta">{{ scheduled_event.event.location }}</div>
                     <div class="description"> {{ scheduled_event.event.description }}</div>
                     <div class="ui horizontal divided  list">
@@ -49,14 +52,20 @@
                           </div>
                         {% endfor %}
                     </div>
-                </div>
-            {% else %}
-                No more events
-            {% endif %}
+                {% block extra_schedule_info %}
+                {% endblock extra_schedule_info %}
+            </div>
+
+           {% block edit_buttons %}
+           {% endblock edit_buttons %}
         </div>
+        {% else %}
+           <div class="header">You don't have any upcoming events.</div>
+        {% endif %}
     </div>
 
-     <script>
+    <script>
         $("span[data-content]").popup();
     </script>
+
 {% endblock body %}

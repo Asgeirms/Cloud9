@@ -18,6 +18,10 @@
     border-radius: 0px;
 }
 
-h1 {text-align: center;}
-p {text-align: center;}
-div {text-align: center;}
+.ui.card {
+    width: 100%;
+}
+
+.ui.container {
+    margin-bottom: 2%;
+}
