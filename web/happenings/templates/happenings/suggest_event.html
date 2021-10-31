@@ -4,7 +4,7 @@
     <div class="ui raised very padded text container segment">
         <h1 class="ui header">Suggest an event</h1>
 
-        <form class="ui form" method="post">{% csrf_token %}
+        <form class="ui form" enctype="multipart/form-data" method="post">{% csrf_token %}
             {% if form.errors %}
                 {% for field in form %}
                     {% for error in field.errors %}
@@ -71,8 +71,28 @@
                 </div>
 
                 <div class="field">
+                    {{ form.short_description.label_tag }}
+                    {{ form.short_description }}
+                </div>
+
+                <div class="field">
                     {{ form.description.label_tag }}
                     {{ form.description }}
+                </div>
+
+                <div class="field">
+                    {{ form.image.label_tag }}
+                    {{ form.image }}
+                </div>
+
+                <div class="field">
+                    {{ form.requirement_categories.label_tag }}
+                    {{ form.requirement_categories }}
+                </div>
+
+                <div class="field">
+                    {{ form.interest_categories.label_tag }}
+                    {{ form.interest_categories }}
                 </div>
 
             <input class="ui blue button" type="submit" value="Suggest event">
@@ -88,7 +108,7 @@
         const pad = (val) => (val < 10) ? `0${val}` : val;
         if (date === null) { return; };
         const year = date.getFullYear();
-        const month = pad(date.getMonth());
+        const month = pad(date.getMonth()+1);
         const day = pad(date.getDate());
         const hours = pad(date.getHours());
         const minutes = pad(date.getMinutes());

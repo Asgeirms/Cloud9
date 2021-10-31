@@ -1,11 +1,14 @@
-{% extends 'web/base.html' %}
+{% extends 'happenings/filter.html' %}
 
-{% block body %}
+{% block content %}
+
+{% if is_empty %}
+    <h1>No events matching the filter</h1>
+{% endif %}
 
 {% for schedule in page_obj  %}
 
     <div class="ui fluid container">
-        
         {# Computer only #}
         <div class="ui middle aligned grid computer only">
             <div class="three column row">
@@ -19,7 +22,13 @@
                 <div class="center aligned column">
                     <div class="ui fluid card">
                         <div class="image">
-                            <img src="https://fomantic-ui.com/images/avatar2/large/matthew.png">
+                            <img src="
+                                {% if schedule.event.image %}
+                                    {{ schedule.event.image.url }}
+                                {% else %}
+                                    https://fomantic-ui.com/images/avatar2/large/matthew.png
+                                {% endif %}" alt="Event image"
+                            />
                         </div>
                         
                         <div class="content">
@@ -35,7 +44,7 @@
                         </div>
 
                         <div class="extra content">
-                            <a><i class="user icon"></i>
+                            <a>
                                 From {{ schedule.start_time }}
                             </a>
 
@@ -43,6 +52,30 @@
                                 To {{ schedule.end_time }}
                             </span>
                         </div>
+                        <div class="ui mini horizontal divided  list">
+                        {% for category in schedule.event.requirement_categories.all %}
+                          <div class="item">
+                            <div class="content">
+                              <div class="header">
+                                <span data-content="{{ category.description }}">
+                                    <i>{{ category.name }}</i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
+                        {% for category in schedule.event.interest_categories.all %}
+                          <div class="item">
+                            <div class="content">
+                              <div class="header">
+                                <span data-content="{{ category.description }}">
+                                    <i>{{ category.name }}</i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
+                    </div>
                     </div>
 
                 </div>
@@ -67,7 +100,8 @@
 <script>
     $("#no").transition('set looping').transition('fade left', '3500ms')
     $("#yes").transition('set looping').transition('fade right', '3500ms')
+    $("span[data-content]").popup();
 
 </script>
 
-{% endblock body %}
+{% endblock content %}

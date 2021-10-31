@@ -1,19 +1,34 @@
 from django import forms
-from .models import Event, Schedule
+from .models import Event, Schedule, RequirementCategory
 
 
 class EventForm(forms.ModelForm):
     '''Formclass. Creating event suggestions'''
     class Meta:
         model = Event
-        exclude = ['admin_approved', 'host']
+        fields = [
+            'name',
+            'location',
+            'min_price',
+            'max_price',
+            'short_description',
+            'description',
+            'image',
+            'interest_categories',
+            'requirement_categories',
+        ]
+
         labels = {
             'min_price': 'Minimum price',
-            'max_price': 'Maximum price'
+            'max_price': 'Maximum price',
+            'short_description': 'Short descripton',
+            'requirement_categories': 'Tags',
+            'interest_categories': 'Event categories'
         }
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Name of the event'}),
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),
+            'short_description': forms.TextInput(attrs={'placeholder': 'Describe your event, but short and concise!'}),
             'description': forms.Textarea(attrs={'placeholder': 'Describe your event!'}),
         }
         
@@ -56,10 +71,12 @@ class ScheduleForm(forms.ModelForm):
                     code='invalid_time')
             )
 
+
 class FilterForm(forms.Form):
     from_time = forms.DateTimeField(label="From:", required=False)
     to_time = forms.DateTimeField(label="To:", required=False)
     max_price = forms.IntegerField(label="Max Price:", required=False)
+    categories = forms.ModelMultipleChoiceField(queryset=RequirementCategory.objects.all(), to_field_name="name" ,label="Categories:", required=False)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -76,16 +93,25 @@ class FilterForm(forms.Form):
                         "From time cannot be after to time!",
                         code='invalid_time')
                 )
+        
+        #Validating the max_price
+        if max_price:
+            if max_price < 0:
+                self.add_error("max_price", forms.ValidationError(
+                    "Max price cannot be negative", code="negative_price"))
+
 
 class EditEventForm(forms.ModelForm):
-    '''Formclass. Creating event suggestions'''
+    '''Formclass. Editing location, price and short description'''
 
     class Meta:
         model = Event
-        exclude = ['admin_approved', 'host', 'name', 'description']
+        fields = ('location', 'min_price', 'max_price', 'requirement_categories', 'interest_categories')
         labels = {
             'min_price': 'Minimum price',
-            'max_price': 'Maximum price'
+            'max_price': 'Maximum price',
+            'requirement_categories': 'Tags',
+            'interest_categories': 'Event categories'
         }
         widgets = {
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),

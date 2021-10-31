@@ -5,23 +5,18 @@
   <h2>Sign Up</h2>
   <form class="ui form" method="post">{% csrf_token %}
     {% for field in form.visible_fields %}
-      <div class="field">
+
+      {# Coloring the field edges red on errors #}
+      <div class="field {% if field.errors %} error {% endif %}">
+        
         {{ field.label_tag }}
-        {% if form.is_bound %}
-          {% if field.errors %}
-            {% for error in field.errors %}
-              <div class="field error">
-                {{ field }}
-                <label>{{ error }}</label>    
-              </div>
-            {% endfor %}
-          {% else %}
-              {{ field }}
-          {% endif %}
-        {% else %}
-            {{ field }}
-        {% endif %}
+        {{ field }}
+
+        {# Displaying errors #}
+        {% if field.errors %} <label>{{ field.errors }}</label> {% endif %}    
+
       </div> 
+
     {% endfor %}
     <input class="ui blue button" type="submit" value="Sign Up">
   </form>

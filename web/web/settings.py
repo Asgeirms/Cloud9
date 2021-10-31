@@ -130,6 +130,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authenticate.User'
 
-LOGIN_REDIRECT_URL = 'events'
+LOGIN_REDIRECT_URL = 'swiping'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Media files (Images uploaded via the website)
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

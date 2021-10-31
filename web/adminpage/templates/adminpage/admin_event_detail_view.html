@@ -1,0 +1,40 @@
+{% extends 'happenings/event_detail_view.html' %}
+{% load happenings_templatetags %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpage/css/adminpage.css' %}">
+{% endblock head %}
+
+{% if user.is_staff %}
+
+    {% block extra_event_info %}
+         <br>
+        <div class="meta"> Admin approved: {{ event.admin_approved }}</div>
+        {% get_schedules event as scheduled_events %}
+        <div class="ui divided relaxed list">
+            {% for scheduled_event in scheduled_events %}
+                <div class="text"><span class="date">{% get_event_times scheduled_event %}</span></div>
+            {% endfor %}
+        </div>
+    {% endblock extra_event_info %}
+
+    {% block edit_buttons %}
+        <div class="ui buttons">
+             <a class="ui gray button" href={% url 'curate_events' %}>Go back</a>
+            {% if event.admin_approved %}
+                <form method="post" action="{% url 'disapprove' event.pk %}">
+                {% csrf_token %}
+                    <button id="middle_button" class="ui negative button" type="submit">Disapprove</button>
+                </form>
+            {% else %}
+                <form method="post" action="{% url 'approve' event.pk %}">
+                {% csrf_token %}
+                    <button id="middle_button" class="ui positive button" type="submit">Approve</button>
+                </form>
+            {% endif %}
+            <button class="ui button">Delete</button>
+        </div>
+    {% endblock edit_buttons %}
+
+{% endif %}

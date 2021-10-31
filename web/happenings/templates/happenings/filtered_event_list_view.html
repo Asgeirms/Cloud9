@@ -1,0 +1,31 @@
+{% extends 'happenings/filter.html' %}
+{% load happenings_templatetags %}
+
+{% block content %}
+    <div class="ui raised text container">
+        <h2>Scheduled Events</h2>
+            {% if queryset %}
+                <div class="ui link cards">
+                    {% for scheduled_event in queryset %}
+                        <a class="card" href="{% url 'schedule_detail' scheduled_event.pk %}">
+                             <img src="
+                                {% if scheduled_event.event.image %}
+                                    {{ scheduled_event.event.image.url }}
+                                {% else %}
+                                    https://fomantic-ui.com/images/avatar2/large/matthew.png
+                                {% endif %}" alt="Event image"/>
+                            <div class="content">
+                                <div class="header"> {{ scheduled_event.event.name }}</div>
+                                    <div class="meta"> {% get_event_times scheduled_event %} </div>
+                                    <div class="meta">{% get_pricerange scheduled_event.event %}  </div>
+                                <div class="meta">{{ scheduled_event.event.location }}</div>
+                                    <div class="description"> {{ scheduled_event.event.short_description }}</div>
+                            </div>
+                        </a>
+                    {% endfor %}  
+                </div>
+            {% else %}
+                No matching event
+            {% endif %}
+    </div>
+{% endblock content %}

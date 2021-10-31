@@ -1,38 +1,23 @@
-{% extends 'web/base.html' %}
+{% extends 'happenings/schedule_detail_view.html' %}
 {% load happenings_templatetags %}
 {% load static %}
 
-{% block head %}
-<link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
-{% endblock head %}
 
-{% block body %}
-    <div class="ui container">
-        <div class="ui card">
-            <div class="content">
-                {% if scheduled_event %}
-                    <div class="header">{{ scheduled_event.event.name }}</div>
-                    <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
-                        <span class="right floated">{% get_pricerange scheduled_event.event %}</span>
-                    </div>
-                    <div class="meta">{{ scheduled_event.event.location }}</div>
-                    <div class="description"> {{ scheduled_event.event.description }}</div>
-                    <br>
-                    <div class="meta"> Admin approved: {{ scheduled_event.event.admin_approved }}</div>
-                    {% else %}
-                    <div class="header">You don't have any upcoming events.</div>
-                {% endif %}
-            </div>
+{% block extra_schedule_info %}
+    <br>
+    <div class="meta"> Admin approved: {{ scheduled_event.event.admin_approved }}</div>
+{% endblock extra_schedule_info %}
 
-            <div class="extra content">
-                <div class="ui stackable buttons">
-                <a class="ui black button" href={% url 'my_events_detailed' scheduled_event.event.id %}>Go back</a>
-                <a class="ui olive button" href="{% url 'edit_schedule' scheduled_event.pk %}">Edit time info</a>
-                <form method="POST"  action="{% url "cancel_schedule" scheduled_event.pk  %}">
-                    {% csrf_token %}<button class="ui fluid negative button" type="submit"> Cancel </button>
-                </form>
-                </div>
+{% block edit_buttons %}
+    {% if scheduled_event.event.host == user or user.is_staff %}
+        <div class="extra content">
+            <div class="ui stackable buttons">
+            <a class="ui black button" href={% url 'my_events_detailed' scheduled_event.event.id %}>Go back</a>
+            <a class="ui olive button" href="{% url 'edit_schedule' scheduled_event.pk %}">Edit time info</a>
+            <form method="POST"  action="{% url "cancel_schedule" scheduled_event.pk  %}">
+                {% csrf_token %}<button class="ui fluid negative button" type="submit"> Cancel </button>
+            </form>
             </div>
         </div>
-    </div>
-{% endblock body %}
+    {% endif %}
+{% endblock edit_buttons %}

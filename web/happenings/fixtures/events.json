@@ -1,0 +1,320 @@
+[
+    {
+        "model": "happenings.event",
+        "pk": 100000,
+        "fields": {
+            "name": "Lord of the rings marathon",
+            "location": "Prinsen kino",
+            "min_price": "250",
+            "max_price": "250",
+            "short_description": "Watch an adventrure",
+            "description": "Join us in watching the Lotr movies. There will be popcorn and a good time",
+            "image": "",
+            "admin_approved": true,
+            "interest_categories": [
+                1000004,
+                1000005
+            ],
+            "requirement_categories": [
+                2
+            ],
+            "host": "1"
+        }
+    },
+    {
+        "model": "happenings.schedule",
+        "pk": 100000,
+        "fields": {
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
+            "event": 100000
+        }
+    },
+    {
+        "model": "happenings.event",
+        "pk": 100001,
+        "fields": {
+            "name": "Fishing in Nidelva",
+            "location": "Scandic Nidelven",
+            "min_price": "0",
+            "max_price": "0",
+            "short_description": "Haul in tomorrow's dinner!",
+            "description": "Join Piratfiskerne in our illegal night fishing in Nidelva! Bring your own fishing gear for a pleasant night of lantern fishing with free beer and music.",
+            "image": "",
+            "admin_approved": true,
+            "interest_categories": [
+                1000004,
+                1000007,
+                1000010
+            ],
+            "requirement_categories": [
+                1000003
+            ],
+            "host": "1"
+        }
+    },
+    {
+        "model": "happenings.schedule",
+        "pk": 100001,
+        "fields": {
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
+            "event": 100001
+        }
+    },
+    {
+        "model": "happenings.event",
+        "pk": 100002,
+        "fields": {
+            "name": "Math quiz",
+            "location": "Moms basement",
+            "min_price": "100",
+            "max_price": "100",
+            "short_description": "How quick is your brain?",
+            "description": "A standard team quizz with prizes and beer",
+            "image": "",
+            "admin_approved": true,
+            "interest_categories": [
+                1000012,
+                1000011
+            ],
+            "requirement_categories": [
+                1,
+                1000003
+            ],
+            "host": "1"
+        }
+    },
+    {
+        "model": "happenings.schedule",
+        "pk": 100002,
+        "fields": {
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
+            "event": 100002
+        }
+    },
+    {
+        "model": "happenings.event",
+        "pk": 100003,
+        "fields": {
+            "name": "Hiking to Kjerringa",
+            "location": "Kjerringa, Merk\u00e5ker",
+            "min_price": "0",
+            "max_price": "0",
+            "short_description": "Ut p\u00e5 tur aldri sur!",
+            "description": "Look at our event at UT.NO!",
+            "image": "",
+            "admin_approved": true,
+            "interest_categories": [
+                1000010,
+                1000001
+            ],
+            "requirement_categories": [
+                1000001,
+                1000003
+            ],
+            "host": "1"
+        }
+    },
+    {
+        "model": "happenings.schedule",
+        "pk": 100003,
+        "fields": {
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
+            "event": 100003
+        }
+    },
+    {
+        "model": "happenings.event",
+        "pk": 100004,
+        "fields": {
+            "name": "Game development course",
+            "location": "Jotunheimen e-sports",
+            "min_price": "500",
+            "max_price": "500",
+            "short_description": "Want to make your own game?",
+            "description": "You dont have to bring anything. Equipment and food is on us.",
+            "image": "",
+            "admin_approved": true,
+            "interest_categories": [
+                1000008,
+                1000009,
+                1000002,
+                1000005
+            ],
+            "requirement_categories": [
+                1,
+                1000003,
+                2
+            ],
+            "host": "1"
+        }
+    },
+    {
+        "model": "happenings.schedule",
+        "pk": 100004,
+        "fields": {
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
+            "event": 100004
+        }
+    },
+    {
+        "model": "happenings.event",
+        "pk": 100005,
+        "fields": {
+            "name": "Woodwork with Woody",
+            "location": "Woodys workshop",
+            "min_price": "100",
+            "max_price": "250",
+            "short_description": "Make a table out of driftwood",
+            "description": "Bring your own driftwood",
+            "image": "",
+            "admin_approved": true,
+            "interest_categories": [
+                1000002,
+                1000005
+            ],
+            "requirement_categories": [
+                1
+            ],
+            "host": "1"
+        }
+    },
+    {
+        "model": "happenings.schedule",
+        "pk": 100005,
+        "fields": {
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
+            "event": 100005
+        }
+    },
+    {
+        "model": "happenings.event",
+        "pk": 100006,
+        "fields": {
+            "name": "D&D Dawn of demons and death",
+            "location": "Gl\u00f8shaugen",
+            "min_price": "0",
+            "max_price": "0",
+            "short_description": "Hardcore tablegame",
+            "description": "Join a host of heroes and play trough the demons dungeon",
+            "image": "",
+            "admin_approved": true,
+            "interest_categories": [
+                1000012
+            ],
+            "requirement_categories": [
+                2,
+                1
+            ],
+            "host": "1"
+        }
+    },
+    {
+        "model": "happenings.schedule",
+        "pk": 100006,
+        "fields": {
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
+            "event": 100006
+        }
+    },
+    {
+        "model": "happenings.event",
+        "pk": 100007,
+        "fields": {
+            "name": "Pornographic content",
+            "location": "my desktop",
+            "min_price": "6969",
+            "max_price": "6969",
+            "short_description": "Lolololol",
+            "description": "YOur mom",
+            "image": "",
+            "admin_approved": true,
+            "interest_categories": [
+                1000004,
+                1000005
+            ],
+            "requirement_categories": [
+                1
+            ],
+            "host": "1"
+        }
+    },
+    {
+        "model": "happenings.schedule",
+        "pk": 100007,
+        "fields": {
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
+            "event": 100007
+        }
+    },
+    {
+        "model": "happenings.event",
+        "pk": 100008,
+        "fields": {
+            "name": "Streetfight with Henrik",
+            "location": "Trondheim Torg",
+            "min_price": "3400",
+            "max_price": "100000",
+            "short_description": "Fight Henrik",
+            "description": "Fight Henrik to win money",
+            "image": "",
+            "admin_approved": true,
+            "interest_categories": [
+                1000004,
+                1000007,
+                1000010
+            ],
+            "requirement_categories": [
+                1
+            ],
+            "host": "1"
+        }
+    },
+    {
+        "model": "happenings.schedule",
+        "pk": 100008,
+        "fields": {
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
+            "event": 100008
+        }
+    },
+    {
+        "model": "happenings.event",
+        "pk": 100009,
+        "fields": {
+            "name": "Fright festival",
+            "location": "City center",
+            "min_price": "0",
+            "max_price": "0",
+            "short_description": "Halloween fright fest",
+            "description": "Be scared or scare people",
+            "image": "",
+            "admin_approved": true,
+            "interest_categories": [
+                1000004,
+                1000010
+            ],
+            "requirement_categories": [
+                1000001
+            ],
+            "host": "1"
+        }
+    },
+    {
+        "model": "happenings.schedule",
+        "pk": 100009,
+        "fields": {
+            "start_time": "2021-11-27T07:01:57Z",
+            "end_time": "2021-11-27T11:01:57Z",
+            "event": 100009
+        }
+    }
+]

@@ -18,7 +18,7 @@ def get_pricerange(event: Event):
 
 @register.simple_tag
 def get_schedules(event: Event):
-    return Schedule.objects.filter(event=event)
+    return Schedule.objects.filter(event=event).order_by('start_time')
 
 
 @register.simple_tag
