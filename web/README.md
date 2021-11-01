@@ -104,6 +104,11 @@ To run all tests in the project, run the following command
 ```
 python manage.py test
 ```
+## DJANGOs template-model-view architecture
+https://www.onlinetutorialspoint.com/django/django-model-view-template-mvt-overview.html
+
+## Folder and file structure
+Where is what, and what does it do.
 
 ## Coding style and standards
 TODO
