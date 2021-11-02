@@ -8,7 +8,6 @@ class ScheduleSerializer(serializers.ModelSerializer):
     min_price = serializers.IntegerField(source='event.min_price')
     max_price = serializers.IntegerField(source='event.max_price')
     short_description = serializers.CharField(source='event.short_description', allow_blank=True)
-    # test = serializers.CharField(default=str(serializers.IntegerField(source='event.min_price').get_value()) + " - " + str(serializers.IntegerField(source='event.max_price').get_value))
 
     def to_representation(self, instance):
         representation = super(ScheduleSerializer, self).to_representation(instance)
