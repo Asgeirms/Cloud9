@@ -1,5 +1,132 @@
 {% extends 'happenings/filter.html' %}
 
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'swiping/css/spinning_animation.css' %}"/>
+    <link href="{% static 'swiping/js/spinning_animation.js' %}"/>
+
+    <style>
+        .circle-mask {
+            margin: 0px;
+            clip-path: circle(120vh at 50% 122vh);
+        }
+
+        .spinner_wrapper {
+            position: absolute;
+            justify-content: center;
+            min-width: 100vw;
+            max-width: 100vw;
+            min-height: 100vh;
+            max-height: 100vh;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            display: flex;
+            z-index: -1;
+        }
+
+        .spinner {
+            flex: none;
+            position: absolute;
+            top: 22.60vh;
+            height: 240vh;
+            width: 240vh;
+            width: auto;
+        }
+
+        .crop {
+            height: 40vh;
+            width: auto;
+            overflow: hidden;
+        }
+
+        .buttonR {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+
+        .buttonL {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 45%;
+        }
+
+        /* Animations */
+        .spinR {
+            animation: spin 4s linear;
+        }
+
+        .spinL {
+            animation: spin 4s linear reverse;
+        }
+
+        @keyframes spin {
+            0% {
+                
+            }
+            
+            100% {
+                transform: rotate(3600deg);
+            }
+        }
+
+        .fade {
+            animation: fade 4s linear;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0;
+            }
+            
+            10% {
+                opacity: 0;
+            }
+            
+            90% {
+                opacity: 0;
+            }
+            
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+    <script type='text/javascript'>
+        function rotate(dir) {
+            const button_r = document.getElementById('right_button');
+            const button_l = document.getElementById('left_button');
+            const rotator = document.getElementById('spinner');
+            const swipe_card = document.getElementById('swipe_card');
+  
+            //button_r.style.display = "none";
+            //button_l.style.display = "none";
+  
+            if (dir === 'l') {
+                rotator.classList.add("spinL");
+                swipe_card.classList.add("fade");
+            }
+            else if (dir === 'r'){
+                rotator.classList.add("spinR");
+                swipe_card.classList.add("fade");
+            }
+            
+            setTimeout(function removeSpin() {
+                rotator.classList.remove("spinL");
+                rotator.classList.remove("spinR");
+                swipe_card.classList.remove("fade");
+                //buttonR.disabled = false;
+                //buttonL.disabled = false;
+            }, 4000);
+        }
+    </script>
+{% endblock head %}
+
+
 {% block content %}
 
 {% if is_empty %}
@@ -7,37 +134,36 @@
 {% endif %}
 
 {% for schedule in page_obj  %}
-
     <div class="ui fluid container">
         {# Computer only #}
         <div class="ui middle aligned grid computer only">
-            <div class="three column row">
-
-                <div class="left floated right aligned column">
-                    <a id="no" href="?current={{schedule.pk}}&amp;swiped=no&amp;page={{page_obj.next_page_number}}">
+            <div class="three column row circle-mask" style="height: 60vh;">
+                <div id="left_button" class="left floated right aligned column">
+                    <a id="no" href="?current={{schedule.pk}}&amp;swiped=no&amp;page={{page_obj.next_page_number}}" onclick="return rotate('l')">
                         <i class="massive angle double left icon" id="no"></i>
                     </a>
                 </div>
-
                 <div class="center aligned column">
-                    <div class="ui fluid card">
-                        <div class="image">
+                    <div id="swipe_card" class="ui fluid card">
+                        <div class="image crop">
                             <img src="
                                 {% if schedule.event.image %}
                                     {{ schedule.event.image.url }}
                                 {% else %}
                                     https://fomantic-ui.com/images/avatar2/large/matthew.png
                                 {% endif %}" alt="Event image"
+                                
+                                style="margin: auto; height: 40vh; width: auto;"
                             />
                         </div>
-                        
+                            
                         <div class="content">
                             <a class="header">{{ schedule.event.name }}</a>
-                        
+                            
                             <div class="meta">
                                 <span class="date">{{ schedule.event.location }}</span>
                             </div>
-                    
+                        
                             <div class="description">
                                 {{ schedule.event.description }}
                             </div>
@@ -53,43 +179,43 @@
                             </span>
                         </div>
                         <div class="ui mini horizontal divided  list">
-                        {% for category in schedule.event.requirement_categories.all %}
-                          <div class="item">
-                            <div class="content">
-                              <div class="header">
-                                <span data-content="{{ category.description }}">
-                                    <i>{{ category.name }}</i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        {% endfor %}
-                        {% for category in schedule.event.interest_categories.all %}
-                          <div class="item">
-                            <div class="content">
-                              <div class="header">
-                                <span data-content="{{ category.description }}">
-                                    <i>{{ category.name }}</i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        {% endfor %}
+                            {% for category in schedule.event.requirement_categories.all %}
+                                <div class="item">
+                                    <div class="content">
+                                        <div class="header">
+                                            <span data-content="{{ category.description }}">
+                                                <i>{{ category.name }}</i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% for category in schedule.event.interest_categories.all %}
+                                <div class="item">
+                                    <div class="content">
+                                        <div class="header">
+                                            <span data-content="{{ category.description }}">
+                                                <i>{{ category.name }}</i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                    </div>
-
                 </div>
-
-                <div class="right floated left aligned column">
-                    <a id="yes" href="?current={{schedule.pk}}&amp;swiped=yes&amp;page={{page_obj.next_page_number}}">
+                <div id="right_button" class="right floated left aligned column">
+                    <a id="yes" href="?current={{schedule.pk}}&amp;swiped=yes&amp;page={{page_obj.next_page_number}}" onclick="return rotate('r')">
                         <i class="massive angle double right icon" id="yes"></i>
                     </a>
                 </div>
 
+                </div>
             </div>
-
         </div>
-
+        <div class="spinner_wrapper">
+            <img src="static/swiping/images/spinner.png" alt="Spinning wheel background image" id="spinner" class="spinner">
+        </div>
 
         {# For mobile devices only #}
     </div>
