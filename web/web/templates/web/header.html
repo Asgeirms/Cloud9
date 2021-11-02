@@ -12,6 +12,11 @@
             {% endif %}
 
             <a href="{% url 'filtered_event_list' %}" class="item"> Events </a>
+
+            {% if user.is_staff %}
+                <a href="{% url 'export_xml' %}" class="item">Download XML</a>
+            {% endif %}
+
                 {% if user.is_authenticated %}
                     <div id="nav-user-dropdown" class="ui dropdown right item">
                         <div class="text"> {{ user.username }} </div>

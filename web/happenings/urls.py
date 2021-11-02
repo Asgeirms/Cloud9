@@ -14,4 +14,5 @@ urlpatterns = [
     path('me/<int:pk>/editSchedule', views.EditScheduleView.as_view(), name='edit_schedule'),
     path('me/<int:pk>/create', views.AddScheduleView.as_view(), name='add_schedule'),
     path('me/<int:pk>/cancel', views.DeleteScheduleView.as_view(), name='cancel_schedule'),
+    path('xml', views.ExportXMLView, name="export_xml")
 ]   
