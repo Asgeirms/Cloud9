@@ -11,6 +11,27 @@
                 <a href="{% url 'my_events' %}" class="item"> My events </a>
             {% endif %}
 
+            <a href="{% url 'filtered_event_list' %}" class="item"> Events </a>
+
+            {% if user.is_staff %}
+                <a href="{% url 'export_xml' %}" class="item">Download XML</a>
+            {% endif %}
+
+                {% if user.is_authenticated %}
+                    <div id="nav-user-dropdown" class="ui dropdown right item">
+                        <div class="text"> {{ user.username }} </div>
+                            <i class="dropdown icon text"></i>
+                            <nav class="menu transition" >
+                                 {% if user.is_staff %}
+                                     <a href="{% url 'curate_events' %}" class="item">Admin page</a>
+                                 {% endif %}
+                                <a href="{% url 'logout' %}" class="item"> Sign out </a>
+                            </nav>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="right item"> Sign in </a>
+                {% endif %}
+            </div>
             <a href="{% url 'filtered_event_list' %}" class="item"> All events </a>
 
             <a href="https://www.thelist.no/" class="item"> The List </a>

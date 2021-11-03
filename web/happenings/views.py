@@ -7,12 +7,16 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.db.models import Case, When # to order querysets on list of ids
 from datetime import datetime
-
+from django.core import serializers
+from django.core.files import File
+from django.http import HttpResponse, FileResponse
+from rest_framework_xml.renderers import XMLRenderer
+from django.contrib.admin.views.decorators import staff_member_required
 
 from .forms import EventForm, ScheduleForm, FilterForm, EditEventForm
 from .models import Event, Schedule, RequirementCategory
 from random import randint
-
+from .serializers import ScheduleSerializer
 
 class MyEventsListView(ListView):
     """View for showing a users own events"""
@@ -294,3 +298,11 @@ def fill_filter_form_from_session(request):
             'max_price': request.session.get('filter_max_price'),
             'categories': categories})
     return form
+
+@staff_member_required(login_url="login")
+def ExportXMLView(request):
+    serializer = ScheduleSerializer(Schedule.objects.all().filter(event__admin_approved=True), many=True)
+    data = XMLRenderer().render(serializer.data)
+    response = HttpResponse(data, content_type='application/force-download')
+    response['Content-Disposition'] = 'attachment; filename=schedule.xml'
+    return response
