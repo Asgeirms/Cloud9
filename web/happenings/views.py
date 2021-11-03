@@ -10,6 +10,7 @@ from django.core import serializers
 from django.core.files import File
 from django.http import HttpResponse, FileResponse
 from rest_framework_xml.renderers import XMLRenderer
+from django.contrib.admin.views.decorators import staff_member_required
 
 from .forms import EventForm, ScheduleForm, FilterForm, EditEventForm
 from .models import Event, Schedule, RequirementCategory
@@ -259,6 +260,7 @@ def fill_filter_form_from_session(request):
             'categories': categories})
     return form
 
+@staff_member_required(login_url="login")
 def ExportXMLView(request):
     serializer = ScheduleSerializer(Schedule.objects.all().filter(event__admin_approved=True), many=True)
     data = XMLRenderer().render(serializer.data)

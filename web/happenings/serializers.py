@@ -1,13 +1,33 @@
 from rest_framework import serializers
 
-from .models import Schedule
+from .models import Schedule, Event, RequirementCategory, InterestCategory
+
+class InterestCategorySerializer(serializers.ModelSerializer):
+    tag = serializers.CharField(source="name")
+
+    class Meta:
+        model = InterestCategory
+        fields = ['tag']
+
+class RequirementCategorySerializer(serializers.ModelSerializer):
+    category = serializers.CharField(source="name")
+
+    class Meta:
+        model = RequirementCategory
+        fields = ['category']
+
+
+class EventSerializer(serializers.ModelSerializer):
+    categories = RequirementCategorySerializer(source="requirement_categories", many=True)
+    tags = InterestCategorySerializer(source="interest_categories", many=True)
+
+    class Meta:
+        model = Event
+        fields = ('name', "location", "min_price", "max_price", "short_description", "categories", "tags")
+
 
 class ScheduleSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source='event.name')
-    location = serializers.CharField(source='event.location')
-    min_price = serializers.IntegerField(source='event.min_price')
-    max_price = serializers.IntegerField(source='event.max_price')
-    short_description = serializers.CharField(source='event.short_description', allow_blank=True)
+    event = EventSerializer()
 
     def to_representation(self, instance):
         representation = super(ScheduleSerializer, self).to_representation(instance)
@@ -17,4 +37,4 @@ class ScheduleSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Schedule
-        fields = ('id', 'name', 'start_time', 'end_time', "location", "min_price", "max_price", "short_description" )
+        fields = ('id','start_time', 'end_time', 'event' )
