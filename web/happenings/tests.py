@@ -19,7 +19,7 @@ class EventAndScheduleSaveTest(TestCase):
             "min_price": 0,
             "max_price": 10,
             "description": "A long description",
-            "status": 'N'
+            "status": 'P'
         }
 
     def test_create_event(self):
