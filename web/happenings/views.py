@@ -301,7 +301,7 @@ def fill_filter_form_from_session(request):
 
 @staff_member_required(login_url="login")
 def ExportXMLView(request):
-    serializer = ScheduleSerializer(Schedule.objects.all().filter(event__admin_approved=True), many=True)
+    serializer = ScheduleSerializer(Schedule.objects.all().filter(event__admin_approved=Event.Status.APPROVED), many=True)
     data = XMLRenderer().render(serializer.data)
     response = HttpResponse(data, content_type='application/force-download')
     response['Content-Disposition'] = 'attachment; filename=schedule.xml'
