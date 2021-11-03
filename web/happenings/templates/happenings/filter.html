@@ -45,7 +45,12 @@
                     </div>
                     <div class="field">
                         {{ form.categories.label_tag }}
-                        {{ form.categories }}
+                        <select name="categories" multiple="" class="ui fluid dropdown">
+                            <option value="">Categories</option>
+                            {% for category in form.categories %}
+                                {{ category }}
+                            {% endfor %}
+                        </select>
                     </div>
                 <input class="ui primary button" name="submit" type="submit" value="Apply Filter">
                 <input class="ui right floated secondary button" name="reset" type="submit" value="Reset Filter">
@@ -92,6 +97,10 @@
         
         $('.ui.accordion')
             .accordion()
+        ;
+
+        $('.ui.dropdown')
+            .dropdown()
         ;
     </script>
 {% endblock body %}
