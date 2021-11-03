@@ -28,11 +28,23 @@ class EventSerializer(serializers.ModelSerializer):
             representation['price_range'] = "FREE"
         else:
             representation['price_range'] = str(instance.min_price) + " - " + str(instance.max_price)
+        #Changes the format of categories and tags so that it can be read in excel
+        def flatten_list(representation, list_name, item_name):
+            copied_list = representation[list_name].copy()
+            representation[list_name] = ""
+            for od in copied_list:
+                representation[list_name] += od.get(item_name) + ", "
+            if len(representation[list_name]) > 1:
+                representation[list_name] = representation[list_name][:-2]
+            return representation
+        representation = flatten_list(representation, "categories", "category")
+        representation = flatten_list(representation, "tags", "tag")
         return representation
 
     class Meta:
         model = Event
         fields = ('name', "location", "price_range", "short_description", "categories", "tags")
+
 
 class ScheduleSerializer(serializers.ModelSerializer):
     event = EventSerializer()
