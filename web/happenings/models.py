@@ -25,7 +25,7 @@ class InterestCategory(models.Model):
 
 class RequirementCategory(models.Model):
     """Model for Requirement categories.
-        Requirement categories are categories that describe the avalibility for the event (like 'Vegan',
+        Requirement categories are categories that describe the accessibility for the event (like 'Vegan',
          'English friendly' or 'Wheelchair friendly'). Requirement categories can be used
          by users to filter by"""
     name = models.CharField(max_length=250)
@@ -87,9 +87,12 @@ class Event(models.Model):
         return str(self.name)
 
     def get_pricerange(self):
-        if self.max_price > 0:
-            return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
-        return "FREE"
+        if self.max_price == self.min_price:
+            if self.max_price == 0:
+                return "FREE"
+            return str(self.min_price) + "kr"
+
+        return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
 
     def get_status(self):
         if self.admin_approved == Event.Status.DELETED:

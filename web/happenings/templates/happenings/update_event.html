@@ -46,9 +46,20 @@
                 </div>
 
                 <div class="field">
+                    {{ form.generated_short_description.label_tag }}
+                    This is an optional field
+                    <select name="generated_short_description" class="ui fluid clearable dropdown">
+                        <option value="">Descriptions</option>
+                        {% for description in form.generated_short_description %}
+                            {{ description }}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="field">
                     {{ form.requirement_categories.label_tag }}
                     <select name="requirement_categories" multiple="" class="ui fluid dropdown">
-                        <option value="">Categories</option>
+                        <option value="">Accessibility tags</option>
                         {% for category in form.requirement_categories %}
                             {{ category }}
                         {% endfor %}
@@ -58,19 +69,9 @@
                 <div class="field">
                     {{ form.interest_categories.label_tag }}
                     <select name="interest_categories" multiple="" class="ui fluid dropdown">
-                        <option value="">Categories</option>
+                        <option value="">Event categories</option>
                         {% for category in form.interest_categories %}
                             {{ category }}
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="field">
-                    {{ form.generated_short_description.label_tag }}
-                    <select name="generated_short_description" class="ui fluid dropdown">
-                        <option value="">Descriptions</option>
-                        {% for description in form.generated_short_description %}
-                            {{ description }}
                         {% endfor %}
                     </select>
                 </div>

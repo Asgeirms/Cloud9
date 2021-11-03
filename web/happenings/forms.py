@@ -23,7 +23,7 @@ class EventForm(forms.ModelForm):
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
             'short_description': 'Short descripton',
-            'requirement_categories': 'Tags',
+            'requirement_categories': 'Accessibility tags',
             'interest_categories': 'Event categories',
             'generated_short_description': 'A premade short description'
         }
@@ -113,7 +113,7 @@ class EditEventForm(forms.ModelForm):
         labels = {
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
-            'requirement_categories': 'Tags',
+            'requirement_categories': 'Accessibility tags',
             'interest_categories': 'Event categories',
             'generated_short_description': 'A premade short description'
         }
