@@ -26,7 +26,7 @@ class EventAndScheduleSaveTest(TestCase):
         event = Event.objects.create(name="TestEvent", location="TestLocation", min_price=0, max_price=10,
                                      description="A long description", host=self.user)
         self.assertEqual(event.name, self.valid_form_data["name"])
-        self.assertEqual(event.admin_approved, self.valid_form_data["status"])
+        self.assertEqual(event.admin_approved, self.valid_form_data["admin_approved"])
         event.name = "TestEventChanged"
         event.save()
         self.assertEqual(event.name, "TestEventChanged")
