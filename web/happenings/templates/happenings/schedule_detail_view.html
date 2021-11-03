@@ -22,11 +22,17 @@
             <div class="content">
 
                     <div class="header">{{ scheduled_event.event.name }}</div>
-                    <div class="text">Host: {{ event.host.username }}</div>
-                    <div class="meta"><span class="date">{% get_event_times scheduled_event %}</span>
+                    <div class="text"><span class="date">{% get_event_times scheduled_event %}</span>
                         <span class="right floated">{% get_pricerange scheduled_event.event %}</span>
                     </div>
-                    <div class="meta">{{ scheduled_event.event.location }}</div>
+                    <div class="meta">Location: {{ scheduled_event.event.location }}</div>
+                    <div class="text">Host:
+                        {{ scheduled_event.event.host.first_name }} {{ scheduled_event.event.host.last_name }}
+                        <span class="right floated">
+                            The host has {% get_approved_event_count scheduled_event.event.host %} other
+                            approved events </span>
+                    </div>
+                    <br>
                     <div class="description"> {{ scheduled_event.event.description }}</div>
                     <div class="ui horizontal divided  list">
                         {% for category in scheduled_event.event.requirement_categories.all %}

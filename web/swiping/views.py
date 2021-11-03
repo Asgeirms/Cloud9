@@ -150,7 +150,7 @@ class SwipingEventsView(ListView):
 
         # All eligable schedules
         queryset = Schedule.objects \
-                    .filter(event__admin_approved=True)
+                    .filter(event__admin_approved='A')
 
         if self.request.session.get("filter"):
             queryset = use_session_filter(queryset, self.request)

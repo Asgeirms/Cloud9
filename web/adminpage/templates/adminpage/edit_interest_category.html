@@ -1,0 +1,35 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+
+{% block body %}
+    <h1 class="ui centered header">
+        {% block form_header %}
+            Edit interest category
+        {% endblock form_header %}
+    </h1>
+
+    <form class="ui form text container" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <div class="field">
+                {% for error in field.errors %}
+                    <div class="ui negative small message">
+                        <i class="close icon"></i>
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+                <label>{{ field.label }}</label>
+                {{ field }}
+            </div>
+        {% endfor %}
+
+        <input class="ui right floated positive submit button" type="submit" value="Save"/>
+        <a class="ui right floated red button" href="{% url "interest_categories" %}">
+            Cancel
+        </a>
+    </form>
+{% endblock body %}

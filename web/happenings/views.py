@@ -1,4 +1,5 @@
 from django import shortcuts
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.urls import reverse_lazy
@@ -50,23 +51,29 @@ class MyEventsListView(ListView):
         return queryset
 
 
-class DetailedMyScheduleView(DetailView):
+class DetailedMyScheduleView(PermissionRequiredMixin, DetailView):
     '''The detailed view you get watching your own event-schedules.'''
     model = Schedule
     template_name = 'happenings/my_schedules_detail_view.html'
     context_object_name = 'scheduled_event'
     success_url = reverse_lazy('my_events_detailed')
 
+    def has_permission(self):
+        return self.request.user == self.get_object().event.host
 
-class DetailedMyEventView(DetailView):
+
+class DetailedMyEventView(PermissionRequiredMixin, DetailView):
     '''The detailed view you get watching your own events.'''
     model = Event
     template_name = 'happenings/my_event_detail_view.html'
     context_object_name = 'event'
     success_url = reverse_lazy('my_events')
 
+    def has_permission(self):
+        return self.request.user == self.get_object().host
 
-class SuggestEventView(CreateView):
+
+class SuggestEventView(LoginRequiredMixin, CreateView):
     template_name = "happenings/suggest_event.html"
     models = Event
     form_class = EventForm
@@ -103,7 +110,7 @@ class SuggestEventView(CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
-class EditEventView(UpdateView):
+class EditEventView(PermissionRequiredMixin, UpdateView):
     template_name = "happenings/update_event.html"
     model = Event
     form_class = EditEventForm
@@ -113,10 +120,16 @@ class EditEventView(UpdateView):
         event_id = self.kwargs['pk']
         return reverse_lazy('my_events_detailed', kwargs={'pk': event_id})
 
+    def has_permission(self):
+        return self.request.user == self.get_object().host
 
-class DeleteEventView(DeleteView):
+
+class DeleteEventView(PermissionRequiredMixin, DeleteView):
     model = Event
     success_url = reverse_lazy('my_events')
+
+    def has_permission(self):
+        return self.request.user == self.get_object().host
 
 
 class AddScheduleView(CreateView):
@@ -134,7 +147,7 @@ class AddScheduleView(CreateView):
         return reverse_lazy('my_events_detailed', kwargs={'pk': event_id})
 
 
-class EditScheduleView(UpdateView):
+class EditScheduleView(PermissionRequiredMixin, UpdateView):
     template_name = "happenings/update_schedule.html"
     model = Schedule
     form_class = ScheduleForm
@@ -144,13 +157,19 @@ class EditScheduleView(UpdateView):
         schedule_id = self.kwargs['pk']
         return reverse_lazy('my_schedule_detailed', kwargs={'pk': schedule_id})
 
+    def has_permission(self):
+        return self.request.user == self.get_object().event.host
 
-class DeleteScheduleView(DeleteView):
+
+class DeleteScheduleView(PermissionRequiredMixin, DeleteView):
     model = Schedule
 
     def get_success_url(self):
-        event_id = self.kwargs['pk']
+        event_id = self.kwargs['event_pk']
         return reverse_lazy('my_events_detailed', kwargs={'pk': event_id})
+
+    def has_permission(self):
+        return self.request.user == self.get_object().event.host
 
 
 class ScheduleDetailView(DetailView):
@@ -162,7 +181,7 @@ class ScheduleDetailView(DetailView):
  
 def FilterEventListView(request):
     queryset = Schedule.objects.all()
-    queryset = queryset.filter(event__admin_approved=True)
+    queryset = queryset.filter(event__admin_approved='A')
     queryset = queryset.order_by('start_time')
     if request.method == 'POST':
         form = FilterForm(request.POST)

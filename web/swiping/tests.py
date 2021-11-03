@@ -25,7 +25,7 @@ class SwipingEventsViewTests(TestCase):
         # Initializing events for the swiping
         self.TOTAL_EVENTS = 10
         for num in range(self.TOTAL_EVENTS):
-            event = Event.objects.create(host_id=self.admin.pk, admin_approved=True)
+            event = Event.objects.create(host_id=self.admin.pk, admin_approved='A')
 
             Schedule.objects.create(
                 start_time=timezone.now(),

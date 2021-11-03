@@ -55,10 +55,26 @@
                     {{ form.interest_categories }}
                 </div>
 
+                <div class="field">
+                    {{ form.generated_short_description.label_tag }}
+                    <select name="generated_short_description" class="ui fluid dropdown">
+                        <option value="">Descriptions</option>
+                        {% for description in form.generated_short_description %}
+                            {{ description }}
+                        {% endfor %}
+                    </select>
+                </div>
+
 
             <input class="ui blue button" type="submit" value="Save event">
 
         </form>
     </div>
+
+    <script>
+         $('.ui.dropdown')
+            .dropdown()
+        ;
+    </script>
 
 {% endblock body %}

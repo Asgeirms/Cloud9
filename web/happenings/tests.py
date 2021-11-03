@@ -18,14 +18,15 @@ class EventAndScheduleSaveTest(TestCase):
             "location": "TestLocation",
             "min_price": 0,
             "max_price": 10,
-            "description": "A long description"
+            "description": "A long description",
+            "status": 'N'
         }
 
     def test_create_event(self):
         event = Event.objects.create(name="TestEvent", location="TestLocation", min_price=0, max_price=10,
                                      description="A long description", host=self.user)
         self.assertEqual(event.name, self.valid_form_data["name"])
-        self.assertFalse(event.admin_approved)
+        self.assertEqual(event.admin_approved, self.valid_form_data["status"])
         event.name = "TestEventChanged"
         event.save()
         self.assertEqual(event.name, "TestEventChanged")

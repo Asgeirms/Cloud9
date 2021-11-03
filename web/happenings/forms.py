@@ -16,6 +16,7 @@ class EventForm(forms.ModelForm):
             'image',
             'interest_categories',
             'requirement_categories',
+            'generated_short_description'
         ]
 
         labels = {
@@ -23,7 +24,8 @@ class EventForm(forms.ModelForm):
             'max_price': 'Maximum price',
             'short_description': 'Short descripton',
             'requirement_categories': 'Tags',
-            'interest_categories': 'Event categories'
+            'interest_categories': 'Event categories',
+            'generated_short_description': 'A premade short description'
         }
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Name of the event'}),
@@ -106,12 +108,14 @@ class EditEventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ('location', 'min_price', 'max_price', 'requirement_categories', 'interest_categories')
+        fields = ('location', 'min_price', 'max_price',
+                  'requirement_categories', 'interest_categories', 'generated_short_description')
         labels = {
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
             'requirement_categories': 'Tags',
-            'interest_categories': 'Event categories'
+            'interest_categories': 'Event categories',
+            'generated_short_description': 'A premade short description'
         }
         widgets = {
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),

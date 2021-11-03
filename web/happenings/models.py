@@ -1,6 +1,14 @@
 from django.db import models
 from django.conf import settings
 
+
+class GeneratedShortDescriptions(models.Model):
+    description = models.TextField(max_length=250)
+
+    def __str__(self):
+        return str(self.description)
+
+
 class InterestCategory(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField(max_length=500)
@@ -28,7 +36,17 @@ class CategoryWeightsUser(models.Model):
 
     weight = models.FloatField(default=1)
 
+
 class Event(models.Model):
+
+    class Status(models.TextChoices):
+        PENDING = 'P', "Pending"
+        APPROVED = 'A', "Approved"
+        DISAPPROVED = 'N', "Disapproved"
+        DELETED = 'D', "Deleted"
+
+    STATUS_CHOICES_DICT = dict(Status.choices)
+
     name = models.CharField(max_length=250)
     location = models.CharField(max_length=250)
     min_price = models.IntegerField(default=0)
@@ -36,9 +54,16 @@ class Event(models.Model):
     short_description = models.TextField(blank=True, max_length=250)
     description = models.TextField()
     image = models.ImageField(blank=True, upload_to='events')
-    admin_approved = models.BooleanField(default=False)
+    admin_approved = models.CharField(choices=Status.choices, max_length=2, default=Status.PENDING)
     interest_categories = models.ManyToManyField(InterestCategory, blank=True)
     requirement_categories = models.ManyToManyField(RequirementCategory, blank=True)
+
+    generated_short_description = models.ForeignKey(
+        GeneratedShortDescriptions,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
 
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -52,6 +77,12 @@ class Event(models.Model):
         if self.max_price > 0:
             return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
         return "FREE"
+
+    def get_status(self):
+        if self.admin_approved == 'D':
+            return "Deleted by admin"
+        return self.STATUS_CHOICES_DICT[self.admin_approved]
+
 
 class Schedule(models.Model):
     start_time = models.DateTimeField()
