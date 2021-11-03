@@ -181,7 +181,7 @@ class ScheduleDetailView(DetailView):
  
 def FilterEventListView(request):
     queryset = Schedule.objects.all()
-    queryset = queryset.filter(event__admin_approved='A')
+    queryset = queryset.filter(event__admin_approved=Event.Status.APPROVED)
     queryset = queryset.order_by('start_time')
     if request.method == 'POST':
         form = FilterForm(request.POST)

@@ -79,7 +79,7 @@ class Event(models.Model):
         return "FREE"
 
     def get_status(self):
-        if self.admin_approved == 'D':
+        if self.admin_approved == Event.Status.DELETED:
             return "Deleted by admin"
         return self.STATUS_CHOICES_DICT[self.admin_approved]
 

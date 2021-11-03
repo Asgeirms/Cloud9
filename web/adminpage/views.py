@@ -23,10 +23,10 @@ class CurateEventsView(PermissionRequiredMixin, ListView):
 
     def get_queryset(self):
         data = {
-            "pending": Event.objects.filter(admin_approved='P'),
-            "not_approved": Event.objects.filter(admin_approved='N'),
-            "approved": Event.objects.filter(admin_approved='A'),
-            "deleted": Event.objects.filter(admin_approved='D')
+            "pending": Event.objects.filter(admin_approved=Event.Status.PENDING),
+            "not_approved": Event.objects.filter(admin_approved=Event.Status.DISAPPROVED),
+            "approved": Event.objects.filter(admin_approved=Event.Status.APPROVED),
+            "deleted": Event.objects.filter(admin_approved=Event.Status.DELETED)
         }
         return data
 
@@ -45,28 +45,28 @@ class AdminEventDetailView(PermissionRequiredMixin, DetailView):
     @user_passes_test(lambda user: user.is_staff)
     def disapprove(self, pk):
         event = Event.objects.get(pk=pk)
-        event.admin_approved = 'N'
+        event.admin_approved = Event.Status.DISAPPROVED
         event.save()
         return redirect('curate_events')
 
     @user_passes_test(lambda user: user.is_staff)
     def approve(self, pk):
         event = Event.objects.get(pk=pk)
-        event.admin_approved = 'A'
+        event.admin_approved = Event.Status.APPROVED
         event.save()
         return redirect('curate_events')
 
     @user_passes_test(lambda user: user.is_staff)
     def delete(self, pk):
         event = Event.objects.get(pk=pk)
-        event.admin_approved = 'D'
+        event.admin_approved = Event.Status.DELETED
         event.save()
         return redirect('curate_events')
 
     @user_passes_test(lambda user: user.is_staff)
     def restore(self, pk):
         event = Event.objects.get(pk=pk)
-        event.admin_approved = 'P'
+        event.admin_approved = Event.Status.PENDING
         event.save()
         return redirect('curate_events')
 
