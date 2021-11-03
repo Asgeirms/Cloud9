@@ -3,6 +3,9 @@ from django.conf import settings
 
 
 class GeneratedShortDescriptions(models.Model):
+    """Model for generated short descriptions.
+        Generated short descriptions are clickbait like taglines that admins can create
+        and event hosts can choose from to add to their event"""
     description = models.TextField(max_length=250)
 
     def __str__(self):
@@ -10,6 +13,9 @@ class GeneratedShortDescriptions(models.Model):
 
 
 class InterestCategory(models.Model):
+    """Model for Interest categories.
+        Interest categories are categories that describe the event's content (like "music" or "outdoor"), and are used
+        to influence the suggestions made by the 'AI'"""
     name = models.CharField(max_length=250)
     description = models.TextField(max_length=500)
     
@@ -18,6 +24,10 @@ class InterestCategory(models.Model):
 
 
 class RequirementCategory(models.Model):
+    """Model for Requirement categories.
+        Requirement categories are categories that describe the avalibility for the event (like 'Vegan',
+         'English friendly' or 'Wheelchair friendly'). Requirement categories can be used
+         by users to filter by"""
     name = models.CharField(max_length=250)
     description = models.TextField(max_length=500)
 
@@ -26,6 +36,8 @@ class RequirementCategory(models.Model):
 
 
 class CategoryWeightsUser(models.Model):
+    """Model for CategoryWeightsUser.
+        CategoryWeightsUser are used by the AI to influence the events that are shown"""
     category = models.ForeignKey(
         InterestCategory,
         on_delete=models.CASCADE)
@@ -38,6 +50,7 @@ class CategoryWeightsUser(models.Model):
 
 
 class Event(models.Model):
+    """Model for Events"""
 
     class Status(models.TextChoices):
         PENDING = 'P', "Pending"
@@ -85,6 +98,7 @@ class Event(models.Model):
 
 
 class Schedule(models.Model):
+    """Model for schedule"""
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     event = models.ForeignKey(

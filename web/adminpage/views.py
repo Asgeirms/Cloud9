@@ -11,6 +11,9 @@ from happenings.models import Event, GeneratedShortDescriptions, InterestCategor
 
 
 class AdminpanelView(PermissionRequiredMixin, TemplateView):
+    """This is the view for the adminpanel,
+        the premission is used to check if the user is a staff member"""
+
     template_name="adminpage/adminpage.html"
 
     def has_permission(self):
@@ -18,6 +21,10 @@ class AdminpanelView(PermissionRequiredMixin, TemplateView):
 
 
 class CurateEventsView(PermissionRequiredMixin, ListView):
+    """This is the view for the curation panel,
+        the data is separated into the different admin_approved statuses,
+        the permission is used to check if the user is a staff member"""
+
     template_name = "adminpage/curate_events.html"
     context_object_name = "events"
 
@@ -35,6 +42,10 @@ class CurateEventsView(PermissionRequiredMixin, ListView):
 
 
 class AdminEventDetailView(PermissionRequiredMixin, DetailView):
+    """This is the view for the detailed view for an event, shown via the adminpage,
+        the permission checks if the user is a staff user.
+        The different functions change the status of the event"""
+
     template_name = "adminpage/admin_event_detail_view.html"
     model = Event
     context_object_name = "event"
@@ -72,6 +83,11 @@ class AdminEventDetailView(PermissionRequiredMixin, DetailView):
 
 
 class DeleteEventAdminView(PermissionRequiredMixin, DeleteView):
+    """
+        This is the view for deleting an event via the admin pages.
+        The permission checks if the user is a staff user
+    """
+
     model = Event
     success_url = reverse_lazy('curate_events')
 
@@ -80,6 +96,9 @@ class DeleteEventAdminView(PermissionRequiredMixin, DeleteView):
 
 
 class ShortDescriptionListView(PermissionRequiredMixin, ListView):
+    """This is the list view for the premade short descriptions.
+        The permission check checks if the user is a staff user"""
+
     model = GeneratedShortDescriptions
     template_name = "adminpage/descriptions_list.html"
     context_object_name = "descriptions"
@@ -89,6 +108,9 @@ class ShortDescriptionListView(PermissionRequiredMixin, ListView):
 
 
 class CreateShortDescriptionView(PermissionRequiredMixin, CreateView):
+    """This is the view for creating premade short descriptions.
+        The permission check ckecks if the user is a staff user"""
+
     template_name = "adminpage/create_description.html"
     models = GeneratedShortDescriptions
     form_class = GeneratedShortDescriptionsForm
@@ -100,6 +122,9 @@ class CreateShortDescriptionView(PermissionRequiredMixin, CreateView):
 
 
 class EditShortDescriptionView(PermissionRequiredMixin, UpdateView):
+    """This is the view for editing premade short descriptions.
+        The permission checks if the user is a staff user"""
+
     template_name = "adminpage/edit_description.html"
     model = GeneratedShortDescriptions
     form_class = GeneratedShortDescriptionsForm
@@ -111,6 +136,9 @@ class EditShortDescriptionView(PermissionRequiredMixin, UpdateView):
 
 
 class DeleteShortDescriptionView(PermissionRequiredMixin, DeleteView):
+    """This is the view for deleting premade short descriptions.
+        The permission check if the user is a staff user"""
+
     model = GeneratedShortDescriptions
     success_url = reverse_lazy('descriptions')
 
@@ -119,6 +147,8 @@ class DeleteShortDescriptionView(PermissionRequiredMixin, DeleteView):
 
 
 class InterestCategoryListView(PermissionRequiredMixin, ListView):
+    """This is the list view for the interest categories.
+            The permission check checks if the user is a staff user"""
     model = InterestCategory
     template_name = "adminpage/interest_categories.html"
     context_object_name = "categories"
@@ -128,6 +158,9 @@ class InterestCategoryListView(PermissionRequiredMixin, ListView):
 
 
 class CreateInterestCategory(PermissionRequiredMixin, CreateView):
+    """This is the view for creating interest categories.
+        The permission check ckecks if the user is a staff user"""
+
     template_name = "adminpage/create_interest_category.html"
     models = InterestCategory
     form_class = InterestCategoryForm
@@ -139,6 +172,9 @@ class CreateInterestCategory(PermissionRequiredMixin, CreateView):
 
 
 class EditInterestCategory(PermissionRequiredMixin, UpdateView):
+    """This is the view for editing interest categories.
+            The permission checks if the user is a staff user"""
+
     template_name = "adminpage/edit_interest_category.html"
     model = InterestCategory
     form_class = InterestCategoryForm
@@ -150,6 +186,9 @@ class EditInterestCategory(PermissionRequiredMixin, UpdateView):
 
 
 class DeleteInterestCategory(PermissionRequiredMixin, DeleteView):
+    """This is the view for deleting interest categories.
+            The permission check if the user is a staff user"""
+
     model = InterestCategory
     success_url = reverse_lazy('interest_categories')
 
@@ -158,6 +197,9 @@ class DeleteInterestCategory(PermissionRequiredMixin, DeleteView):
 
 
 class RequirementCategoryListView(PermissionRequiredMixin, ListView):
+    """This is the list view for the requirement categories.
+            The permission check checks if the user is a staff user"""
+
     model = RequirementCategory
     template_name = "adminpage/requirement_categories.html"
     context_object_name = "categories"
@@ -167,6 +209,9 @@ class RequirementCategoryListView(PermissionRequiredMixin, ListView):
 
 
 class CreateRequirementCategory(PermissionRequiredMixin, CreateView):
+    """This is the view for creating requirement categories.
+        The permission check ckecks if the user is a staff user"""
+
     template_name = "adminpage/create_requirement_category.html"
     models = RequirementCategory
     form_class = RequirementCategoryForm
@@ -178,6 +223,9 @@ class CreateRequirementCategory(PermissionRequiredMixin, CreateView):
 
 
 class EditRequirementCategory(PermissionRequiredMixin, UpdateView):
+    """This is the view for editing requirement categories.
+            The permission checks if the user is a staff user"""
+
     template_name = "adminpage/edit_requirement_category.html"
     model = RequirementCategory
     form_class = RequirementCategoryForm
@@ -189,6 +237,9 @@ class EditRequirementCategory(PermissionRequiredMixin, UpdateView):
 
 
 class DeleteRequirementCategory(PermissionRequiredMixin, DeleteView):
+    """This is the view for deleting requirement categories.
+            The permission check if the user is a staff user"""
+
     model = RequirementCategory
     success_url = reverse_lazy('requirement_categories')
 

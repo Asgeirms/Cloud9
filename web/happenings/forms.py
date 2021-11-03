@@ -3,7 +3,7 @@ from .models import Event, Schedule, RequirementCategory
 
 
 class EventForm(forms.ModelForm):
-    '''Formclass. Creating event suggestions'''
+    """Formclass. Creating event suggestions"""
     class Meta:
         model = Event
         fields = [
@@ -104,7 +104,7 @@ class FilterForm(forms.Form):
 
 
 class EditEventForm(forms.ModelForm):
-    '''Formclass. Editing location, price and short description'''
+    """Formclass. Editing location, price and short description"""
 
     class Meta:
         model = Event

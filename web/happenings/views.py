@@ -15,16 +15,17 @@ from random import randint
 
 
 class MyEventsListView(ListView):
-    '''View you own events'''
+    """View for showing a users own events"""
+
     template_name = "happenings/my_events_list_view.html"
     context_object_name = "my_events_list"
     model = Event
 
     def get_queryset(self):
-        '''The task of this query:
+        """The task of this query:
             - Users should only see their own events.
             - Find what schedule belonging to what event, and sort events on schedules.
-        '''
+        """
         current_schedules = Schedule.objects.filter(event__host=self.request.user).filter(end_time__gte=timezone.now()).order_by('start_time')
         old_schedules = Schedule.objects.filter(event__host=self.request.user).filter(end_time__lt=timezone.now()).order_by('start_time')
 
@@ -52,7 +53,8 @@ class MyEventsListView(ListView):
 
 
 class DetailedMyScheduleView(PermissionRequiredMixin, DetailView):
-    '''The detailed view you get watching your own event-schedules.'''
+    """The detailed view you get watching your own event-schedules."""
+
     model = Schedule
     template_name = 'happenings/my_schedules_detail_view.html'
     context_object_name = 'scheduled_event'
@@ -63,7 +65,8 @@ class DetailedMyScheduleView(PermissionRequiredMixin, DetailView):
 
 
 class DetailedMyEventView(PermissionRequiredMixin, DetailView):
-    '''The detailed view you get watching your own events.'''
+    """The detailed view you get watching your own events."""
+
     model = Event
     template_name = 'happenings/my_event_detail_view.html'
     context_object_name = 'event'
@@ -74,6 +77,8 @@ class DetailedMyEventView(PermissionRequiredMixin, DetailView):
 
 
 class SuggestEventView(LoginRequiredMixin, CreateView):
+    """View for suggesting an event"""
+
     template_name = "happenings/suggest_event.html"
     models = Event
     form_class = EventForm
@@ -111,6 +116,8 @@ class SuggestEventView(LoginRequiredMixin, CreateView):
 
 
 class EditEventView(PermissionRequiredMixin, UpdateView):
+    """View for updating an event.
+        The permission checks if the event is owned by the one trying to change it"""
     template_name = "happenings/update_event.html"
     model = Event
     form_class = EditEventForm
@@ -125,6 +132,9 @@ class EditEventView(PermissionRequiredMixin, UpdateView):
 
 
 class DeleteEventView(PermissionRequiredMixin, DeleteView):
+    """View for deleting an event.
+        The permission checks if the owner is the one trying to delete it"""
+
     model = Event
     success_url = reverse_lazy('my_events')
 
@@ -133,6 +143,8 @@ class DeleteEventView(PermissionRequiredMixin, DeleteView):
 
 
 class AddScheduleView(CreateView):
+    """View for adding a schedule to an event"""
+
     template_name = "happenings/add_schedule.html"
     model = Schedule
     form_class = ScheduleForm
@@ -148,6 +160,9 @@ class AddScheduleView(CreateView):
 
 
 class EditScheduleView(PermissionRequiredMixin, UpdateView):
+    """View for editing a schedule.
+        The permission checks if the owner is the one trying to change it"""
+
     template_name = "happenings/update_schedule.html"
     model = Schedule
     form_class = ScheduleForm
@@ -162,6 +177,9 @@ class EditScheduleView(PermissionRequiredMixin, UpdateView):
 
 
 class DeleteScheduleView(PermissionRequiredMixin, DeleteView):
+    """View for deleting a schedule.
+        The permission checks if the owner is the one trying to delete it"""
+
     model = Schedule
 
     def get_success_url(self):
@@ -173,6 +191,8 @@ class DeleteScheduleView(PermissionRequiredMixin, DeleteView):
 
 
 class ScheduleDetailView(DetailView):
+    """View for a detailed schedule"""
+
     model = Schedule
     template_name = "happenings/schedule_detail_view.html"
     context_object_name = 'scheduled_event'
