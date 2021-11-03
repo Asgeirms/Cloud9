@@ -20,11 +20,19 @@ class RequirementCategorySerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     categories = RequirementCategorySerializer(source="requirement_categories", many=True)
     tags = InterestCategorySerializer(source="interest_categories", many=True)
+    price_range = serializers.CharField(source="name") #any source will do, it gets changed in representation anyway
+
+    def to_representation(self, instance):
+        representation = super(EventSerializer, self).to_representation(instance)
+        if instance.max_price == 0:
+            representation['price_range'] = "FREE"
+        else:
+            representation['price_range'] = str(instance.min_price) + " - " + str(instance.max_price)
+        return representation
 
     class Meta:
         model = Event
-        fields = ('name', "location", "min_price", "max_price", "short_description", "categories", "tags")
-
+        fields = ('name', "location", "price_range", "short_description", "categories", "tags")
 
 class ScheduleSerializer(serializers.ModelSerializer):
     event = EventSerializer()
