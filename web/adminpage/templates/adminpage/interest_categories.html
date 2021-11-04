@@ -1,0 +1,35 @@
+{% extends 'web/base.html' %}
+{% load happenings_templatetags %}
+{% load static %}
+
+{% block body %}
+    <div class="ui container">
+        <h1>
+            <a href={% url 'adminpanel' %}> <i class="blue chevron circle left icon"></i></a>
+            Event categories
+             <a href="{% url 'add_interest_categories' %}">
+                    <i class="ui green plus icon"></i>
+                </a>
+        </h1>
+        <div class="ui relaxed divided list">
+            {% for category in categories %}
+                <div class="item">
+                    <div class="right floated content">
+                        <form method="post" action="{% url 'delete_interest_categories' category.pk %}">
+                            {% csrf_token %}
+                            <button class="ui negative button" type="submit">Delete</button>
+                        </form>
+                    </div>
+                    <div class="content">
+                        <div class="header"> {{category.name}}
+                        <a href="{% url 'edit_interest_categories' category.pk%}">
+                            <i class="ui green pencil icon"></i>
+                        </a></div>
+                        <div class="description">{{ category.description }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <br>
+    </div>
+{% endblock %}

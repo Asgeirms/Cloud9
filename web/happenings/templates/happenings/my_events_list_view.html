@@ -22,13 +22,14 @@
                                 <div class="content">
                                   <div class="header">{{ event.name }}</div>
                                   <div class="description">
-                                    <p>{{ event.short_description }}</p>
+                                      <p>{{ event.short_description }}</p>
+                                      {% if event.generated_short_description %}
+                                          <p>{{ event.generated_short_description}}</p>
+                                      {% endif %}
                                   </div>
                                 </div>
                             </a>
                         {% endfor %}
-
-
                     </div>
                 {% else %}
                     <p>You don't have any upcoming or current events!</p>
@@ -45,7 +46,10 @@
                                     <div class="content">
                                         <div class="header">{{ event.name }}</div>
                                         <div class="description">
-                                            <p>{{ event.description }}</p>
+                                            <p>{{ event.short_description }}</p>
+                                            {% if event.generated_short_description %}
+                                                <p>{{ event.generated_short_description}}</p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </a>
@@ -81,8 +85,11 @@
                                         <div class="header">{{ schedule.event.name }}</div>
                                         <div class="meta">{%  get_event_times schedule %}</div>
                                         <div class="description">
-                                            <p>{{ schedule.event.description }}</p>
-                                        </div>
+                                          <p>{{ schedule.event.short_description }}</p>
+                                          {% if schedule.event.generated_short_description %}
+                                              <p>{{ schedule.event.generated_short_description}}</p>
+                                          {% endif %}
+                                      </div>
                                     </div>
                                 </a>
                             {% endfor %}

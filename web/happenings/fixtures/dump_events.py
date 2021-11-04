@@ -58,7 +58,7 @@ def autofill_events(sheet):
                     "short_description": row[events[0].index("short_description")],
                     "description": row[events[0].index("description")],
                     "image": row[events[0].index("image")],
-                    "admin_approved": bool(row[events[0].index("admin_approved")]),
+                    "admin_approved": row[events[0].index("admin_approved")],
                     "interest_categories": get_categories_list_with_pk(row[events[0].index("interest_categories")], "interest"),
                     "requirement_categories": get_categories_list_with_pk(row[events[0].index("requirement_categories")], "requirement"),
                     "host": "1",
