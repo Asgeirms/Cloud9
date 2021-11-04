@@ -118,7 +118,7 @@
         }
 
         .fade {
-            animation: fade 4s linear;
+            animation: fade 5s linear forwards;
         }
 
         @keyframes fade {
@@ -148,12 +148,10 @@
             opacity: 0;
         }
 
-        @keyframes spin_fade {
+        @keyframes spin_fade{
             0% {
                 transform: translate(-50%);
                 opacity: 1;
-                transform: translate();
-
             }
 
             90% {
@@ -223,7 +221,7 @@
 
         <div class="ui middle aligned grid computer only">
             <div class="three column row circle-mask" style="height: 60vh;">
-                <div id="left_button" class="left floated right aligned column" style="opacity: 0;">
+                <div id="left_button" class="left floated right aligned column"  style="opacity: 0;">
                     <a id="no" href="?current={{schedule.pk}}&amp;swiped=no&amp;page={{page_obj.next_page_number}}" onclick="return rotate('l')">
                         <i class="massive angle double left icon" id="no"></i>
                     </a>
@@ -335,15 +333,15 @@
         </div>
         <svg width="auto" height="20vh" viewBox="0 0 330 131" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; left: 50vw; top: 80vh; transform: translateX(-50%);">
             <g id="buttons">
-                <g id="left_button" href="?current={{schedule.pk}}&amp;swiped=no&amp;page={{page_obj.next_page_number}}" onclick="return rotate('l')" filter="url(#filter0_d_6:17)" style="cursor: pointer;">
+                <a id="left_button" href="?current={{schedule.pk}}&amp;swiped=no&amp;page={{page_obj.next_page_number}}" onclick="return rotate('l')" filter="url(#filter0_d_6:17)" style="cursor: pointer;">
                     <circle id="no" cx="84" cy="65" r="39" fill="white" stroke="#A7A7A7" stroke-width="2"/>
                     <line id="no" x1="99.1838" y1="48.0711" x2="68.0711" y2="79.1838" stroke="#F56666" stroke-width="10" stroke-linecap="round"/>
                     <line id="no" x1="99.8908" y1="79.8909" x2="68.7782" y2="48.7782" stroke="#F56666" stroke-width="10" stroke-linecap="round"/>
-                </g>
-                <g id="right_button" href="?current={{schedule.pk}}&amp;swiped=yes&amp;page={{page_obj.next_page_number}}" onclick="return rotate('r')"  filter="url(#filter1_d_6:17)" style="cursor: pointer;">
+                </a>
+                <a id="right_button" href="?current={{schedule.pk}}&amp;swiped=yes&amp;page={{page_obj.next_page_number}}" onclick="return rotate('r')"  filter="url(#filter1_d_6:17)" style="cursor: pointer;">
                     <circle id="yes" cx="247" cy="65" r="39" fill="white" stroke="#A7A7A7" stroke-width="2"/>
                     <path id="yes" d="M242.912 52.7736C238.921 48.9561 232.591 49.0967 228.774 53.0878C224.956 57.0788 225.097 63.4089 229.088 67.2264L242.912 52.7736ZM247.5 71L240.588 78.2264L247.5 84.8381L254.412 78.2264L247.5 71ZM265.912 67.2264C269.903 63.4089 270.044 57.0788 266.226 53.0878C262.409 49.0967 256.079 48.9561 252.088 52.7736L265.912 67.2264ZM229.088 67.2264L240.588 78.2264L254.412 63.7736L242.912 52.7736L229.088 67.2264ZM254.412 78.2264L265.912 67.2264L252.088 52.7736L240.588 63.7736L254.412 78.2264Z" fill="#1CE06B"/>
-                </g>
+                </a>
             </g>
             <defs>
                 <filter id="filter0_d_6:17" x="40" y="25" width="88" height="88" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -369,7 +367,7 @@
             </defs>
         </svg>
 
-        <!-- TODO: More flashy animations
+        
         <g class="star">
             <svg width="40vw" height="auto" viewBox="0 0 187 178" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M93.9755 3.84549L93.5 2.38197L93.0245 3.84549L71.9202 68.7979H3.62516H2.08632L3.33127 69.7024L58.5831 109.845L37.4788 174.798L37.0032 176.261L38.2482 175.357L93.5 135.214L148.752 175.357L149.997 176.261L149.521 174.798L128.417 109.845L183.669 69.7024L184.914 68.7979H183.375H115.08L93.9755 3.84549Z" fill="url(#paint0_diamond_7:18)" stroke="black"/>
@@ -381,7 +379,7 @@
                 </defs>
             </svg>
         </g>
-        -->
+        
         {# For mobile devices only #}
     </div>
 {% endfor %}
