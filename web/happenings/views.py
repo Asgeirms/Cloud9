@@ -1,4 +1,5 @@
 from django import shortcuts
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.urls import reverse_lazy
@@ -18,16 +19,17 @@ from random import randint
 from .serializers import ScheduleSerializer
 
 class MyEventsListView(ListView):
-    '''View you own events'''
+    """View for showing a users own events"""
+
     template_name = "happenings/my_events_list_view.html"
     context_object_name = "my_events_list"
     model = Event
 
     def get_queryset(self):
-        '''The task of this query:
+        """The task of this query:
             - Users should only see their own events.
             - Find what schedule belonging to what event, and sort events on schedules.
-        '''
+        """
         current_schedules = Schedule.objects.filter(event__host=self.request.user).filter(end_time__gte=timezone.now()).order_by('start_time')
         old_schedules = Schedule.objects.filter(event__host=self.request.user).filter(end_time__lt=timezone.now()).order_by('start_time')
 
@@ -54,23 +56,33 @@ class MyEventsListView(ListView):
         return queryset
 
 
-class DetailedMyScheduleView(DetailView):
-    '''The detailed view you get watching your own event-schedules.'''
+class DetailedMyScheduleView(PermissionRequiredMixin, DetailView):
+    """The detailed view you get watching your own event-schedules."""
+
     model = Schedule
     template_name = 'happenings/my_schedules_detail_view.html'
     context_object_name = 'scheduled_event'
     success_url = reverse_lazy('my_events_detailed')
 
+    def has_permission(self):
+        return self.request.user == self.get_object().event.host
 
-class DetailedMyEventView(DetailView):
-    '''The detailed view you get watching your own events.'''
+
+class DetailedMyEventView(PermissionRequiredMixin, DetailView):
+    """The detailed view you get watching your own events."""
+
     model = Event
     template_name = 'happenings/my_event_detail_view.html'
     context_object_name = 'event'
     success_url = reverse_lazy('my_events')
 
+    def has_permission(self):
+        return self.request.user == self.get_object().host
 
-class SuggestEventView(CreateView):
+
+class SuggestEventView(LoginRequiredMixin, CreateView):
+    """View for suggesting an event"""
+
     template_name = "happenings/suggest_event.html"
     models = Event
     form_class = EventForm
@@ -107,7 +119,9 @@ class SuggestEventView(CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
-class EditEventView(UpdateView):
+class EditEventView(PermissionRequiredMixin, UpdateView):
+    """View for updating an event.
+        The permission checks if the event is owned by the one trying to change it"""
     template_name = "happenings/update_event.html"
     model = Event
     form_class = EditEventForm
@@ -117,13 +131,24 @@ class EditEventView(UpdateView):
         event_id = self.kwargs['pk']
         return reverse_lazy('my_events_detailed', kwargs={'pk': event_id})
 
+    def has_permission(self):
+        return self.request.user == self.get_object().host
 
-class DeleteEventView(DeleteView):
+
+class DeleteEventView(PermissionRequiredMixin, DeleteView):
+    """View for deleting an event.
+        The permission checks if the owner is the one trying to delete it"""
+
     model = Event
     success_url = reverse_lazy('my_events')
 
+    def has_permission(self):
+        return self.request.user == self.get_object().host
+
 
 class AddScheduleView(CreateView):
+    """View for adding a schedule to an event"""
+
     template_name = "happenings/add_schedule.html"
     model = Schedule
     form_class = ScheduleForm
@@ -138,7 +163,10 @@ class AddScheduleView(CreateView):
         return reverse_lazy('my_events_detailed', kwargs={'pk': event_id})
 
 
-class EditScheduleView(UpdateView):
+class EditScheduleView(PermissionRequiredMixin, UpdateView):
+    """View for editing a schedule.
+        The permission checks if the owner is the one trying to change it"""
+
     template_name = "happenings/update_schedule.html"
     model = Schedule
     form_class = ScheduleForm
@@ -148,16 +176,27 @@ class EditScheduleView(UpdateView):
         schedule_id = self.kwargs['pk']
         return reverse_lazy('my_schedule_detailed', kwargs={'pk': schedule_id})
 
+    def has_permission(self):
+        return self.request.user == self.get_object().event.host
 
-class DeleteScheduleView(DeleteView):
+
+class DeleteScheduleView(PermissionRequiredMixin, DeleteView):
+    """View for deleting a schedule.
+        The permission checks if the owner is the one trying to delete it"""
+
     model = Schedule
 
     def get_success_url(self):
-        event_id = self.kwargs['pk']
+        event_id = self.kwargs['event_pk']
         return reverse_lazy('my_events_detailed', kwargs={'pk': event_id})
+
+    def has_permission(self):
+        return self.request.user == self.get_object().event.host
 
 
 class ScheduleDetailView(DetailView):
+    """View for a detailed schedule"""
+
     model = Schedule
     template_name = "happenings/schedule_detail_view.html"
     context_object_name = 'scheduled_event'
@@ -166,7 +205,7 @@ class ScheduleDetailView(DetailView):
  
 def FilterEventListView(request):
     queryset = Schedule.objects.all()
-    queryset = queryset.filter(event__admin_approved=True)
+    queryset = queryset.filter(event__admin_approved=Event.Status.APPROVED)
     queryset = queryset.order_by('start_time')
     if request.method == 'POST':
         form = FilterForm(request.POST)
@@ -262,7 +301,7 @@ def fill_filter_form_from_session(request):
 
 @staff_member_required(login_url="login")
 def ExportXMLView(request):
-    serializer = ScheduleSerializer(Schedule.objects.all().filter(event__admin_approved=True), many=True)
+    serializer = ScheduleSerializer(Schedule.objects.all().filter(event__admin_approved=Event.Status.APPROVED), many=True)
     data = XMLRenderer().render(serializer.data)
     response = HttpResponse(data, content_type='application/force-download')
     response['Content-Disposition'] = 'attachment; filename=schedule.xml'

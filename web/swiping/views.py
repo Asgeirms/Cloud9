@@ -9,7 +9,7 @@ from django.shortcuts import redirect, render
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
-from happenings.models import Schedule, InterestCategory, CategoryWeightsUser
+from happenings.models import Schedule, InterestCategory, CategoryWeightsUser, Event
 from swiping.paginator import SwipingPaginator
 from util.session_utils import add_data_to_session_as_dict, read_session_data
 from happenings.views import use_session_filter, fill_filter_form_from_session, save_filters_to_session, reset_session_filters
@@ -150,7 +150,7 @@ class SwipingEventsView(ListView):
 
         # All eligable schedules
         queryset = Schedule.objects \
-                    .filter(event__admin_approved=True)
+                    .filter(event__admin_approved=Event.Status.APPROVED)
 
         if self.request.session.get("filter"):
             queryset = use_session_filter(queryset, self.request)

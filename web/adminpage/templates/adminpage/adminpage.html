@@ -1,0 +1,53 @@
+{% extends 'web/base.html' %}
+{% load happenings_templatetags %}
+{% load static %}
+
+{% block body %}
+
+    <div class="ui container">
+        <h1>Adminpanel</h1>
+        <div class="ui two stackable cards">
+                <div class="ui card">
+                    <a class="content" href="{% url 'curate_events' %}">
+                        <div class="center aligned header">
+                            <i class="ui calendar icon"></i>Curate events
+                        </div>
+                        <div class="description">
+                            Click here to curate events.
+                        </div>
+                    </a>
+                </div>
+                <div class="ui card">
+                    <a class="content" href="{% url 'descriptions' %}">
+                        <div class="center aligned header">
+                            <i class="ui comment icon"></i> Premade descriptions
+                        </div>
+                        <div class="description">
+                            Click here to create, edit and delete premade descriptions
+                        </div>
+                    </a>
+                </div>
+                <div class="ui card">
+                        <a class="content" href="{% url 'requirement_categories' %}">
+                            <div class="center aligned header">
+                                <i class="ui tag icon"></i> Accessibility tags
+                            </div>
+                            <div class="description">
+                                Click here to create, edit and delete accessibility tags
+                            </div>
+                        </a>
+                </div>
+                <div class="ui card">
+                    <a class="content" href="{% url 'interest_categories' %}">
+                        <div class="center aligned header">
+                            <i class="ui hashtag icon"></i> Event categories
+                        </div>
+                        <div class="description">
+                            Click here to create, edit and delete premade event categories
+                        </div>
+                    </a>
+                </div>
+        </div>
+    </div>
+
+{% endblock %}

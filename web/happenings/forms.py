@@ -3,7 +3,7 @@ from .models import Event, Schedule, RequirementCategory
 
 
 class EventForm(forms.ModelForm):
-    '''Formclass. Creating event suggestions'''
+    """Formclass. Creating event suggestions"""
     class Meta:
         model = Event
         fields = [
@@ -16,14 +16,16 @@ class EventForm(forms.ModelForm):
             'image',
             'interest_categories',
             'requirement_categories',
+            'generated_short_description'
         ]
 
         labels = {
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
             'short_description': 'Short descripton',
-            'requirement_categories': 'Tags',
-            'interest_categories': 'Event categories'
+            'requirement_categories': 'Accessibility tags (optional)',
+            'interest_categories': 'Event categories (optional)',
+            'generated_short_description': 'A premade short description (optional)'
         }
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Name of the event'}),
@@ -76,7 +78,8 @@ class FilterForm(forms.Form):
     from_time = forms.DateTimeField(label="From:", required=False)
     to_time = forms.DateTimeField(label="To:", required=False)
     max_price = forms.IntegerField(label="Max Price:", required=False)
-    categories = forms.ModelMultipleChoiceField(queryset=RequirementCategory.objects.all(), to_field_name="name" ,label="Categories:", required=False)
+    categories = forms.ModelMultipleChoiceField(queryset=RequirementCategory.objects.all(),
+                                                to_field_name="name", label="Accessibility tags:", required=False)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -102,16 +105,18 @@ class FilterForm(forms.Form):
 
 
 class EditEventForm(forms.ModelForm):
-    '''Formclass. Editing location, price and short description'''
+    """Formclass. Editing location, price and short description"""
 
     class Meta:
         model = Event
-        fields = ('location', 'min_price', 'max_price', 'requirement_categories', 'interest_categories')
+        fields = ('location', 'min_price', 'max_price',
+                  'requirement_categories', 'interest_categories', 'generated_short_description')
         labels = {
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
-            'requirement_categories': 'Tags',
-            'interest_categories': 'Event categories'
+            'requirement_categories': 'Accessibility tags (optional)',
+            'interest_categories': 'Event categories (optional)',
+            'generated_short_description': 'A premade short description (optional)'
         }
         widgets = {
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),

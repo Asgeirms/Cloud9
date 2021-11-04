@@ -8,6 +8,7 @@
 
 {% block body %}
     <div class="ui container">
+        {% block go_back %}{% endblock %}
         <div class="ui card">
             <div class="image">
                 <img src="
@@ -19,12 +20,18 @@
             </div>
             <div class="content">
                 {% if event %}
-                    <div class="header">{{ event.name }}</div>
-                    <div class="text">Host: {{ event.host.username }}</div>
-                    <div class="meta">{{ event.location }}
+                    <div class="header">{{ event.name }} {% block delete %} {% endblock %}</div>
+                    <div class="meta">Location: {{  event.location }}
                         <span class="right floated">{% get_pricerange event %}</span>
                     </div>
+
+                    <div class="text">Host: {{ event.host.first_name }} {{ event.host.last_name }}
+                        <span class="right floated">The host has {% get_approved_event_count event.host %} other
+                            approved events </span>
+                    </div>
+                    <br>
                     <div class="description"> {{ event.description }}</div>
+
 
                     {% block extra_event_info %}
                     {% endblock extra_event_info %}
