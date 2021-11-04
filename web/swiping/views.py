@@ -1,4 +1,5 @@
 import json
+import time
 from datetime import datetime
 
 import numpy as np
@@ -59,8 +60,13 @@ class SwipingEventsView(ListView):
             current_pk = current_page.pk  
         else:
             current_page = Schedule.objects.get(pk=current_pk)
-
+        
         if swiped == "yes":
+            ''' TODO Use AJAX to prevent page from refreshing 
+            while still updating the HTML to get new events post 
+            spinning animation, for yes and no swipes. Do 
+            use time.sleep in the future'''
+            time.sleep(4)
             add_data_to_session_as_dict(
                 request=request,
                 name=self.viewed_events_name,
@@ -92,6 +98,11 @@ class SwipingEventsView(ListView):
                 ###############################
 
         elif swiped == "no":
+            ''' TODO Use AJAX to prevent page from refreshing 
+            while still updating the HTML to get new events post 
+            spinning animation, for yes and no swipes. Do
+            not use time.sleep in the future.'''
+            time.sleep(4)
             add_data_to_session_as_dict(
                 request=request,
                 name=self.viewed_events_name,
