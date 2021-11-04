@@ -42,7 +42,15 @@ INSTALLED_APPS = [
     'happenings',
     'web',
     'swiping',
+    'rest_framework',
+    'rest_framework_xml',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+    'rest_framework_xml.renderers.XMLRenderer',
+  ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

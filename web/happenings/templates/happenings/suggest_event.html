@@ -87,12 +87,22 @@
 
                 <div class="field">
                     {{ form.requirement_categories.label_tag }}
-                    {{ form.requirement_categories }}
+                    <select name="requirement_categories" multiple="" class="ui fluid dropdown">
+                        <option value="">Categories</option>
+                        {% for category in form.requirement_categories %}
+                            {{ category }}
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="field">
                     {{ form.interest_categories.label_tag }}
-                    {{ form.interest_categories }}
+                    <select name="interest_categories" multiple="" class="ui fluid dropdown">
+                        <option value="">Categories</option>
+                        {% for category in form.interest_categories %}
+                            {{ category }}
+                        {% endfor %}
+                    </select>
                 </div>
 
             <input class="ui blue button" type="submit" value="Suggest event">
@@ -134,6 +144,10 @@
             .closest(".message")
             .transition("fade");
     });
+
+    $('.ui.dropdown')
+        .dropdown()
+    ;
     
 </script>
 {% endblock body %}
