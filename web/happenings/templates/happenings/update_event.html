@@ -46,8 +46,11 @@
                 </div>
 
                 <div class="field">
-                    {{ form.generated_short_description.label_tag }}
-                    This is an optional field
+                    <label>{{ form.generated_short_description.label_tag }}
+                        <span data-content="Pick one of these premade descriptions to add
+                            to your event if you want to!">
+                        <i class="ui  question circle icon"></i>
+                    </span>
                     <select name="generated_short_description" class="ui fluid clearable dropdown">
                         <option value="">Descriptions</option>
                         {% for description in form.generated_short_description %}
@@ -86,6 +89,7 @@
          $('.ui.dropdown')
             .dropdown()
         ;
+         $("span[data-content]").popup();
     </script>
 
 {% endblock body %}

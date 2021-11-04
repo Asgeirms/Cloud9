@@ -23,9 +23,9 @@ class EventForm(forms.ModelForm):
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
             'short_description': 'Short descripton',
-            'requirement_categories': 'Accessibility tags',
-            'interest_categories': 'Event categories',
-            'generated_short_description': 'A premade short description'
+            'requirement_categories': 'Accessibility tags (optional)',
+            'interest_categories': 'Event categories (optional)',
+            'generated_short_description': 'A premade short description (optional)'
         }
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Name of the event'}),
@@ -78,7 +78,8 @@ class FilterForm(forms.Form):
     from_time = forms.DateTimeField(label="From:", required=False)
     to_time = forms.DateTimeField(label="To:", required=False)
     max_price = forms.IntegerField(label="Max Price:", required=False)
-    categories = forms.ModelMultipleChoiceField(queryset=RequirementCategory.objects.all(), to_field_name="name" ,label="Categories:", required=False)
+    categories = forms.ModelMultipleChoiceField(queryset=RequirementCategory.objects.all(),
+                                                to_field_name="name", label="Accessibility tags:", required=False)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -113,9 +114,9 @@ class EditEventForm(forms.ModelForm):
         labels = {
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
-            'requirement_categories': 'Accessibility tags',
-            'interest_categories': 'Event categories',
-            'generated_short_description': 'A premade short description'
+            'requirement_categories': 'Accessibility tags (optional)',
+            'interest_categories': 'Event categories (optional)',
+            'generated_short_description': 'A premade short description (optional)'
         }
         widgets = {
             'location': forms.TextInput(attrs={'placeholder': 'Where to host?'}),

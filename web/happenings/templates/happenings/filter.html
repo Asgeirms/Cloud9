@@ -45,8 +45,8 @@
                     </div>
                     <div class="field">
                         {{ form.categories.label_tag }}
-                        <select name="categories" multiple="" class="ui fluid dropdown">
-                            <option value="">Categories</option>
+                        <select name="categories" multiple="" class="ui fluid search dropdown">
+                            <option value="">Accessibility tags</option>
                             {% for category in form.categories %}
                                 {{ category }}
                             {% endfor %}

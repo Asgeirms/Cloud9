@@ -50,8 +50,13 @@
                 </div>
 
                 <div class="two field">
-                    <label>Enter the time of the event</label>
-                    If the same event has multiple occurrences, you can add more timeslots from the "My events" page
+                    <label>Enter the time of the event
+                    <span data-content="If the same event has multiple occurrences,
+                        you can add more timeslots from the 'My events' page.">
+                        <i class="ui  question circle icon"></i>
+                    </span>
+                    </label>
+
 
                     <div class="field">
                         {{ form.start_time.label_tag }}
@@ -76,8 +81,12 @@
                 </div>
 
                 <div class="field">
-                    {{ form.generated_short_description.label_tag }}
-                    This is an optional field
+                    <label>{{ form.generated_short_description.label_tag }}
+                        <span data-content="Pick one of these premade descriptions to add
+                            to your event if you want to!">
+                        <i class="ui  question circle icon"></i>
+                    </span>
+                    </label>
                     <select name="generated_short_description" class="ui fluid clearable dropdown">
                         <option value="">Descriptions</option>
                         {% for description in form.generated_short_description %}
@@ -88,7 +97,6 @@
 
                 <div class="field">
                     {{ form.short_description.label_tag }}
-                    This is an optional field
                     {{ form.short_description }}
                 </div>
 
@@ -104,8 +112,7 @@
 
                 <div class="field">
                     {{ form.requirement_categories.label_tag }}
-                    This is an optional field
-                    <select name="requirement_categories" multiple="" class="ui fluid dropdown">
+                    <select name="requirement_categories" multiple="" class="ui fluid search dropdown">
                         <option value="">Accessibility tags</option>
                         {% for category in form.requirement_categories %}
                             {{ category }}
@@ -115,8 +122,7 @@
 
                 <div class="field">
                     {{ form.interest_categories.label_tag }}
-                    This is an optional field
-                    <select name="interest_categories" multiple="" class="ui fluid dropdown">
+                    <select name="interest_categories" multiple="" class="ui fluid search dropdown">
                         <option value="">Event categories</option>
                         {% for category in form.interest_categories %}
                             {{ category }}
@@ -167,6 +173,8 @@
      $('.ui.dropdown')
         .dropdown()
     ;
+
+     $("span[data-content]").popup();
 
 </script>
 {% endblock body %}
