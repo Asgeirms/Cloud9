@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, Schedule, RequirementCategory
+from .models import Event, Schedule, AccessibilityTag
 
 
 class EventForm(forms.ModelForm):
@@ -14,8 +14,8 @@ class EventForm(forms.ModelForm):
             'short_description',
             'description',
             'image',
-            'interest_categories',
-            'requirement_categories',
+            'event_categories',
+            'accessibility_tags',
             'generated_short_description'
         ]
 
@@ -23,8 +23,8 @@ class EventForm(forms.ModelForm):
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
             'short_description': 'Short descripton',
-            'requirement_categories': 'Accessibility tags (optional)',
-            'interest_categories': 'Event categories (optional)',
+            'accessibility_tags': 'Accessibility tags (optional)',
+            'event_categories': 'Event categories (optional)',
             'generated_short_description': 'A premade short description (optional)'
         }
         widgets = {
@@ -78,7 +78,7 @@ class FilterForm(forms.Form):
     from_time = forms.DateTimeField(label="From:", required=False)
     to_time = forms.DateTimeField(label="To:", required=False)
     max_price = forms.IntegerField(label="Max Price:", required=False)
-    categories = forms.ModelMultipleChoiceField(queryset=RequirementCategory.objects.all(),
+    categories = forms.ModelMultipleChoiceField(queryset=AccessibilityTag.objects.all(),
                                                 to_field_name="name", label="Accessibility tags:", required=False)
 
     def clean(self):
@@ -110,12 +110,12 @@ class EditEventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = ('location', 'min_price', 'max_price',
-                  'requirement_categories', 'interest_categories', 'generated_short_description')
+                  'accessibility_tags', 'event_categories', 'generated_short_description')
         labels = {
             'min_price': 'Minimum price',
             'max_price': 'Maximum price',
-            'requirement_categories': 'Accessibility tags (optional)',
-            'interest_categories': 'Event categories (optional)',
+            'accessibility_tags': 'Accessibility tags (optional)',
+            'event_categories': 'Event categories (optional)',
             'generated_short_description': 'A premade short description (optional)'
         }
         widgets = {

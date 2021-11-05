@@ -1,25 +1,25 @@
 from rest_framework import serializers
 
-from .models import Schedule, Event, RequirementCategory, InterestCategory
+from .models import Schedule, Event, AccessibilityTag, EventCategory
 
 class InterestCategorySerializer(serializers.ModelSerializer):
     tag = serializers.CharField(source="name")
 
     class Meta:
-        model = InterestCategory
+        model = EventCategory
         fields = ['tag']
 
 class RequirementCategorySerializer(serializers.ModelSerializer):
     category = serializers.CharField(source="name")
 
     class Meta:
-        model = RequirementCategory
+        model = AccessibilityTag
         fields = ['category']
 
 
 class EventSerializer(serializers.ModelSerializer):
-    categories = RequirementCategorySerializer(source="requirement_categories", many=True)
-    tags = InterestCategorySerializer(source="interest_categories", many=True)
+    categories = RequirementCategorySerializer(source="accessibility_tags", many=True)
+    tags = InterestCategorySerializer(source="event_categories", many=True)
     price_range = serializers.CharField(source="name") #any source will do, it gets changed in representation anyway
 
     def to_representation(self, instance):

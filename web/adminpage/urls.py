@@ -15,14 +15,13 @@ urlpatterns = [
     path('descriptions/create', views.CreateShortDescriptionView.as_view(), name="add_short_description"),
     path('description/<int:pk>/edit', views.EditShortDescriptionView.as_view(), name="edit_short_description"),
     path('description/<int:pk>/delete', views.DeleteShortDescriptionView.as_view(), name="delete_short_description"),
-    path('interest_categories', views.InterestCategoryListView.as_view(), name="interest_categories"),
-    path('interest_categories/create', views.CreateInterestCategory.as_view(), name="add_interest_categories"),
-    path('interest_categories/<int:pk>/edit', views.EditInterestCategory.as_view(), name="edit_interest_categories"),
-    path('interest_categories/<int:pk>/delete', views.DeleteInterestCategory.as_view(), name="delete_interest_categories"),
-    path('requirement_category', views.RequirementCategoryListView.as_view(), name="requirement_categories"),
-    path('requirement_category/create', views.CreateRequirementCategory.as_view(), name="add_requirement_categories"),
-    path('requirement_category/<int:pk>/edit', views.EditRequirementCategory.as_view(), name="edit_requirement_categories"),
-    path('requirement_category/<int:pk>/delete', views.DeleteRequirementCategory.as_view(), name="delete_requirement_categories"),
-
+    path('event_categories', views.EventCategoryListView.as_view(), name="event_categories"),
+    path('event_categories/create', views.CreateEventCategory.as_view(), name="add_event_categories"),
+    path('event_categories/<int:pk>/edit', views.EditEventCategory.as_view(), name="edit_event_categories"),
+    path('event_categories/<int:pk>/delete', views.DeleteEventCategory.as_view(), name="delete_event_categories"),
+    path('accessibility_tags', views.AccessibilityTagsListView.as_view(), name="accessibility_tags"),
+    path('accessibility_tags/create', views.CreateAccessibilityTag.as_view(), name="add_accessibility_tag"),
+    path('accessibility_tags/<int:pk>/edit', views.EditAccessibilityTag.as_view(), name="edit_accessibility_tag"),
+    path('accessibility_tags/<int:pk>/delete', views.DeleteAccessibilityTag.as_view(), name="delete_accessibility_tag"),
 
 ]
