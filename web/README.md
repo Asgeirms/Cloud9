@@ -117,45 +117,42 @@ https://www.onlinetutorialspoint.com/django/django-model-view-template-mvt-overv
 As of now, the project consists of 6 folders, with 4 of them being django apps
 (`adminpage`, `authenticate`, `happenings` and `swiping`),
 one being a folder for util files (`util`) and the last one being the main folder (`web`).
+All app folders include `migration` and `template` folders and some include `static` folders. 
+The `migration` folder includes the database migrations, the `templates` folder is for the html files and
+the `static` folder is for css, images and js files.
+All apps also contain the files created upon django app creation.
 
-####Adminpage
+### Adminpage
 The `adminpage` app contains all pages related to the adminpage and the subpages. 
 The adminpage contains pages for curating events and creating/editing/deleting short descriptions, accessibility tags
-and event categories.
+and event tags.
 
-The app has a `migration` folder for the database migrations, a `static` folder where css files are located and a 
-`templates` folder for the templates.
-migrations. The folder also contains files created upon django app creation and a `forms.py` file. 
+In addition to folders and files that exist in all apps, this also includes a `forms.py` file. 
 
 
-####Authenticate
+### Authenticate
 The `authenticate` app contains all pages and models related to users, login and registration.
 
-The app has a `migration` folder for the database migrations and a `template` folder for the templates.
-The folder also contains files created upon django app creation and a `forms.py` file and a `validators.py` file. 
+In addition to folders and files that exist in all apps, this also includes a `forms.py` file and a `validators.py` file. 
 
 The `models.py` contains the `User` model, which inherits fields based on the Django User model.
 
 
-####Happenings
+### Happenings
 The `happenings` app contains all pages and models related to events and filters.
 This includes the 'My Events', 'All events' and the 'Download XML'.
 
-The app has a `fixtures` folder for scripts helped to upload dummy data, a `migration` folder for the database 
-migrations, a `static` folder for css and js files, a `template` folder for the templates and a 
-`templatetags` folder for templatetags.
-The folder also contains files created upon django app creation and a `forms.py` file and a `serializers.py` file.
 
+In addition to folders and files that exist in all apps, this also includes a `forms.py` file, a `serializers.py` file, 
+the folder `fixtures`
 
-####Swiping
+### Swiping
 The `swiping` app contains the pages and files related to the "swiping/spinning".
 
-The app has a `migration` folder for the database migrations, a `static` folder for css, images and js files
-and a `template` folder for the templates.
-The folder also contains files created upon django app creation and a `paginator.py` file.
+In addition to folders and files that exist in all apps, this also includes a `paginator.py` file.
 
 
-###Web
+### Web
 The `web` folder contains the projects settings, and the templates and css files for the `base.html`
 file and the `header.html` file.
 
