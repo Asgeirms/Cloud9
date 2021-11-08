@@ -10,13 +10,13 @@
             "short_description": "Watch an adventrure",
             "description": "Join us in watching the Lotr movies. There will be popcorn and a good time",
             "image": "",
-            "admin_approved": true,
+            "admin_approved": "A",
             "interest_categories": [
                 1000004,
                 1000005
             ],
             "requirement_categories": [
-                2
+                1000002
             ],
             "host": "1"
         }
@@ -25,8 +25,8 @@
         "model": "happenings.schedule",
         "pk": 100000,
         "fields": {
-            "start_time": "2021-11-27T07:01:57Z",
-            "end_time": "2021-11-27T11:01:57Z",
+            "start_time": "2021-12-04T08:14:32Z",
+            "end_time": "2021-12-04T12:14:32Z",
             "event": 100000
         }
     },
@@ -41,7 +41,7 @@
             "short_description": "Haul in tomorrow's dinner!",
             "description": "Join Piratfiskerne in our illegal night fishing in Nidelva! Bring your own fishing gear for a pleasant night of lantern fishing with free beer and music.",
             "image": "",
-            "admin_approved": true,
+            "admin_approved": "A",
             "interest_categories": [
                 1000004,
                 1000007,
@@ -57,8 +57,8 @@
         "model": "happenings.schedule",
         "pk": 100001,
         "fields": {
-            "start_time": "2021-11-27T07:01:57Z",
-            "end_time": "2021-11-27T11:01:57Z",
+            "start_time": "2021-12-04T08:14:32Z",
+            "end_time": "2021-12-04T12:14:32Z",
             "event": 100001
         }
     },
@@ -73,13 +73,13 @@
             "short_description": "How quick is your brain?",
             "description": "A standard team quizz with prizes and beer",
             "image": "",
-            "admin_approved": true,
+            "admin_approved": "A",
             "interest_categories": [
                 1000012,
                 1000011
             ],
             "requirement_categories": [
-                1,
+                999999,
                 1000003
             ],
             "host": "1"
@@ -89,8 +89,8 @@
         "model": "happenings.schedule",
         "pk": 100002,
         "fields": {
-            "start_time": "2021-11-27T07:01:57Z",
-            "end_time": "2021-11-27T11:01:57Z",
+            "start_time": "2021-12-04T08:14:32Z",
+            "end_time": "2021-12-04T12:14:32Z",
             "event": 100002
         }
     },
@@ -105,7 +105,7 @@
             "short_description": "Ut p\u00e5 tur aldri sur!",
             "description": "Look at our event at UT.NO!",
             "image": "",
-            "admin_approved": true,
+            "admin_approved": "A",
             "interest_categories": [
                 1000010,
                 1000001
@@ -121,8 +121,8 @@
         "model": "happenings.schedule",
         "pk": 100003,
         "fields": {
-            "start_time": "2021-11-27T07:01:57Z",
-            "end_time": "2021-11-27T11:01:57Z",
+            "start_time": "2021-12-04T08:14:32Z",
+            "end_time": "2021-12-04T12:14:32Z",
             "event": 100003
         }
     },
@@ -137,7 +137,7 @@
             "short_description": "Want to make your own game?",
             "description": "You dont have to bring anything. Equipment and food is on us.",
             "image": "",
-            "admin_approved": true,
+            "admin_approved": "A",
             "interest_categories": [
                 1000008,
                 1000009,
@@ -145,9 +145,9 @@
                 1000005
             ],
             "requirement_categories": [
-                1,
+                999999,
                 1000003,
-                2
+                1000002
             ],
             "host": "1"
         }
@@ -156,8 +156,8 @@
         "model": "happenings.schedule",
         "pk": 100004,
         "fields": {
-            "start_time": "2021-11-27T07:01:57Z",
-            "end_time": "2021-11-27T11:01:57Z",
+            "start_time": "2021-12-04T08:14:32Z",
+            "end_time": "2021-12-04T12:14:32Z",
             "event": 100004
         }
     },
@@ -172,13 +172,13 @@
             "short_description": "Make a table out of driftwood",
             "description": "Bring your own driftwood",
             "image": "",
-            "admin_approved": true,
+            "admin_approved": "P",
             "interest_categories": [
                 1000002,
                 1000005
             ],
             "requirement_categories": [
-                1
+                999999
             ],
             "host": "1"
         }
@@ -187,8 +187,8 @@
         "model": "happenings.schedule",
         "pk": 100005,
         "fields": {
-            "start_time": "2021-11-27T07:01:57Z",
-            "end_time": "2021-11-27T11:01:57Z",
+            "start_time": "2021-12-04T08:14:32Z",
+            "end_time": "2021-12-04T12:14:32Z",
             "event": 100005
         }
     },
@@ -203,13 +203,13 @@
             "short_description": "Hardcore tablegame",
             "description": "Join a host of heroes and play trough the demons dungeon",
             "image": "",
-            "admin_approved": true,
+            "admin_approved": "P",
             "interest_categories": [
                 1000012
             ],
             "requirement_categories": [
-                2,
-                1
+                1000002,
+                999999
             ],
             "host": "1"
         }
@@ -218,8 +218,8 @@
         "model": "happenings.schedule",
         "pk": 100006,
         "fields": {
-            "start_time": "2021-11-27T07:01:57Z",
-            "end_time": "2021-11-27T11:01:57Z",
+            "start_time": "2021-12-04T08:14:32Z",
+            "end_time": "2021-12-04T12:14:32Z",
             "event": 100006
         }
     },
@@ -234,13 +234,13 @@
             "short_description": "Lolololol",
             "description": "YOur mom",
             "image": "",
-            "admin_approved": true,
+            "admin_approved": "D",
             "interest_categories": [
                 1000004,
                 1000005
             ],
             "requirement_categories": [
-                1
+                999999
             ],
             "host": "1"
         }
@@ -249,8 +249,8 @@
         "model": "happenings.schedule",
         "pk": 100007,
         "fields": {
-            "start_time": "2021-11-27T07:01:57Z",
-            "end_time": "2021-11-27T11:01:57Z",
+            "start_time": "2021-12-04T08:14:32Z",
+            "end_time": "2021-12-04T12:14:32Z",
             "event": 100007
         }
     },
@@ -265,14 +265,14 @@
             "short_description": "Fight Henrik",
             "description": "Fight Henrik to win money",
             "image": "",
-            "admin_approved": true,
+            "admin_approved": "N",
             "interest_categories": [
                 1000004,
                 1000007,
                 1000010
             ],
             "requirement_categories": [
-                1
+                999999
             ],
             "host": "1"
         }
@@ -281,8 +281,8 @@
         "model": "happenings.schedule",
         "pk": 100008,
         "fields": {
-            "start_time": "2021-11-27T07:01:57Z",
-            "end_time": "2021-11-27T11:01:57Z",
+            "start_time": "2021-12-04T08:14:32Z",
+            "end_time": "2021-12-04T12:14:32Z",
             "event": 100008
         }
     },
@@ -297,7 +297,7 @@
             "short_description": "Halloween fright fest",
             "description": "Be scared or scare people",
             "image": "",
-            "admin_approved": true,
+            "admin_approved": "A",
             "interest_categories": [
                 1000004,
                 1000010
@@ -312,8 +312,8 @@
         "model": "happenings.schedule",
         "pk": 100009,
         "fields": {
-            "start_time": "2021-11-27T07:01:57Z",
-            "end_time": "2021-11-27T11:01:57Z",
+            "start_time": "2021-12-04T08:14:32Z",
+            "end_time": "2021-12-04T12:14:32Z",
             "event": 100009
         }
     }

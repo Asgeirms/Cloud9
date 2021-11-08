@@ -5,6 +5,8 @@ sqlparse==0.4.2
 Pillow==8.3.2
 python-dotenv==0.19.1
 numpy==1.19.5
+djangorestframework==3.12.4
+djangorestframework-xml==2.0.0
 
 # Sheet API: specified to install in the documentation
 cachetools==4.2.4

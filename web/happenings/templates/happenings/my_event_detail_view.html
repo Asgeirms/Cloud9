@@ -4,7 +4,7 @@
 
 {% block extra_event_info %}
     <br>
-    <div class="meta"> Admin approved: {{ event.admin_approved }}</div>
+    <div class="meta"> Admin approved: {% get_event_status event %}</div>
     {% get_schedules event as scheduled_events %}
     <div class="ui divided relaxed list">
         {% for scheduled_event in scheduled_events %}
@@ -20,12 +20,12 @@
     {% if event.host == user or user.is_staff %}
         <div class="extra content">
             <div class="ui stackable buttons">
-            <a class="ui black button" href={% url 'my_events' %}>Go back</a>
-            <a class="ui olive button" href="{% url 'edit_event' event.pk %}">Edit event info </a>
-            <a class="ui green button" href="{% url 'add_schedule' event.pk %}">Add another time</a>
-            <form method="POST"  action="{% url "delete_event" event.pk  %}">
-                {% csrf_token %}<button class="ui fluid negative button" type="submit"> Delete </button>
-            </form>
+                <a class="ui black button" href={% url 'my_events' %}>Go back</a>
+                <a class="ui olive button" href="{% url 'edit_event' event.pk %}">Edit event info </a>
+                <a class="ui green button" href="{% url 'add_schedule' event.pk %}">Add another time</a>
+                <form method="POST"  action="{% url "delete_event" event.pk  %}">
+                    {% csrf_token %}<button class="ui fluid negative button" type="submit"> Delete </button>
+                </form>
             </div>
         </div>
     {% endif %}

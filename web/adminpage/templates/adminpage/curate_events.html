@@ -10,72 +10,132 @@
 
     {% if user.is_staff %}
 
-
-        <h1 class="ui header">Events</h1>
+        <h1 class="ui header"> <a href={% url 'adminpanel' %}> <i class="blue chevron circle left icon"></i></a>Events</h1>
 
         <div class="ui tabular menu">
-            <a class="item active" data-tab="not-approved">
-                Non-approved <div class="number">{{ events.not_approved.count }} </div>
+            <a class="item active" data-tab="pending">
+                Pending <div class="number">{{ events.pending.count }} </div>
             </a>
             <a class="item" data-tab="approved">
                 Approved
             </a>
+            <a class="item" data-tab="not-approved">
+                Disapproved
+            </a>
+            <a class="item" data-tab="deleted">
+                Deleted
+            </a>
         </div>
 
-        <div class="ui bottom attached tab segment active" data-tab="not-approved">
+        <div class="ui bottom attached tab segment active" data-tab="pending">
             <div class="ui link cards">
-            {% if events.not_approved.count == 0 %}
-                <div class="text">You've curated all the events! Congrats on the hard work</div>
-
+                {% if events.pending.count == 0 %}
+                    <div class="text">You've curated all the events! Congrats on the hard work</div>
                 {% else %}
-                {% for event in events.not_approved %}
-                <a class="card" href="{% url 'admin_events' event.pk %}">
-                    <div class="content">
-                        <div class="header"> {{ event.name }}</div>
+                {% for event in events.pending %}
+                    <a class="card" href="{% url 'admin_events' event.pk %}">
+                        <div class="content">
+                            <div class="header"> {{ event.name }} </div>
                             <div class="meta">{% get_pricerange event %}  </div>
-                        <div class="meta">{{ event.location }}</div>
+                            <div class="meta">{{ event.location }}</div>
                             <div class="description"> {{ event.short_description }}</div>
-                    </div>
-                    <form method="post" action="{% url 'approve' event.pk %}">
-                        {% csrf_token %}
-                        <button class="ui fluid positive button" type="submit">Approve</button>
-                    </form>
-                </a>
-
-
+                        </div>
+                        <form method="post" action="{% url 'approve' event.pk %}">
+                            {% csrf_token %}
+                            <button class="ui fluid positive button" type="submit">Approve</button>
+                        </form>
+                        <form method="post" action="{% url 'disapprove' event.pk %}">
+                            {% csrf_token %}
+                            <button class="ui fluid negative button" type="submit">Disapprove</button>
+                        </form>
+                        <form method="post" action="{% url 'delete' event.pk %}">
+                            {% csrf_token %}
+                            <button class="ui fluid gray button" type="submit"><i class="red floated trash icon"></i></button>
+                        </form>
+                    </a>
                 {% endfor %}
-            {% endif %}
-        </div>
-        </div>
-        <div class="ui bottom attached tab segment" data-tab="approved">
-            <div class="ui link cards">
-            {% if events.approved.count == 0 %}
-                <div class="text">You haven't approved any events. Please go check if any fits your standards</div>
-
-                {% else %}
-
-                {% for event in events.approved %}
-                <a class="card" href="{% url 'admin_events' event.pk %}">
-                    <div class="content">
-                        <div class="header"> {{ event.name }}</div>
-                            <div class="meta">{% get_pricerange event %}  </div>
-                        <div class="meta">{{ event.location }}</div>
-                            <div class="description"> {{ event.short_description }}</div>
-                    </div>
-                    <form method="post" action="{% url 'disapprove' event.pk %}">
-                        {% csrf_token %}
-                        <button class="ui fluid negative button" type="submit">Disapprove</button>
-                    </form>
-                </a>
-
-                {% endfor %}
-
                 {% endif %}
-
             </div>
         </div>
 
-        {% else %}
+        <div class="ui bottom attached tab segment" data-tab="approved">
+            <div class="ui link cards">
+                {% if events.approved.count == 0 %}
+                    <div class="text">You haven't approved any events. Please go check if any fits your standards</div>
+                {% else %}
+                {% for event in events.approved %}
+                    <a class="card" href="{% url 'admin_events' event.pk %}">
+                        <div class="content">
+                            <div class="header"> {{ event.name }}</div>
+                            <div class="meta">{% get_pricerange event %}  </div>
+                            <div class="meta">{{ event.location }}</div>
+                            <div class="description"> {{ event.short_description }}</div>
+                        </div>
+                        <form method="post" action="{% url 'disapprove' event.pk %}">
+                            {% csrf_token %}
+                            <button class="ui fluid negative button" type="submit">Disapprove</button>
+                        </form>
+                        <form method="post" action="{% url 'delete' event.pk %}">
+                            {% csrf_token %}
+                            <button class="ui fluid gray button" type="submit"><i class="red floated trash icon"></i></button>
+                        </form>
+                    </a>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="ui bottom attached tab segment" data-tab="not-approved">
+            <div class="ui link cards">
+                {% if events.not_approved.count == 0 %}
+                    <div class="text">Wow! No disapproved events! That's awesome!</div>
+                {% else %}
+                    {% for event in events.not_approved %}
+                        <a class="card" href="{% url 'admin_events' event.pk %}">
+                            <div class="content">
+                                <div class="header"> {{ event.name }}</div>
+                                <div class="meta">{% get_pricerange event %}  </div>
+                                <div class="meta">{{ event.location }}</div>
+                                <div class="description"> {{ event.short_description }}</div>
+                            </div>
+                            <form method="post" action="{% url 'approve' event.pk %}">
+                                {% csrf_token %}
+                                <button class="ui fluid positive button" type="submit">Approve</button>
+                            </form>
+                            <form method="post" action="{% url 'delete' event.pk %}">
+                                {% csrf_token %}
+                                <button class="ui fluid gray button" type="submit"><i class="red floated trash icon"></i></button>
+                            </form>
+                        </a>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="ui bottom attached tab segment" data-tab="deleted">
+            <div class="ui link cards">
+                {% if events.deleted.count == 0 %}
+                    <div class="text">There's no deleted events</div>
+                {% else %}
+                {% for event in events.deleted %}
+                    <a class="card" href="{% url 'admin_events' event.pk %}">
+                        <div class="content">
+                            <div class="header"> {{ event.name }}</div>
+                            <div class="meta">{% get_pricerange event %}  </div>
+                            <div class="meta">{{ event.location }}</div>
+                            <div class="description"> {{ event.short_description }}</div>
+                        </div>
+                        <form method="post" action="{% url 'restore' event.pk %}">
+                            {% csrf_token %}
+                            <button class="ui fluid positive button" type="submit">Restore</button>
+                        </form>
+                    </a>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+    {% else %}
         You dont have premission to view this page
     {% endif %}
 

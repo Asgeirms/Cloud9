@@ -4,6 +4,7 @@
 {% block content %}
     <div class="ui raised text container">
         <h2>Scheduled Events</h2>
+            <h5>All events have been curated by real people</h5>
             {% if queryset %}
                 <div class="ui link cards">
                     {% for scheduled_event in queryset %}
@@ -16,12 +17,19 @@
                                 {% endif %}" alt="Event image"/>
                             <div class="content">
                                 <div class="header"> {{ scheduled_event.event.name }}</div>
-                                    <div class="meta"> {% get_event_times scheduled_event %} </div>
-                                    <div class="meta">{% get_pricerange scheduled_event.event %}  </div>
+                                <div class="meta"> {% get_event_times scheduled_event %} </div>
+                                <div class="meta" style="color: #4c4f52">{% get_pricerange scheduled_event.event %}  </div>
                                 <div class="meta">{{ scheduled_event.event.location }}</div>
-                                    <div class="description"> {{ scheduled_event.event.short_description }}</div>
+                                <div class="description">
+                                    {{ scheduled_event.event.short_description }}
+                                    {% if scheduled_event.event.generated_short_description %}
+                                        <br>
+                                        {{ scheduled_event.event.generated_short_description}}
+                                    {% endif %}
+                                </div>
                             </div>
                         </a>
+
                     {% endfor %}  
                 </div>
             {% else %}

@@ -8,9 +8,19 @@
 
 {% if user.is_staff %}
 
+    {% block go_back %}
+        <h1><a href={% url 'curate_events' %}> <i class="blue chevron circle left icon"></i>Go back</a></h1>
+    {% endblock %}
+
+    {% block delete %}
+        {% if event.admin_approved != 'D' %}
+            <a href="{% url 'delete' event.pk %}"><i class="red floated trash icon"></i></a>
+        {% endif %}
+    {% endblock %}
+
     {% block extra_event_info %}
          <br>
-        <div class="meta"> Admin approved: {{ event.admin_approved }}</div>
+        <div class="meta"> Admin approved: {% get_event_status event %}</div>
         {% get_schedules event as scheduled_events %}
         <div class="ui divided relaxed list">
             {% for scheduled_event in scheduled_events %}
@@ -20,20 +30,26 @@
     {% endblock extra_event_info %}
 
     {% block edit_buttons %}
-        <div class="ui buttons">
-             <a class="ui gray button" href={% url 'curate_events' %}>Go back</a>
-            {% if event.admin_approved %}
-                <form method="post" action="{% url 'disapprove' event.pk %}">
-                {% csrf_token %}
-                    <button id="middle_button" class="ui negative button" type="submit">Disapprove</button>
-                </form>
+        {% if event.admin_approved == 'P' %}
+            <div class="three ui stackable buttons">
+        {% else %}
+            <div class="two ui stackable buttons">
+        {% endif %}
+             {% if event.admin_approved != 'D' %}
+                {% if event.admin_approved == 'A' %}
+                    <a id="middle_button" class="ui negative button" href="{% url 'disapprove' event.pk %}">Disapprove</a>
+                {% elif event.admin_approved == 'N' %}
+                    <a id="middle_button"  class="ui positive button" href="{% url 'approve' event.pk %}">Approve</a>
+                {% else %}
+                    <a id="middle_button"  class="ui positive button" href="{% url 'approve' event.pk %}">Approve</a>
+                    <a id="middle_button" class="ui negative button" href="{% url 'disapprove' event.pk %}">Disapprove</a>
+                {% endif %}
             {% else %}
-                <form method="post" action="{% url 'approve' event.pk %}">
-                {% csrf_token %}
-                    <button id="middle_button" class="ui positive button" type="submit">Approve</button>
-                </form>
+                 <a class="ui positive button" href="{% url 'restore' event.pk %}">Restore</a>
+                 <form method="POST"  action="{% url "delete_event_admin" event.pk  %}">
+                    {% csrf_token %}<button class="ui fluid negative button" type="submit"> Permanently delete </button>
+                 </form>
             {% endif %}
-            <button class="ui button">Delete</button>
         </div>
     {% endblock edit_buttons %}
 

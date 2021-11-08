@@ -46,13 +46,37 @@
                 </div>
 
                 <div class="field">
+                    <label>{{ form.generated_short_description.label_tag }}
+                        <span data-content="Pick one of these premade descriptions to add
+                            to your event if you want to!">
+                        <i class="ui  question circle icon"></i>
+                    </span>
+                    <select name="generated_short_description" class="ui fluid clearable dropdown">
+                        <option value="">Descriptions</option>
+                        {% for description in form.generated_short_description %}
+                            {{ description }}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="field">
                     {{ form.requirement_categories.label_tag }}
-                    {{ form.requirement_categories }}
+                    <select name="requirement_categories" multiple="" class="ui fluid dropdown">
+                        <option value="">Accessibility tags</option>
+                        {% for category in form.requirement_categories %}
+                            {{ category }}
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="field">
                     {{ form.interest_categories.label_tag }}
-                    {{ form.interest_categories }}
+                    <select name="interest_categories" multiple="" class="ui fluid dropdown">
+                        <option value="">Event categories</option>
+                        {% for category in form.interest_categories %}
+                            {{ category }}
+                        {% endfor %}
+                    </select>
                 </div>
 
 
@@ -60,5 +84,12 @@
 
         </form>
     </div>
+
+    <script>
+         $('.ui.dropdown')
+            .dropdown()
+        ;
+         $("span[data-content]").popup();
+    </script>
 
 {% endblock body %}
