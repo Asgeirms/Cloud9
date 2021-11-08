@@ -43,8 +43,8 @@ def main():
     spreadsheet = service.spreadsheets()
 
     data = []
-    requirements_data = autofill_category(spreadsheet, "happenings.requirementcategory", req_range)
-    interests_data = autofill_category(spreadsheet, "happenings.interestcategory", interest_range)
+    requirements_data = autofill_category(spreadsheet, "happenings.accessibilitytag", req_range)
+    interests_data = autofill_category(spreadsheet, "happenings.eventcategory", interest_range)
     
     data.extend(requirements_data)
     data.extend(interests_data)

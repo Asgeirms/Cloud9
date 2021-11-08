@@ -1,4 +1,4 @@
-{% extends 'happenings/filter.html' %}
+{% extends 'happenings/filter_base.html' %}
 
 {% load static %}
 
@@ -96,7 +96,7 @@
                             </span>
                         </div>
                         <div class="ui mini horizontal divided  list">
-                            {% for category in schedule.event.requirement_categories.all %}
+                            {% for category in schedule.event.accessibility_tags.all %}
                                 <div class="item">
                                     <div class="content">
                                         <div class="header">
@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                            {% for category in schedule.event.interest_categories.all %}
+                            {% for category in schedule.event.event_categories.all %}
                                 <div class="item">
                                     <div class="content">
                                         <div class="header">

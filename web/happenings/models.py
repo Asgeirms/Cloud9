@@ -12,9 +12,9 @@ class GeneratedShortDescriptions(models.Model):
         return str(self.description)
 
 
-class InterestCategory(models.Model):
-    """Model for Interest categories.
-        Interest categories are categories that describe the event's content (like "music" or "outdoor"), and are used
+class EventCategory(models.Model):
+    """Model for Event categories.
+        Event categories are categories that describe the event's content (like "music" or "outdoor"), and are used
         to influence the suggestions made by the 'AI'"""
     name = models.CharField(max_length=250)
     description = models.TextField(max_length=500)
@@ -23,10 +23,10 @@ class InterestCategory(models.Model):
         return str(self.name)
 
 
-class RequirementCategory(models.Model):
-    """Model for Requirement categories.
-        Requirement categories are categories that describe the accessibility for the event (like 'Vegan',
-         'English friendly' or 'Wheelchair friendly'). Requirement categories can be used
+class AccessibilityTag(models.Model):
+    """Model for Accessibility Tags.
+        Accessibility tags are categories that describe the accessibility for the event (like 'Vegan',
+         'English friendly' or 'Wheelchair friendly'). Accessibility tags can be used
          by users to filter by"""
     name = models.CharField(max_length=250)
     description = models.TextField(max_length=500)
@@ -39,7 +39,7 @@ class CategoryWeightsUser(models.Model):
     """Model for CategoryWeightsUser.
         CategoryWeightsUser are used by the AI to influence the events that are shown"""
     category = models.ForeignKey(
-        InterestCategory,
+        EventCategory,
         on_delete=models.CASCADE)
 
     user = models.ForeignKey(
@@ -68,8 +68,8 @@ class Event(models.Model):
     description = models.TextField()
     image = models.ImageField(blank=True, upload_to='events')
     admin_approved = models.CharField(choices=Status.choices, max_length=2, default=Status.PENDING)
-    interest_categories = models.ManyToManyField(InterestCategory, blank=True)
-    requirement_categories = models.ManyToManyField(RequirementCategory, blank=True)
+    event_categories = models.ManyToManyField(EventCategory, blank=True)
+    accessibility_tags = models.ManyToManyField(AccessibilityTag, blank=True)
 
     generated_short_description = models.ForeignKey(
         GeneratedShortDescriptions,
@@ -95,6 +95,13 @@ class Event(models.Model):
         return str(self.min_price) + "kr - " + str(self.max_price) + "kr"
 
     def get_status(self):
+        """The checks for 1 and 0 is because of backwards compatibility when admin approved
+        was just a boolean field"""
+
+        if self.admin_approved == '1':
+            return self.STATUS_CHOICES_DICT[Event.Status.APPROVED]
+        if self.admin_approved == '0':
+            return self.STATUS_CHOICES_DICT[Event.Status.DISAPPROVED]
         if self.admin_approved == Event.Status.DELETED:
             return "Deleted by admin"
         return self.STATUS_CHOICES_DICT[self.admin_approved]

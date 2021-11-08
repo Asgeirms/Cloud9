@@ -36,7 +36,7 @@
                     {% block extra_event_info %}
                     {% endblock extra_event_info %}
                      <div class="ui horizontal divided  list">
-                        {% for category in event.requirement_categories.all %}
+                        {% for category in event.accessibility_tags.all %}
                           <div class="item">
                             <div class="content">
                              <div class="header">
@@ -47,7 +47,7 @@
                             </div>
                           </div>
                         {% endfor %}
-                        {% for category in event.interest_categories.all %}
+                        {% for category in event.event_categories.all %}
                           <div class="item">
                             <div class="content">
                              <div class="header">

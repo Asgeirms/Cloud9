@@ -13,7 +13,7 @@ django.setup()
 from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from django.utils import timezone
-from happenings.models import InterestCategory, RequirementCategory
+from happenings.models import EventCategory, AccessibilityTag
 from helper import empty_table_in_spreadsheet
 
 
@@ -21,14 +21,14 @@ def get_categories_list_with_pk(categories, category_type):
     categories = list(map(str.strip, categories.split(',')))
     
     # Can be rewritten to use match-case in python 3.10
-    if category_type.lower() == "interest":
+    if category_type.lower() == "event":
         for index, name in enumerate(categories):
-            categories[index] = InterestCategory.objects.get(name=name).id
+            categories[index] = EventCategory.objects.get(name=name).id
         return categories
 
-    elif category_type.lower() == "requirement":
+    elif category_type.lower() == "accessibility":
         for index, name in enumerate(categories):
-            categories[index] = RequirementCategory.objects.get(name=name).id
+            categories[index] = AccessibilityTag.objects.get(name=name).id
         return categories
 
 
@@ -59,8 +59,8 @@ def autofill_events(sheet):
                     "description": row[events[0].index("description")],
                     "image": row[events[0].index("image")],
                     "admin_approved": row[events[0].index("admin_approved")],
-                    "interest_categories": get_categories_list_with_pk(row[events[0].index("interest_categories")], "interest"),
-                    "requirement_categories": get_categories_list_with_pk(row[events[0].index("requirement_categories")], "requirement"),
+                    "event_categories": get_categories_list_with_pk(row[events[0].index("event_categories")], "event"),
+                    "accessibility_tags": get_categories_list_with_pk(row[events[0].index("accessibility_tags")], "accessibility"),
                     "host": "1",
             }
         }
