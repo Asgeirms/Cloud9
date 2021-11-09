@@ -5,7 +5,7 @@
 
 {% block extra_schedule_info %}
     <br>
-    <div class="meta"> Admin approved: {% get_event_status scheduled_event %} </div>
+    <div class="meta"> Admin approved status: {% get_event_status scheduled_event.event %} </div>
 {% endblock extra_schedule_info %}
 
 {% block edit_buttons %}

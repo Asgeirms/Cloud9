@@ -4,7 +4,7 @@
 
 {% block extra_event_info %}
     <br>
-    <div class="meta"> Admin approved: {% get_event_status event %}</div>
+    <div class="meta"> Admin approved status: {% get_event_status event %}</div>
     {% get_schedules event as scheduled_events %}
     <div class="ui divided relaxed list">
         {% for scheduled_event in scheduled_events %}
