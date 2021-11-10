@@ -119,26 +119,27 @@ python manage.py test
 You can find events on the 'Swipe!' page or the 'All Events' page. On the Swipe! page you can press 
 'X' or 'Heart' depending if you're interested in the event or not.
 If 'Heart' is pressed the event is saved to your profile and can be viewed on the 'My events' page.
+If you've pressed either 'X' or 'Heart' on an event, the specific occurrence of that event is not shown again, and a new event is shown. If you've looked through all events you'll be directed to the 'Swipe finish' page.
 Both on the 'Swipe!' page and the 'All Events' page, there is the ability to use the filter function.
 
 #### Add events
 In order to create your own event, head to 'My events' and press 'Create event' at the bottom of
 your event list. Fill out the form and press 'Suggest event'. An admin will take a look at
-your event and you can find the current status by looking at event in the 'My events' list
+your event and you can find the current status by looking at the event in the 'My events' list
 and look at the 'Admin approved status'. 
 
 #### Edit an event
-You can edit an existing event by checking it out by pressing the name on the 'My events' list. 
-On the event page you can edit the location, price, premade short description, accessibility tags
-event categories. You can also add more event times, if your event is held more than once.
-If you press a timeslot in the list over event time, you will see the spesifics for the schedule,
-and you can edit the times for that schedule.
+You can get more information about the event by pressing the name on the 'My events' list. You can then press the 
+'Edit event info' button in order to edit the location, price, pre-made short description, accessibility tags and 
+event categories. You can also add more event times, if your event is held more than once, by pressing the 'Add another
+time' button.
+If you press a time-slot in the list over event time, you will see the specifics for the schedule,
+and you can edit the times for that schedule, by pressing the 'Edit time info'.
 
 ### As an admin
-
+The admin is like a normal user, but with extra rights and options, having access to a special admin panel where pending events can be curated as well as accessibility tags, event categories and pre-made short descriptions can be added, changed or deleted.
 #### Curating events
-Admins have the ability to curate events. To curate events go to the adminpanel, and press
-and press the curate events button. There there is 4 tabs, `pending`, `approved`, `disapproved` 
+Admins have the ability to curate events. To curate events go to the adminpanel, and press the curate events button. There there is 4 tabs, `pending`, `approved`, `disapproved` 
 and `deleted`. Pending are for events that haven't been decided yet, approved are for events that
 are shown on the website, disapproved are for events that are close to being approved and deleted
 are for events that are against the site's rules.
@@ -150,12 +151,11 @@ you want to add as admin, and check of the `Staff status` box.
 If you want another admin that can add other admins, check of the `Superuser status` box too.
 
 #### Rest of the admin panel
-On the adminpanel you can also add more event categories, accesibility tags and more 
+On the adminpanel you can also add, change or delete event categories, accessibility tags and
 pre-written short descriptions. 
 
 #### Downloading XML
-Press the 'Download XML' button in order to download and XML file with approved events.
-
+Press the 'Download XML' button in order to download an XML file with approved events.
 
 ## DJANGOs template-model-view architecture
 https://www.onlinetutorialspoint.com/django/django-model-view-template-mvt-overview.html
@@ -191,8 +191,8 @@ The `happenings` app contains all pages and models related to events and filters
 This includes the 'My Events', 'All events' and the 'Download XML'.
 
 
-In addition to folders and files that exist in all apps, this also includes a `forms.py` file, a `serializers.py` file, 
-the folder `fixtures`
+In addition to folders and files that exist in all apps, this also includes a `forms.py` file, a `serializers.py` file 
+and the folder `fixtures`.
 
 ### Swiping
 The `swiping` app contains the pages and files related to the "swiping/spinning".
