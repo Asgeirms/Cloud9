@@ -3,71 +3,77 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
+ <link rel="stylesheet" type="text/css" href="{% static 'happenings/css/event.css' %}">
 {% endblock head %}
 
 {% block body %}
 
     <div class="ui container">
-       {% if scheduled_event %}
-           <div class="ui card">
-               <div class="image">
-                   <img src="
-                        {% if scheduled_event.event.image %}
-                            {{ scheduled_event.event.image.url }}
-                        {% else %}
-                            https://fomantic-ui.com/images/avatar2/large/matthew.png
-                        {% endif %}" alt="Event image"/>
-               </div>
-            <div class="content">
+        <div class="ui centered grid">
+            <div class="two column row">
+               <div class="column">
+                   {% if scheduled_event %}
+                       <div class="ui card">
+                           <div class="image">
+                               <img src="
+                                    {% if scheduled_event.event.image %}
+                                        {{ scheduled_event.event.image.url }}
+                                    {% else %}
+                                        https://fomantic-ui.com/images/avatar2/large/matthew.png
+                                    {% endif %}" alt="Event image"/>
+                           </div>
+                        <div class="content">
 
-                    <div class="header">{{ scheduled_event.event.name }}</div>
-                    <div class="text"><span class="date">{% get_event_times scheduled_event %}</span>
-                        <span class="right floated">{% get_pricerange scheduled_event.event %}</span>
+                                <div class="header">{{ scheduled_event.event.name }}</div>
+                                <div class="text"><span class="date">{% get_event_times scheduled_event %}</span>
+                                    <span class="right floated">{% get_pricerange scheduled_event.event %}</span>
+                                </div>
+                                <div class="meta">Location: {{ scheduled_event.event.location }}</div>
+                                <div class="text">Host:
+                                    {{ scheduled_event.event.host.first_name }} {{ scheduled_event.event.host.last_name }}
+                                    <span class="right floated">
+                                        The host has {% get_approved_event_count scheduled_event.event.host %} other
+                                        approved events </span>
+                                </div>
+                                <br>
+                                <div class="description"> {{ scheduled_event.event.description }}</div>
+                                <div class="ui horizontal divided  list">
+                                    {% for category in scheduled_event.event.accessibility_tags.all %}
+                                      <div class="item">
+                                        <div class="content">
+                                          <div class="header">
+                                            <span data-content="{{ category.description }}">
+                                                <i>{{ category.name }}</i>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    {% endfor %}
+                                    {% for category in scheduled_event.event.event_categories.all %}
+                                      <div class="item">
+                                        <div class="content">
+                                          <div class="header">
+                                            <span data-content="{{ category.description }}">
+                                                <i>{{ category.name }}</i>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    {% endfor %}
+                                </div>
+                            {% block extra_schedule_info %}
+                            {% endblock extra_schedule_info %}
+                        </div>
+
+                       {% block edit_buttons %}
+                       {% endblock edit_buttons %}
                     </div>
-                    <div class="meta">Location: {{ scheduled_event.event.location }}</div>
-                    <div class="text">Host:
-                        {{ scheduled_event.event.host.first_name }} {{ scheduled_event.event.host.last_name }}
-                        <span class="right floated">
-                            The host has {% get_approved_event_count scheduled_event.event.host %} other
-                            approved events </span>
-                    </div>
-                    <br>
-                    <div class="description"> {{ scheduled_event.event.description }}</div>
-                    <div class="ui horizontal divided  list">
-                        {% for category in scheduled_event.event.accessibility_tags.all %}
-                          <div class="item">
-                            <div class="content">
-                              <div class="header">
-                                <span data-content="{{ category.description }}">
-                                    <i>{{ category.name }}</i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        {% endfor %}
-                        {% for category in scheduled_event.event.event_categories.all %}
-                          <div class="item">
-                            <div class="content">
-                              <div class="header">
-                                <span data-content="{{ category.description }}">
-                                    <i>{{ category.name }}</i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        {% endfor %}
-                    </div>
-                {% block extra_schedule_info %}
-                {% endblock extra_schedule_info %}
+                    {% else %}
+                       <div class="header">You don't have any upcoming events.</div>
+                    {% endif %}
+                </div>
             </div>
-
-           {% block edit_buttons %}
-           {% endblock edit_buttons %}
         </div>
-        {% else %}
-           <div class="header">You don't have any upcoming events.</div>
-        {% endif %}
     </div>
 
     <script>
