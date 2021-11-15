@@ -27,6 +27,7 @@
                                           <p>{{ event.generated_short_description}}</p>
                                       {% endif %}
                                   </div>
+                                <div class="meta">Admin approved status: {% get_event_status event %}</div>
                                 </div>
                             </a>
                         {% endfor %}
