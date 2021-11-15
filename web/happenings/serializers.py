@@ -3,23 +3,23 @@ from rest_framework import serializers
 from .models import Schedule, Event, AccessibilityTag, EventCategory
 
 class InterestCategorySerializer(serializers.ModelSerializer):
-    tag = serializers.CharField(source="name")
-
-    class Meta:
-        model = EventCategory
-        fields = ['tag']
-
-class RequirementCategorySerializer(serializers.ModelSerializer):
     category = serializers.CharField(source="name")
 
     class Meta:
-        model = AccessibilityTag
+        model = EventCategory
         fields = ['category']
+
+class RequirementCategorySerializer(serializers.ModelSerializer):
+    tag = serializers.CharField(source="name")
+
+    class Meta:
+        model = AccessibilityTag
+        fields = ['tag']
 
 
 class EventSerializer(serializers.ModelSerializer):
-    categories = RequirementCategorySerializer(source="accessibility_tags", many=True)
-    tags = InterestCategorySerializer(source="event_categories", many=True)
+    accessibility_tags = RequirementCategorySerializer(many=True)
+    event_categories = InterestCategorySerializer(many=True)
     price_range = serializers.CharField(source="name") #any source will do, it gets changed in representation anyway
 
     def to_representation(self, instance):
@@ -37,13 +37,13 @@ class EventSerializer(serializers.ModelSerializer):
             if len(representation[list_name]) > 1:
                 representation[list_name] = representation[list_name][:-2]
             return representation
-        representation = flatten_list(representation, "categories", "category")
-        representation = flatten_list(representation, "tags", "tag")
+        representation = flatten_list(representation, "accessibility_tags", "tag")
+        representation = flatten_list(representation, "event_categories", "category")
         return representation
 
     class Meta:
         model = Event
-        fields = ('name', "location", "price_range", "short_description", "categories", "tags")
+        fields = ('name', "location", "price_range", "short_description", "accessibility_tags", "event_categories")
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
