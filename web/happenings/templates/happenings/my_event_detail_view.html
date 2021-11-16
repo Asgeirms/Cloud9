@@ -2,6 +2,7 @@
 {% load happenings_templatetags %}
 {% load static %}
 
+
 {% block extra_event_info %}
     <br>
     <div class="meta"> Admin approved status: {% get_event_status event %}</div>
@@ -19,14 +20,14 @@
 {% block edit_buttons %}
     {% if event.host == user or user.is_staff %}
         <div class="extra content">
-            <div class="ui stackable buttons">
+            <div class="three ui fluid stackable buttons">
                 <a class="ui black button" href={% url 'my_events' %}>Go back</a>
                 <a class="ui olive button" href="{% url 'edit_event' event.pk %}">Edit event info </a>
                 <a class="ui green button" href="{% url 'add_schedule' event.pk %}">Add another time</a>
-                <form method="POST"  action="{% url "delete_event" event.pk  %}">
-                    {% csrf_token %}<button class="ui fluid negative button" type="submit"> Delete </button>
-                </form>
             </div>
+            <form method="POST"  action="{% url "delete_event" event.pk  %}">
+                {% csrf_token %}<button class="ui fluid negative button" type="submit"> Delete </button>
+            </form>
         </div>
     {% endif %}
 {% endblock edit_buttons %}
