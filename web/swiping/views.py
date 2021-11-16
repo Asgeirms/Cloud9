@@ -66,7 +66,7 @@ class SwipingEventsView(ListView):
             while still updating the HTML to get new events post 
             spinning animation, for yes and no swipes. Do 
             use time.sleep in the future'''
-            time.sleep(4)
+            time.sleep(2)
             add_data_to_session_as_dict(
                 request=request,
                 name=self.viewed_events_name,
@@ -102,7 +102,7 @@ class SwipingEventsView(ListView):
             while still updating the HTML to get new events post 
             spinning animation, for yes and no swipes. Do
             not use time.sleep in the future.'''
-            time.sleep(4)
+            time.sleep(2)
             add_data_to_session_as_dict(
                 request=request,
                 name=self.viewed_events_name,
