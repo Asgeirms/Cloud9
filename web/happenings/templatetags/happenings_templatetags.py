@@ -34,4 +34,4 @@ def get_event_status(event: Event):
 
 @register.simple_tag
 def get_approved_event_count(host: AUTH_USER_MODEL):
-    return Event.objects.filter(host=host).count()
+    return Event.objects.filter(host=host).filter(admin_approved=Event.Status.APPROVED).count()

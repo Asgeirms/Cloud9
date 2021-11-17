@@ -60,20 +60,20 @@
                 </div>
 
                 <div class="field">
-                    {{ form.requirement_categories.label_tag }}
-                    <select name="requirement_categories" multiple="" class="ui fluid dropdown">
+                    {{ form.accessibility_tags.label_tag }}
+                    <select name="accessibility_tags" multiple="" class="ui fluid dropdown">
                         <option value="">Accessibility tags</option>
-                        {% for category in form.requirement_categories %}
+                        {% for category in form.accessibility_tags %}
                             {{ category }}
                         {% endfor %}
                     </select>
                 </div>
 
                 <div class="field">
-                    {{ form.interest_categories.label_tag }}
-                    <select name="interest_categories" multiple="" class="ui fluid dropdown">
+                    {{ form.event_categories.label_tag }}
+                    <select name="event_categories" multiple="" class="ui fluid dropdown">
                         <option value="">Event categories</option>
-                        {% for category in form.interest_categories %}
+                        {% for category in form.event_categories %}
                             {{ category }}
                         {% endfor %}
                     </select>

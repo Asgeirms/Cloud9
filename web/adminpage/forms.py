@@ -1,6 +1,6 @@
 from django import forms
 
-from happenings.models import GeneratedShortDescriptions, InterestCategory, RequirementCategory
+from happenings.models import GeneratedShortDescriptions, EventCategory, AccessibilityTag
 
 
 class GeneratedShortDescriptionsForm(forms.ModelForm):
@@ -14,15 +14,15 @@ class GeneratedShortDescriptionsForm(forms.ModelForm):
         }
 
 
-class InterestCategoryForm(forms.ModelForm):
-    """This form is used for the creation and updating for the interest categories"""
+class EventCategoryForm(forms.ModelForm):
+    """This form is used for the creation and updating for the event categories"""
     class Meta:
-        model = InterestCategory
+        model = EventCategory
         fields = '__all__'
 
 
-class RequirementCategoryForm(forms.ModelForm):
-    """This form is used for the creation and updating for the requirement categories"""
+class AccessibilityTagForm(forms.ModelForm):
+    """This form is used for the creation and updating for the accessibility tags"""
     class Meta:
-        model = RequirementCategory
+        model = AccessibilityTag
         fields = '__all__'

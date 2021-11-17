@@ -10,7 +10,7 @@ from django.shortcuts import redirect, render
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
-from happenings.models import Schedule, InterestCategory, CategoryWeightsUser, Event
+from happenings.models import Schedule, EventCategory, CategoryWeightsUser, Event
 from swiping.paginator import SwipingPaginator
 from util.session_utils import add_data_to_session_as_dict, read_session_data
 from happenings.views import use_session_filter, fill_filter_form_from_session, save_filters_to_session, reset_session_filters
@@ -35,7 +35,7 @@ class SwipingEventsView(ListView):
         # AI 1
         # Initialize all unseen weighted category for user.
         if not self.request.user.is_anonymous:
-            for obj in InterestCategory.objects.all():
+            for obj in EventCategory.objects.all():
                 if not len(CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=obj)):
                     CategoryWeightsUser.objects.create(user=self.request.user, category=obj, weight=1)
         ###############################
@@ -66,7 +66,7 @@ class SwipingEventsView(ListView):
             while still updating the HTML to get new events post 
             spinning animation, for yes and no swipes. Do 
             use time.sleep in the future'''
-            time.sleep(4)
+            time.sleep(2)
             add_data_to_session_as_dict(
                 request=request,
                 name=self.viewed_events_name,
@@ -91,7 +91,7 @@ class SwipingEventsView(ListView):
                 ###############################
                 # AI 2
                 # Increase weights of categories belonging to this event.
-                for cat in Schedule.objects.filter(pk=current_pk).first().event.interest_categories.all():
+                for cat in Schedule.objects.filter(pk=current_pk).first().event.event_categories.all():
                     weight : float = CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
                     weight += (1-weight)*(DECREASE_RATE)
                     CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).update(weight=weight)
@@ -102,7 +102,7 @@ class SwipingEventsView(ListView):
             while still updating the HTML to get new events post 
             spinning animation, for yes and no swipes. Do
             not use time.sleep in the future.'''
-            time.sleep(4)
+            time.sleep(2)
             add_data_to_session_as_dict(
                 request=request,
                 name=self.viewed_events_name,
@@ -123,7 +123,7 @@ class SwipingEventsView(ListView):
                 ###############################
                 # AI 3
                 # Decrease weights of categories belonging to this event.
-                for cat in Schedule.objects.filter(pk=current_pk).first().event.interest_categories.all():
+                for cat in Schedule.objects.filter(pk=current_pk).first().event.event_categories.all():
                     weight = CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).first().weight
                     CategoryWeightsUser.objects.filter(user=self.request.user).filter(category=cat).update(weight=weight*DECREASE_RATE)
                 ###############################
@@ -193,7 +193,7 @@ class SwipingEventsView(ListView):
                 sum = 0
                 n = 0
 
-                cats = schedule.event.interest_categories.all()
+                cats = schedule.event.event_categories.all()
                 if len(cats):
                     for cat in cats:
                         n+=1

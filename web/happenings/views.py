@@ -14,7 +14,7 @@ from rest_framework_xml.renderers import XMLRenderer
 from django.contrib.admin.views.decorators import staff_member_required
 
 from .forms import EventForm, ScheduleForm, FilterForm, EditEventForm
-from .models import Event, Schedule, RequirementCategory
+from .models import Event, Schedule, AccessibilityTag
 from random import randint
 from .serializers import ScheduleSerializer
 
@@ -198,7 +198,7 @@ class ScheduleDetailView(DetailView):
     """View for a detailed schedule"""
 
     model = Schedule
-    template_name = "happenings/schedule_detail_view.html"
+    template_name = "happenings/schedule_detail_view_base.html"
     context_object_name = 'scheduled_event'
     success_url = reverse_lazy('filtered_event_list')
 
@@ -278,14 +278,14 @@ def use_session_filter(queryset, request):
             queryset = queryset.filter(start_time__lte=datetime.strptime(request.session.get('filter_to_time'), "%Y-%m-%d %H:%M"))
         if request.session.get('filter_categories'):
             for category in request.session.get('filter_categories'):
-                queryset = queryset.filter(event__requirement_categories__name__contains=category)
+                queryset = queryset.filter(event__accessibility_tags__name__contains=category)
     return queryset
 
 
 def fill_filter_form_from_session(request):
     #to get the selcted categories
-    categories = RequirementCategory.objects.all()
-    not_selected_categories = RequirementCategory.objects.all()
+    categories = AccessibilityTag.objects.all()
+    not_selected_categories = AccessibilityTag.objects.all()
     if request.session.get('filter_categories'):
         for category in request.session.get('filter_categories'):
             not_selected_categories = not_selected_categories.exclude(name=category)

@@ -25,12 +25,12 @@ CATEGORIES_FILE = "categories.json"
 
 categories_sheet = "Categories"
 
-# Requirements categories
+# Accessibility tags
 req_start = "A2"
 req_end = "B14"
 req_range = f"{categories_sheet}!{req_start}:{req_end}"
 
-# Interest categories
+# Event categories
 interest_start = "E2"
 interest_end = "F19"
 interest_range = f"{categories_sheet}!{interest_start}:{interest_end}"
