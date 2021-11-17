@@ -26,14 +26,15 @@
 
                                 <div class="header">{{ scheduled_event.event.name }}</div>
                                 <div class="text"><span class="date">{% get_event_times scheduled_event %}</span>
-                                    <span class="right floated">{% get_pricerange scheduled_event.event %}</span>
+                                    <span class="right floated">{% get_pricerange scheduled_event.event%}</span>
                                 </div>
                                 <div class="meta">Location: {{ scheduled_event.event.location }}</div>
                                 <div class="text">Host:
                                     {{ scheduled_event.event.host.first_name }} {{ scheduled_event.event.host.last_name }}
+                                    {% get_approved_event_count scheduled_event.event.host as event_count %}
                                     <span class="right floated">
-                                        The host has {% get_approved_event_count scheduled_event.event.host %} other
-                                        approved events </span>
+                                        The host has {{ event_count }}
+                                        approved {% if event_count == 1 %} event {% else %} events {% endif %} </span>
                                 </div>
                                 <br>
                                 <div class="description"> {{ scheduled_event.event.description }}</div>

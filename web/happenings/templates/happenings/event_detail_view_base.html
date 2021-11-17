@@ -28,10 +28,13 @@
                                 <span class="right floated">{% get_pricerange event %}</span>
                             </div>
 
-                            <div class="text">Host: {{ event.host.first_name }} {{ event.host.last_name }}
-                                <span class="right floated">The host has {% get_approved_event_count event.host %} other
-                                    approved events </span>
-                            </div>
+                            <div class="text">Host:
+                                    {{ event.host.first_name }} {{ event.host.last_name }}
+                                    {% get_approved_event_count event.host as event_count %}
+                                    <span class="right floated">
+                                        The host has {{ event_count }}
+                                        approved {% if event_count == 1 %} event {% else %} events {% endif %} </span>
+                                </div>
                             <br>
                             <div class="description"> {{ event.description }}</div>
 
