@@ -61,10 +61,10 @@
                         </div>
                         <!-- Hold the text, and time -->
                         <div class="card_text">
-                            <span class="date">From {{ schedule.start_time }} <br> To {{ schedule.end_time }}</span>
-                            <h2 class="title">{{ schedule.event.name }}</h2>
-                            <p class="description">{{ schedule.event.short_description }}</p>
-                            <span class="location">
+                            <span class="date" style="font-size: 1.5vh; margin-top: 0px; margin-bottom: 1vh;">From {{ schedule.start_time }} <br> To {{ schedule.end_time }}</span>
+                            <h2 class="title" style="font-size: 3vh; margin-top: 0px; margin-bottom: 1vh;">{{ schedule.event.name }}</h2>
+                            <p class="description" style="font-size: 1.5vh; margin-top: 0px; margin-bottom: 1vh;">{{ schedule.event.short_description }}</p>
+                            <span class="location" style="font-size: 1.5vh; margin-top: 0px; margin-bottom: 1vh;">
                                 Where: {{ schedule.event.location }} <br>
                                 Price: {% get_pricerange schedule.event %}
                             </span>
@@ -74,7 +74,7 @@
                             <div class="accessibility">
                                 {% for category in schedule.event.accessibility_tags.all %}
                                     <div class="tag">
-                                        <span data-content="{{ category.description }}">
+                                        <span data-content="{{ category.description }}" style="font-size: 1.5vh;">
                                             <i>{{ category.name }}</i>
                                         </span>
                                     </div>
@@ -83,7 +83,7 @@
                             <div class="category">
                                 {% for category in schedule.event.event_categories.all %}
                                     <div class="tag">
-                                        <span data-content="{{ category.description }}">
+                                        <span data-content="{{ category.description }}" style="font-size: 1.5vh;">
                                             <i>{{ category.name }}</i>
                                         </span>
                                     </div>

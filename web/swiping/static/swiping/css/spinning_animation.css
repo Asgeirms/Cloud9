@@ -1,6 +1,7 @@
 /* Variables */
 :root {
     --top_margin_buffer: 200px;
+    --text_size: 1vh;
 }
 
 /* Containers */
@@ -121,7 +122,6 @@ h2 {
 .accessibility {
     display: flex;
     flex-direction: row;
-    font-size: 10px;
     align-items: center;
     justify-content: center;
 }
@@ -129,7 +129,6 @@ h2 {
 .category {
     display: flex;
     flex-direction: row;
-    font-size: 10px;
     align-items: center;
     justify-content: center;
 }
