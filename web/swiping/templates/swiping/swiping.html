@@ -1,6 +1,7 @@
 {% extends 'happenings/filter_base.html' %}
 
 {% load static %}
+{% load happenings_templatetags %}
 
 {% block head %}
     <link rel="stylesheet" type="text/css" href="{% static 'swiping/css/spinning_animation.css' %}"/>
@@ -12,9 +13,6 @@
             const button_l = document.getElementById('left_button');
             const rotator = document.getElementById('spinner');
             const swipe_card = document.getElementById('swipe_card');
-  
-            //button_r.style.display = "none";
-            //button_l.style.display = "none";
   
             if (dir === 'l') {
                 rotator.classList.add("spinL");
@@ -29,8 +27,6 @@
                 rotator.classList.remove("spinL");
                 rotator.classList.remove("spinR");
                 swipe_card.classList.remove("fade");
-                //buttonR.disabled = false;
-                //buttonL.disabled = false;
             }, 4000);
         }
     </script>
@@ -46,133 +42,66 @@
 {% for schedule in page_obj  %}
     <div class="ui_container">
         {# Computer only #}
-
-        <!--TODO: 
-            - Make everything scale correctly together
-            - Add missing info to cards from database
-            - Improve animations and similar
-        --> 
-
-        <div class="ui middle aligned grid computer only">
-            <div class="three column row circle-mask" style="height: 60vh;">
-                <div id="left_button" class="left floated right aligned column"  style="opacity: 0;">
-                    <a id="no" href="?current={{schedule.pk}}&amp;swiped=no&amp;page={{page_obj.next_page_number}}" onclick="return rotate('l')">
-                        <i class="massive angle double left icon" id="no"></i>
-                    </a>
-                </div>
-                <div class="center aligned column">
-                    <div id="swipe_card" class="ui fluid card">
-                        <div class="image crop">
-                            <img src="
-                                {% if schedule.event.image %}
-                                    {{ schedule.event.image.url }}
-                                {% else %}
-                                    https://fomantic-ui.com/images/avatar2/large/matthew.png
-                                {% endif %}" alt="Event image"
-                                
-                                style="margin: auto; height: 40vh; width: auto;"
-                            />
-                        </div>
-                            
-                        <div class="content">
-                            <a class="header">{{ schedule.event.name }}</a>
-                            
-                            <div class="meta">
-                                <span class="date">{{ schedule.event.location }}</span>
-                            </div>
-                        
-                            <div class="description">
-                                {{ schedule.event.short_description }}
-                            </div>
-                        </div>
-
-                        <div class="extra content">
-                            <a>
-                                From {{ schedule.start_time }}
-                            </a>
-
-                            <span class="right floated">
-                                To {{ schedule.end_time }}
-                            </span>
-                        </div>
-                        <div class="ui mini horizontal divided  list">
-                            {% for category in schedule.event.accessibility_tags.all %}
-                                <div class="item">
-                                    <div class="content">
-                                        <div class="header">
-                                            <span data-content="{{ category.description }}">
-                                                <i>{{ category.name }}</i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                            {% for category in schedule.event.event_categories.all %}
-                                <div class="item">
-                                    <div class="content">
-                                        <div class="header">
-                                            <span data-content="{{ category.description }}">
-                                                <i>{{ category.name }}</i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <div id="right_button" class="right floated left aligned column" style="opacity: 0;">
-                    <a id="yes" href="?current={{schedule.pk}}&amp;swiped=yes&amp;page={{page_obj.next_page_number}}" onclick="return rotate('r')">
-                        <i class="massive angle double right icon" id="yes"></i>
-                    </a>
-                </div>
-
-                </div>
-            </div>
-        </div>
         <div class="spinner_mask">
             <div id="spinner" class="spinner_container">
                 <img src="static/swiping/images/spinner.png" alt="Spinning wheel background image" class="spinner">
                 <div class="cake_mask">
-                    <div class="card_container">
-                        <!-- TODO: fix this card
-                        <div class="image crop">
-                            <img src="
-                                {% if schedule.event.image %}
-                                    {{ schedule.event.image.url }}
-                                {% else %}
-                                    https://fomantic-ui.com/images/avatar2/large/matthew.png
-                                {% endif %}" alt="Event image"
-                                
-                                style="margin: auto; height: 40vh; width: auto;"
+                    <div id="swipe_card" class="card_container">
+                        <!-- Hold the image -->
+                        <div class="card_image crop">
+                            <img class="image"
+                                src="
+                                    {% if schedule.event.image %}
+                                        {{ schedule.event.image.url }}
+                                    {% else %}
+                                        https://fomantic-ui.com/images/avatar2/large/matthew.png
+                                    {% endif %}"
+                                alt="Event image"
                             />
                         </div>
-                        
-                        <div style="position: absolute; background: blue; width: 50vh; height: 50vh; top: 0; left: 0;"></div>
-                        <div>
-                            <a class="header">{{ schedule.event.name }}</a>
-                            
-                            <div class="meta">
-                                <span class="date">{{ schedule.event.location }}</span>
+                        <!-- Hold the text, and time -->
+                        <div class="card_text">
+                            <span class="date" style="font-size: 1.5vh; margin-top: 0px; margin-bottom: 1vh;">From {{ schedule.start_time }} <br> To {{ schedule.end_time }}</span>
+                            <h2 class="title" style="font-size: 3vh; margin-top: 0px; margin-bottom: 1vh;">{{ schedule.event.name }}</h2>
+                            <p class="description" style="font-size: 1.5vh; margin-top: 0px; margin-bottom: 1vh;">{{ schedule.event.short_description }}</p>
+                            <span class="location" style="font-size: 1.5vh; margin-top: 0px; margin-bottom: 1vh;">
+                                Where: {{ schedule.event.location }} <br>
+                                Price: {% get_pricerange schedule.event %}
+                            </span>
+                        </div>
+                        <!-- Hold the categories -->
+                        <div class="card_categories">
+                            <div class="accessibility">
+                                {% for category in schedule.event.accessibility_tags.all %}
+                                    <div class="tag">
+                                        <span data-content="{{ category.description }}" style="font-size: 1.5vh;">
+                                            <i>{{ category.name }}</i>
+                                        </span>
+                                    </div>
+                                {% endfor %}
                             </div>
-                        
-                            <div class="description">
-                                {{ schedule.event.description }}
+                            <div class="category">
+                                {% for category in schedule.event.event_categories.all %}
+                                    <div class="tag">
+                                        <span data-content="{{ category.description }}" style="font-size: 1.5vh;">
+                                            <i>{{ category.name }}</i>
+                                        </span>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
-                        -->
                     </div>
                 </div>
             </div>
         </div>
-        <svg width="auto" height="20vh" viewBox="0 0 330 131" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; left: 50vw; top: 80vh; transform: translateX(-50%);">
+        <svg class="svg_container" width="auto" height="20vh" viewBox="0 0 330 131" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="buttons">
-                <a id="left_button" href="?current={{schedule.pk}}&amp;swiped=no&amp;page={{page_obj.next_page_number}}" onclick="return rotate('l')" filter="url(#filter0_d_6:17)" style="cursor: pointer;">
+                <a id="left_button" href="?current={{schedule.pk}}&amp;swiped=no&amp;page={{page_obj.next_page_number}}" onclick="return rotate('l')" filter="url(#filter0_d_6:17)" style="cursor: pointer; z-index: 2;">
                     <circle id="no" cx="84" cy="65" r="39" fill="white" stroke="#A7A7A7" stroke-width="2"/>
                     <line id="no" x1="99.1838" y1="48.0711" x2="68.0711" y2="79.1838" stroke="#F56666" stroke-width="10" stroke-linecap="round"/>
                     <line id="no" x1="99.8908" y1="79.8909" x2="68.7782" y2="48.7782" stroke="#F56666" stroke-width="10" stroke-linecap="round"/>
                 </a>
-                <a id="right_button" href="?current={{schedule.pk}}&amp;swiped=yes&amp;page={{page_obj.next_page_number}}" onclick="return rotate('r')"  filter="url(#filter1_d_6:17)" style="cursor: pointer;">
+                <a id="right_button" href="?current={{schedule.pk}}&amp;swiped=yes&amp;page={{page_obj.next_page_number}}" onclick="return rotate('r')"  filter="url(#filter1_d_6:17)" style="cursor: pointer; z-index: 2;">
                     <circle id="yes" cx="247" cy="65" r="39" fill="white" stroke="#A7A7A7" stroke-width="2"/>
                     <path id="yes" d="M242.912 52.7736C238.921 48.9561 232.591 49.0967 228.774 53.0878C224.956 57.0788 225.097 63.4089 229.088 67.2264L242.912 52.7736ZM247.5 71L240.588 78.2264L247.5 84.8381L254.412 78.2264L247.5 71ZM265.912 67.2264C269.903 63.4089 270.044 57.0788 266.226 53.0878C262.409 49.0967 256.079 48.9561 252.088 52.7736L265.912 67.2264ZM229.088 67.2264L240.588 78.2264L254.412 63.7736L242.912 52.7736L229.088 67.2264ZM254.412 78.2264L265.912 67.2264L252.088 52.7736L240.588 63.7736L254.412 78.2264Z" fill="#1CE06B"/>
                 </a>
@@ -203,7 +132,7 @@
 
         
         <g class="star">
-            <svg width="40vw" height="auto" viewBox="0 0 187 178" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="80vh" height="auto" viewBox="0 0 187 178" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M93.9755 3.84549L93.5 2.38197L93.0245 3.84549L71.9202 68.7979H3.62516H2.08632L3.33127 69.7024L58.5831 109.845L37.4788 174.798L37.0032 176.261L38.2482 175.357L93.5 135.214L148.752 175.357L149.997 176.261L149.521 174.798L128.417 109.845L183.669 69.7024L184.914 68.7979H183.375H115.08L93.9755 3.84549Z" fill="url(#paint0_diamond_7:18)" stroke="black"/>
                 <defs>
                     <radialGradient id="paint0_diamond_7:18" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(93.5 98.5) rotate(90) scale(94.5)">
@@ -219,8 +148,6 @@
 {% endfor %}
 
 <script>
-    $("#no").transition('set looping').transition('fade left', '3500ms')
-    $("#yes").transition('set looping').transition('fade right', '3500ms')
     $("span[data-content]").popup();
 </script>
 
